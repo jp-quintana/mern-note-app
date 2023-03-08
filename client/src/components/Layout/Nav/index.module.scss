@@ -1,0 +1,18 @@
+@import 'App.scss';
+
+.container {
+  background: #353d30;
+
+  .nav {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    color: $color-detail;
+
+    .links {
+      margin-left: auto;
+      display: flex;
+      gap: 1rem;
+    }
+  }
+}

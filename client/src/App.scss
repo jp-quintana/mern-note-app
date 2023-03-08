@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Just+Another+Hand&family=Roboto:wght@400;700;900&display=swap');
+
+$font-f-app: 'Roboto', sans-serif;
+$font-f-note: 'Just Another Hand', cursive;
+
+$color-app: #000;
+$color-detail: #fff;
+
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: $font-f-app;
+  font-weight: 400;
+  color: $color-app;
+  background-color: #f9f9f9;
+  font-size: 1.2rem;
+  line-height: 1.5;
+}
+
+a {
+  text-decoration: none;
+}
+
+.main-container {
+  max-width: 125rem;
+  width: 90%;
+  margin: 0 auto;
+}
