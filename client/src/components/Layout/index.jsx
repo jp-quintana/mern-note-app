@@ -1,18 +1,21 @@
 import { Outlet } from 'react-router-dom';
 
-import Nav from './Nav';
+import Aside from './Aside';
+
+import styles from './index.module.scss';
 
 const Layout = () => {
   return (
-    <>
-      <header>
-        <Nav />
-      </header>
-      <main>
-        <Outlet />
-      </main>
-      <footer></footer>
-    </>
+    <div className={styles.container}>
+      <Aside />
+      <div className={styles.main}>
+        <header></header>
+        <main>
+          <Outlet />
+        </main>
+        <footer></footer>
+      </div>
+    </div>
   );
 };
 
