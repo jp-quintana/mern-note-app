@@ -1,0 +1,68 @@
+.container {
+  padding: 0.5rem;
+  overflow-y: auto;
+
+  .nav {
+    .list {
+      overflow: hidden;
+
+      .list_header {
+        padding: 0.5rem 1.5rem;
+        display: flex;
+        align-items: center;
+        font-weight: 700;
+        color: $color-secondary;
+        border-radius: 0.2rem;
+
+        transition: all 0.1s ease-in;
+
+        &:hover {
+          background: $background-primary-h;
+          cursor: pointer;
+        }
+
+        .icon_wrapper {
+          display: flex;
+          align-items: center;
+          width: 2rem;
+          font-size: 1.6rem;
+        }
+      }
+
+      li {
+        gap: 0.5rem;
+        display: flex;
+        align-items: center;
+        font-weight: 700;
+        border-radius: 0.2rem;
+
+        transition: all 0.1s ease-in;
+
+        &:hover {
+          background: $background-primary-h;
+          cursor: pointer;
+        }
+
+        a {
+          padding: 0.5rem 2.5rem;
+          color: $color-secondary;
+          width: 100%;
+          display: flex;
+          gap: 0.5rem;
+
+          .emoji {
+            text-align: center;
+            width: 2rem;
+            border-radius: 0.2rem;
+
+            transition: all 0.1 ease-in;
+
+            &:hover {
+              background: $background-emoji-h;
+            }
+          }
+        }
+      }
+    }
+  }
+}

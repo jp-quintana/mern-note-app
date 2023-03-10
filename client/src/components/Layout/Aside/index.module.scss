@@ -7,10 +7,16 @@
 
   .header {
     padding: 1.5rem;
-
     display: flex;
     gap: 1rem;
     align-items: center;
+
+    transition: all 0.1s ease-in;
+
+    &:hover {
+      background: $background-primary-h;
+      cursor: pointer;
+    }
 
     img {
       height: 2rem;
@@ -26,7 +32,7 @@
   }
 
   .controls {
-    padding: 0.3rem;
+    padding: 0.5rem;
     margin-bottom: 1.5rem;
 
     li {
@@ -35,12 +41,20 @@
       gap: 1rem;
       align-items: center;
       color: $color-secondary;
+      border-radius: 0.2rem;
       font-weight: 700;
+
+      transition: all 0.1s ease-in;
+
+      &:hover {
+        background: $background-primary-h;
+        cursor: pointer;
+      }
 
       .icon_wrapper {
         display: flex;
         align-items: center;
-        width: 1.7rem;
+        width: 1.5rem;
       }
     }
   }
@@ -48,7 +62,18 @@
   .footer {
     border-top: $border;
     margin-top: auto;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    gap: 0.5rem;
     padding: 1.5rem;
+    color: $color-secondary;
+
+    transition: all 0.1s ease-in;
+
+    &:hover {
+      background: $background-primary-h;
+    }
 
     .icon_wrapper {
       display: flex;

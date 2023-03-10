@@ -8,7 +8,7 @@ import styles from './index.module.scss';
 // TODO: Remove
 const USER = {
   username: 'jpquintana',
-  imageUrl: 'https://i.ytimg.com/vi/UGED6cb63YM/maxresdefault.jpg',
+  imageUrl: 'https://wallpaperaccess.com/full/1428034.jpg',
 };
 
 const Aside = () => {
@@ -40,8 +40,9 @@ const Aside = () => {
       </ul>
       <Nav />
       <footer className={styles.footer}>
-        {' '}
-        <FaPlus />
+        <div className={styles.icon_wrapper}>
+          <FaPlus />
+        </div>
         New note
       </footer>
     </aside>
