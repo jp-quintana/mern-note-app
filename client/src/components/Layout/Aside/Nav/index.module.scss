@@ -7,12 +7,13 @@
       overflow: hidden;
 
       .list_header {
-        padding: 0.5rem 1.5rem;
+        padding: 0.5rem;
         display: flex;
         align-items: center;
         font-weight: 700;
         color: $color-secondary;
         border-radius: 0.2rem;
+        user-select: none;
 
         transition: all 0.1s ease-in;
 
@@ -24,8 +25,14 @@
         .icon_wrapper {
           display: flex;
           align-items: center;
-          width: 2rem;
+          padding: 0 1rem;
           font-size: 1.6rem;
+          transition: transform 0.1s ease-in;
+        }
+
+        .icon_open {
+          transform: rotate(90deg);
+          transition: transform 0.1s ease-in;
         }
       }
 

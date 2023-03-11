@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { NavLink, Link } from 'react-router-dom';
 
 import { FaAngleRight } from 'react-icons/fa';
@@ -17,40 +19,59 @@ const USER = {
 };
 
 const Nav = () => {
+  const [showFavorites, setShowFavorites] = useState(false);
+  const [showNotes, setShowNotes] = useState(false);
+
   return (
     <div className={styles.container}>
       <nav className={styles.nav}>
         <ul className={styles.list}>
-          <div className={styles.list_header}>
-            <div className={styles.icon_wrapper}>
+          <div
+            onClick={() => setShowFavorites((prevState) => !prevState)}
+            className={styles.list_header}
+          >
+            <div
+              className={`${styles.icon_wrapper} ${
+                showFavorites ? styles.icon_open : ''
+              }`}
+            >
               <FaAngleRight />
             </div>
             <p>Favorite Notes:</p>
           </div>
-          {USER.favoriteNotes.map((note) => (
-            <li key={note.id}>
-              <NavLink to="/">
-                <div className={styles.emoji}>{note.emoji}</div>
-                {note.name}
-              </NavLink>
-            </li>
-          ))}
+          {showFavorites &&
+            USER.favoriteNotes.map((note) => (
+              <li key={note.id}>
+                <NavLink to="/">
+                  <div className={styles.emoji}>{note.emoji}</div>
+                  {note.name}
+                </NavLink>
+              </li>
+            ))}
         </ul>
         <ul className={styles.list}>
-          <div className={styles.list_header}>
-            <div className={styles.icon_wrapper}>
+          <div
+            onClick={() => setShowNotes((prevState) => !prevState)}
+            className={styles.list_header}
+          >
+            <div
+              className={`${styles.icon_wrapper} ${
+                showNotes ? styles.icon_open : ''
+              }`}
+            >
               <FaAngleRight />
             </div>
             <p>Notes:</p>
           </div>
-          {USER.notes.map((note) => (
-            <li key={note.id}>
-              <NavLink to="/">
-                <div className={styles.emoji}>{note.emoji}</div>
-                {note.name}
-              </NavLink>
-            </li>
-          ))}
+          {showNotes &&
+            USER.notes.map((note) => (
+              <li key={note.id}>
+                <NavLink to="/">
+                  <div className={styles.emoji}>{note.emoji}</div>
+                  {note.name}
+                </NavLink>
+              </li>
+            ))}
         </ul>
       </nav>
     </div>
