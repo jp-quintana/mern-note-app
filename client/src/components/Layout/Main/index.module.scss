@@ -1,0 +1,28 @@
+.container {
+  background: $background-primary;
+  height: 100vh;
+  width: 100%;
+
+  header {
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+
+    .name_wrapper {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+
+      .emoji {
+        text-align: center;
+        width: 2rem;
+      }
+    }
+
+    .controls_wrapper {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+  }
+}
