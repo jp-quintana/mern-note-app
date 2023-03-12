@@ -28,16 +28,23 @@ const Main = () => {
         <div className={styles.controls_wrapper}>
           <p className={styles.last_edit}>Edited 2d ago</p>
           <p className={styles.share}>Share</p>
-          <FaRegCommentAlt size={'1.6rem'} />
-          <FaRegClock size={'1.6rem'} />
-          <FaRegStar size={'1.6rem'} />
-          <FaEllipsisH size={'1.6rem'} />
+          <div className={styles.icon_wrapper}>
+            <FaRegCommentAlt />
+          </div>
+          <div className={styles.icon_wrapper}>
+            <FaRegClock />
+          </div>
+          <div className={styles.icon_wrapper}>
+            <FaRegStar />
+          </div>
+          <div className={styles.icon_wrapper}>
+            <FaEllipsisH />
+          </div>
         </div>
       </header>
       <main>
         <Outlet />
       </main>
-      <footer></footer>
     </div>
   );
 };

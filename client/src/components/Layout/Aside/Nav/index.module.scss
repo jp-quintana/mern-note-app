@@ -12,7 +12,7 @@
         align-items: center;
         font-weight: 700;
         color: $color-secondary;
-        border-radius: 0.2rem;
+        border-radius: 0.3rem;
         user-select: none;
 
         transition: all 0.1s ease-in;
@@ -38,10 +38,8 @@
 
       li {
         gap: 0.5rem;
-        display: flex;
-        align-items: center;
         font-weight: 700;
-        border-radius: 0.2rem;
+        border-radius: 0.3rem;
 
         transition: all 0.1s ease-in;
 
@@ -51,15 +49,18 @@
         }
 
         a {
-          padding: 0.5rem 2.5rem;
+          padding: 0.3rem 2.5rem;
           color: $color-secondary;
           width: 100%;
           display: flex;
+          align-items: center;
           gap: 0.5rem;
 
           .emoji {
             text-align: center;
-            border-radius: 0.2rem;
+            padding: 0.2rem;
+            width: 2.5rem;
+            border-radius: 0.3rem;
 
             transition: all 0.1 ease-in;
 

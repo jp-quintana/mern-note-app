@@ -4,7 +4,7 @@
   width: 100%;
 
   header {
-    padding: 1.5rem;
+    padding: 1.1rem;
     display: flex;
     justify-content: space-between;
 
@@ -21,8 +21,39 @@
 
     .controls_wrapper {
       display: flex;
-      gap: 1.5rem;
+      gap: 1rem;
       align-items: center;
+
+      .last_edit {
+        color: $color_secondary;
+      }
+
+      .share {
+        padding: 0.4rem 0.75rem;
+        border-radius: 0.3rem;
+        transition: all 0.1s ease-in;
+
+        &:hover {
+          background: $background-primary-h;
+          cursor: pointer;
+        }
+      }
+
+      .icon_wrapper {
+        display: flex;
+        align-items: center;
+        padding: 0 0.75rem;
+        height: 100%;
+        font-size: 1.6rem;
+        border-radius: 0.3rem;
+
+        transition: all 0.1s ease-in;
+
+        &:hover {
+          background: $background-primary-h;
+          cursor: pointer;
+        }
+      }
     }
   }
 }
