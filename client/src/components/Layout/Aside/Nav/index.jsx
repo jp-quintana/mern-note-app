@@ -10,11 +10,11 @@ import styles from './index.module.scss';
 const USER = {
   username: 'jpquintana',
   imageUrl: 'https://wallpaperaccess.com/full/1428034.jpg',
-  favoriteNotes: [{ id: '1', name: 'TO DO', emoji: '\u{1F984}' }],
+  favoriteNotes: [{ id: '1', title: 'TO DO', emoji: '\u{1F984}' }],
   notes: [
-    { id: '2', name: 'Grocery list', emoji: '\u{1F5CB}' },
-    { id: '3', name: 'Goals', emoji: '\u{1F5CB}' },
-    { id: '4', name: 'Weight loss', emoji: '\u{1F5CB}' },
+    { id: '2', title: 'Grocery list', emoji: '\u{1F5CB}' },
+    { id: '3', title: 'Goals', emoji: '\u{1F5CB}' },
+    { id: '4', title: 'Weight loss', emoji: '\u{1F5CB}' },
   ],
 };
 
@@ -42,9 +42,9 @@ const Nav = () => {
           {showFavorites &&
             USER.favoriteNotes.map((note) => (
               <li key={note.id}>
-                <NavLink to="/">
+                <NavLink to={`/notes/${note.id}`}>
                   <div className={styles.emoji}>{note.emoji}</div>
-                  {note.name}
+                  {note.title}
                 </NavLink>
               </li>
             ))}
@@ -66,9 +66,9 @@ const Nav = () => {
           {showNotes &&
             USER.notes.map((note) => (
               <li key={note.id}>
-                <NavLink to="/">
+                <NavLink to={`/notes/${note.id}`}>
                   <div className={styles.emoji}>{note.emoji}</div>
-                  {note.name}
+                  {note.title}
                 </NavLink>
               </li>
             ))}

@@ -7,6 +7,7 @@ import {
 
 import Layout from './components/Layout';
 import Home from './pages/Home';
+import Note from './pages/Note';
 
 import './App.scss';
 
@@ -15,6 +16,7 @@ function App() {
     createRoutesFromElements(
       <Route path="/" element={<Layout />}>
         <Route index path="/" element={<Home />} />
+        <Route path="/notes/:noteId" element={<Note />} />
         <Route path="/login" element={<Home />} />
       </Route>
     )

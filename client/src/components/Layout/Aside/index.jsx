@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaSearch, FaRegClock, FaCog, FaPlus } from 'react-icons/fa';
 
 import Nav from './Nav';

@@ -13,7 +13,7 @@ import styles from './index.module.scss';
 // TODO: Remove
 const NOTE = {
   id: '1',
-  name: 'TO DO',
+  title: 'TO DO',
   emoji: '\u{1F984}',
 };
 
@@ -21,9 +21,9 @@ const Main = () => {
   return (
     <div className={styles.container}>
       <header>
-        <div className={styles.name_wrapper}>
+        <div className={styles.title_wrapper}>
           <div className={styles.emoji}>{NOTE.emoji}</div>
-          {NOTE.name}
+          {NOTE.title}
         </div>
         <div className={styles.controls_wrapper}>
           <p className={styles.last_edit}>Edited 2d ago</p>
