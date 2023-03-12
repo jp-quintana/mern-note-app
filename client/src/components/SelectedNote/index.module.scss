@@ -1,29 +1,65 @@
 .form {
   display: flex;
   flex-direction: column;
-  padding-top: 10rem;
 
   input,
   textarea {
     all: unset;
   }
 
-  .title {
-    font-size: 4rem;
-    font-weight: 700;
-    border-bottom: $border;
-    padding: 1rem 0;
-    &::placeholder {
-      color: $color-placeholder;
+  .header {
+    padding: 10rem 10rem 0;
+
+    .controls {
+      display: flex;
+      visibility: hidden;
+
+      li {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.75rem;
+        border-radius: 0.3rem;
+
+        transition: all 0.1s ease-in;
+
+        &:hover {
+          background: $background-primary-h;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .title {
+      font-size: 4rem;
+      font-weight: 700;
+
+      &::placeholder {
+        color: $color-placeholder;
+      }
+    }
+
+    .title:hover + .controls {
+      visibility: visible;
+      // bottom: -5.55rem;
+      // opacity: 1;
+
+      // @media (min-width: 768px) {
+      //   bottom: -5.25rem;
+      // }
     }
   }
 
-  .content {
-    padding: 1rem 0;
+  .body {
+    padding: 0 10rem;
 
-    font-size: 1.6rem;
-    &::placeholder {
-      color: $color-placeholder;
+    .content {
+      padding: 1rem 0;
+
+      font-size: 1.6rem;
+      &::placeholder {
+        color: $color-placeholder;
+      }
     }
   }
 }

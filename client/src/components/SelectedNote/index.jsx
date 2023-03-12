@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FaSmile, FaImage } from 'react-icons/fa';
 
 import styles from './index.module.scss';
 
@@ -10,19 +11,34 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
   });
   return (
     <form className={styles.form}>
-      <input
-        value={userInput.title}
-        onChange={(e) =>
-          setUserInput((prevState) => ({ ...prevState, title: e.target.value }))
-        }
-        placeholder="Untitled"
-        className={styles.title}
-      />
-      <textarea
-        name="content"
-        className={styles.content}
-        placeholder="Enter notes"
-      />
+      <div className={styles.header}>
+        <ul className={styles.controls}>
+          <li>
+            <FaSmile /> Add Emoji
+          </li>
+          <li>
+            <FaImage /> Add Cover
+          </li>
+        </ul>
+        <input
+          value={userInput.title}
+          onChange={(e) =>
+            setUserInput((prevState) => ({
+              ...prevState,
+              title: e.target.value,
+            }))
+          }
+          placeholder="Untitled"
+          className={styles.title}
+        />
+      </div>
+      <div className={styles.body}>
+        <textarea
+          name="content"
+          className={styles.content}
+          placeholder="Enter notes"
+        />
+      </div>
     </form>
   );
 };
