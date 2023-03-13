@@ -12,11 +12,16 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
   return (
     <form className={styles.form}>
       <div className={styles.header}>
+        <div className={styles.emoji_wrapper}>
+          <div className={styles.emoji}>{userInput.emoji}</div>
+        </div>
         <div className={styles.header_content}>
           <ul className={styles.controls}>
-            <li>
-              <FaSmile /> Add Emoji
-            </li>
+            {!userInput.emoji && (
+              <li>
+                <FaSmile /> Add Emoji
+              </li>
+            )}
             <li>
               <FaImage /> Add Cover
             </li>

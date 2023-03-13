@@ -25,30 +25,32 @@ const Nav = () => {
   return (
     <div className={styles.container}>
       <nav className={styles.nav}>
-        <ul className={styles.list}>
-          <div
-            onClick={() => setShowFavorites((prevState) => !prevState)}
-            className={styles.list_header}
-          >
+        {USER.favoriteNotes.length > 0 && (
+          <ul className={styles.list}>
             <div
-              className={`${styles.icon_wrapper} ${
-                showFavorites ? styles.icon_open : ''
-              }`}
+              onClick={() => setShowFavorites((prevState) => !prevState)}
+              className={styles.list_header}
             >
-              <FaAngleRight />
+              <div
+                className={`${styles.icon_wrapper} ${
+                  showFavorites ? styles.icon_open : ''
+                }`}
+              >
+                <FaAngleRight />
+              </div>
+              <p>Favorite Notes:</p>
             </div>
-            <p>Favorite Notes:</p>
-          </div>
-          {showFavorites &&
-            USER.favoriteNotes.map((note) => (
-              <li key={note.id}>
-                <NavLink to={`/notes/${note.id}`}>
-                  <div className={styles.emoji}>{note.emoji}</div>
-                  {note.title}
-                </NavLink>
-              </li>
-            ))}
-        </ul>
+            {showFavorites &&
+              USER.favoriteNotes.map((note) => (
+                <li key={note.id}>
+                  <NavLink to={`/notes/${note.id}`}>
+                    <div className={styles.emoji}>{note.emoji}</div>
+                    {note.title}
+                  </NavLink>
+                </li>
+              ))}
+          </ul>
+        )}
         <ul className={styles.list}>
           <div
             onClick={() => setShowNotes((prevState) => !prevState)}

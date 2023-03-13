@@ -8,7 +8,23 @@
   }
 
   .header {
-    padding: 10rem 10rem 0;
+    padding: 6.5rem 10rem 0;
+
+    .emoji_wrapper {
+      display: inline-block;
+      margin-bottom: 1rem;
+      border-radius: 0.3rem;
+
+      &:hover {
+        background: $background-primary-h;
+        cursor: pointer;
+      }
+
+      .emoji {
+        font-size: 7rem;
+        line-height: 1;
+      }
+    }
 
     &:hover > .header_content > .controls {
       visibility: visible;
@@ -17,17 +33,12 @@
     }
 
     .header_content {
-      position: relative;
-
       .controls {
         user-select: none;
-
         display: flex;
         visibility: hidden;
-        position: absolute;
 
         transition: all 0.1s ease-in;
-        bottom: 100%;
         opacity: 0;
 
         li {
@@ -36,6 +47,7 @@
           gap: 0.5rem;
           padding: 0.75rem;
           border-radius: 0.3rem;
+          color: $color-controls;
 
           &:hover {
             background: $background-primary-h;
