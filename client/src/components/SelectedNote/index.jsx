@@ -12,25 +12,27 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
   return (
     <form className={styles.form}>
       <div className={styles.header}>
-        <ul className={styles.controls}>
-          <li>
-            <FaSmile /> Add Emoji
-          </li>
-          <li>
-            <FaImage /> Add Cover
-          </li>
-        </ul>
-        <input
-          value={userInput.title}
-          onChange={(e) =>
-            setUserInput((prevState) => ({
-              ...prevState,
-              title: e.target.value,
-            }))
-          }
-          placeholder="Untitled"
-          className={styles.title}
-        />
+        <div className={styles.header_content}>
+          <ul className={styles.controls}>
+            <li>
+              <FaSmile /> Add Emoji
+            </li>
+            <li>
+              <FaImage /> Add Cover
+            </li>
+          </ul>
+          <input
+            value={userInput.title}
+            onChange={(e) =>
+              setUserInput((prevState) => ({
+                ...prevState,
+                title: e.target.value,
+              }))
+            }
+            placeholder="Untitled"
+            className={styles.title}
+          />
+        </div>
       </div>
       <div className={styles.body}>
         <textarea

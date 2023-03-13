@@ -7,11 +7,20 @@
     padding: 1.1rem;
     display: flex;
     justify-content: space-between;
+    user-select: none;
 
     .title_wrapper {
       display: flex;
       gap: 0.5rem;
+      padding: 0.4rem 0.75rem;
+
       align-items: center;
+      border-radius: 0.3rem;
+
+      &:hover {
+        background: $background-primary-h;
+        cursor: pointer;
+      }
 
       .emoji {
         text-align: center;

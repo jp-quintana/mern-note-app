@@ -10,43 +10,48 @@
   .header {
     padding: 10rem 10rem 0;
 
-    .controls {
-      display: flex;
-      visibility: hidden;
+    &:hover > .header_content > .controls {
+      visibility: visible;
+      transition: opacity 0.1s ease-in;
+      opacity: 1;
+    }
 
-      li {
+    .header_content {
+      position: relative;
+
+      .controls {
+        user-select: none;
+
         display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.75rem;
-        border-radius: 0.3rem;
+        visibility: hidden;
+        position: absolute;
 
         transition: all 0.1s ease-in;
+        bottom: 100%;
+        opacity: 0;
 
-        &:hover {
-          background: $background-primary-h;
-          cursor: pointer;
+        li {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          padding: 0.75rem;
+          border-radius: 0.3rem;
+
+          &:hover {
+            background: $background-primary-h;
+            cursor: pointer;
+          }
         }
       }
-    }
 
-    .title {
-      font-size: 4rem;
-      font-weight: 700;
+      .title {
+        font-size: 4rem;
+        font-weight: 700;
 
-      &::placeholder {
-        color: $color-placeholder;
+        &::placeholder {
+          color: $color-placeholder;
+        }
       }
-    }
-
-    .title:hover + .controls {
-      visibility: visible;
-      // bottom: -5.55rem;
-      // opacity: 1;
-
-      // @media (min-width: 768px) {
-      //   bottom: -5.25rem;
-      // }
     }
   }
 
