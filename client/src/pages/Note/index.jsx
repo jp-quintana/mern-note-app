@@ -8,10 +8,10 @@ const USER = {
   username: 'jpquintana',
   imageUrl: 'https://wallpaperaccess.com/full/1428034.jpg',
   notes: [
-    { id: '1', title: 'TO DO', emoji: '\u{1F984}', content: '' },
-    { id: '2', title: 'Grocery list', emoji: '\u{1F5CB}', content: '' },
-    { id: '3', title: 'Goals', emoji: '\u{1F5CB}', content: '' },
-    { id: '4', title: 'Weight loss', emoji: '\u{1F5CB}', content: '' },
+    { id: '1', title: 'TO DO', emoji: '🐑', content: '' },
+    { id: '2', title: 'Grocery list', emoji: '', content: '' },
+    { id: '3', title: 'Goals', emoji: '', content: '' },
+    { id: '4', title: 'Weight loss', emoji: '', content: '' },
   ],
 };
 

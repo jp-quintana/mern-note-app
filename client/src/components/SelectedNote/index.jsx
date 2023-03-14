@@ -15,6 +15,11 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
 
   const [showPicker, setShowPicker] = useState(false);
 
+  const handleEmojiSelect = (e) => {
+    setUserInput((prevState) => ({ ...prevState, emoji: e.native }));
+    setShowPicker(false);
+  };
+
   return (
     <form className={styles.form}>
       <div className={styles.header}>
@@ -31,7 +36,7 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
             close={() => setShowPicker(false)}
             modalClassName={styles.picker}
           >
-            <EmojiPicker />
+            <EmojiPicker onEmojiSelect={handleEmojiSelect} />
           </Modal>
           <ul className={styles.controls}>
             {!userInput.emoji && (

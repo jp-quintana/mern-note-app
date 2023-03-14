@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import { FaAngleRight } from 'react-icons/fa';
 
@@ -10,11 +10,11 @@ import styles from './index.module.scss';
 const USER = {
   username: 'jpquintana',
   imageUrl: 'https://wallpaperaccess.com/full/1428034.jpg',
-  favoriteNotes: [{ id: '1', title: 'TO DO', emoji: '\u{1F984}' }],
+  favoriteNotes: [{ id: '1', title: 'TO DO', emoji: '🐑' }],
   notes: [
-    { id: '2', title: 'Grocery list', emoji: '\u{1F5CB}' },
-    { id: '3', title: 'Goals', emoji: '\u{1F5CB}' },
-    { id: '4', title: 'Weight loss', emoji: '\u{1F5CB}' },
+    { id: '2', title: 'Grocery list', emoji: '' },
+    { id: '3', title: 'Goals', emoji: '' },
+    { id: '4', title: 'Weight loss', emoji: '' },
   ],
 };
 
@@ -44,7 +44,9 @@ const Nav = () => {
               USER.favoriteNotes.map((note) => (
                 <li key={note.id}>
                   <NavLink to={`/notes/${note.id}`}>
-                    <div className={styles.emoji}>{note.emoji}</div>
+                    <div className={styles.emoji}>
+                      {note.emoji || `\u{1F5CB}`}
+                    </div>
                     {note.title}
                   </NavLink>
                 </li>
@@ -69,7 +71,9 @@ const Nav = () => {
             USER.notes.map((note) => (
               <li key={note.id}>
                 <NavLink to={`/notes/${note.id}`}>
-                  <div className={styles.emoji}>{note.emoji}</div>
+                  <div className={styles.emoji}>
+                    {note.emoji || `\u{1F5CB}`}
+                  </div>
                   {note.title}
                 </NavLink>
               </li>

@@ -14,7 +14,7 @@ import styles from './index.module.scss';
 const NOTE = {
   id: '1',
   title: 'TO DO',
-  emoji: '\u{1F984}',
+  emoji: '🐑',
 };
 
 const Main = () => {
@@ -22,7 +22,7 @@ const Main = () => {
     <div className={styles.container}>
       <header>
         <div className={styles.title_wrapper}>
-          <div className={styles.emoji}>{NOTE.emoji}</div>
+          <div className={styles.emoji}>{NOTE.emoji || `\u{1F5CB}`}</div>
           {NOTE.title}
         </div>
         <div className={styles.controls_wrapper}>
