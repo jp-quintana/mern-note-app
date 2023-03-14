@@ -33,6 +33,14 @@
     }
 
     .header_content {
+      position: relative;
+
+      .picker {
+        position: absolute;
+        top: 0;
+        z-index: 2;
+      }
+
       .controls {
         user-select: none;
         display: flex;

@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { FaSmile, FaImage } from 'react-icons/fa';
 
+import Modal from 'components/Modal';
+import EmojiPicker from 'components/EmojiPicker';
+
 import styles from './index.module.scss';
 
 const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
@@ -9,16 +12,30 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
     emoji: initialEmoji || '',
     content: initialContent || '',
   });
+
+  const [showPicker, setShowPicker] = useState(false);
+
   return (
     <form className={styles.form}>
       <div className={styles.header}>
-        <div className={styles.emoji_wrapper}>
+        <div
+          onClick={() => setShowPicker(true)}
+          className={styles.emoji_wrapper}
+        >
           <div className={styles.emoji}>{userInput.emoji}</div>
         </div>
         <div className={styles.header_content}>
+          <Modal
+            local
+            show={showPicker}
+            close={() => setShowPicker(false)}
+            modalClassName={styles.picker}
+          >
+            <EmojiPicker />
+          </Modal>
           <ul className={styles.controls}>
             {!userInput.emoji && (
-              <li>
+              <li onClick={() => setShowPicker(true)}>
                 <FaSmile /> Add Emoji
               </li>
             )}
