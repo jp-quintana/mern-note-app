@@ -1,5 +1,5 @@
 .container {
-  // padding: 0 3rem;
+  padding: 0 3rem;
   display: flex;
   justify-content: center;
 
@@ -19,7 +19,7 @@
     }
 
     .header {
-      // padding: 6.5rem 0 0 10rem;
+      padding-top: 6.5rem;
       width: 100%;
 
       .emoji_wrapper {
@@ -90,7 +90,6 @@
     }
 
     .body {
-      // padding-left: 10rem;
       width: 100%;
 
       .content {

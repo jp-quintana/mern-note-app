@@ -11,6 +11,7 @@
     position: relative;
     display: flex;
     user-select: none;
+    overflow: hidden;
 
     .title_wrapper {
       position: absolute;
@@ -24,6 +25,10 @@
       &:hover {
         background: $background-primary-h;
         cursor: pointer;
+      }
+
+      @media (max-width: 360px) {
+        display: none;
       }
 
       .emoji {

@@ -53,16 +53,24 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
             </ul>
             <div
               contentEditable
-              value={userInput.title}
-              onChange={(e) =>
+              // value={userInput.title}
+              // onChange={(e) =>
+              //   setUserInput((prevState) => ({
+              //     ...prevState,
+              //     title: e.target.value,
+              //   }))
+              // }
+              // placeholder="Untitled"
+              onInput={(e) =>
                 setUserInput((prevState) => ({
                   ...prevState,
-                  title: e.target.value,
+                  title: e.target.innerText,
                 }))
               }
-              placeholder="Untitled"
               className={styles.title}
-            />
+            >
+              {userInput.title}
+            </div>
           </div>
         </div>
         <div className={styles.body}>
