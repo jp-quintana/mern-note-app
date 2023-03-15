@@ -1,25 +1,19 @@
 .container {
-  padding: 0 3rem;
   display: flex;
   justify-content: center;
 
-  .form {
+  .note {
     display: flex;
     flex-direction: column;
     max-width: 90rem;
     width: 90%;
-
-    input,
-    textarea {
-      all: unset;
-    }
 
     [contenteditable]:focus {
       outline: 0px solid transparent;
     }
 
     .header {
-      padding-top: 6.5rem;
+      padding: 6.5rem 10rem 0;
       width: 100%;
 
       .emoji_wrapper {
@@ -90,6 +84,7 @@
     }
 
     .body {
+      padding: 0 10rem;
       width: 100%;
 
       .content {

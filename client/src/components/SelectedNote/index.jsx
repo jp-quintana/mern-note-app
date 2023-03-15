@@ -13,8 +13,6 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
     content: initialContent || '',
   });
 
-  console.log(userInput.title);
-
   const [showPicker, setShowPicker] = useState(false);
 
   const handleEmojiSelect = (e) => {
@@ -22,9 +20,11 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
     setShowPicker(false);
   };
 
+  //TODO: Add Editor
+
   return (
     <div className={styles.container}>
-      <form className={styles.form}>
+      <div className={styles.note}>
         <div className={styles.header}>
           <div
             onClick={() => setShowPicker(true)}
@@ -53,14 +53,7 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
             </ul>
             <div
               contentEditable
-              // value={userInput.title}
-              // onChange={(e) =>
-              //   setUserInput((prevState) => ({
-              //     ...prevState,
-              //     title: e.target.value,
-              //   }))
-              // }
-              // placeholder="Untitled"
+              dangerouslySetInnerHTML={{ __html: initialTitle }}
               onInput={(e) =>
                 setUserInput((prevState) => ({
                   ...prevState,
@@ -68,19 +61,17 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
                 }))
               }
               className={styles.title}
-            >
-              {userInput.title}
-            </div>
+            />
           </div>
         </div>
         <div className={styles.body}>
-          <textarea
-            name="content"
+          <div
+            contentEditable
+            dangerouslySetInnerHTML={{ __html: initialContent }}
             className={styles.content}
-            placeholder="Enter notes"
           />
         </div>
-      </form>
+      </div>
     </div>
   );
 };
