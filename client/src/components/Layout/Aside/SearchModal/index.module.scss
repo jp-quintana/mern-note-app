@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+  flex-direction: column;
+
+  .search_box {
+    padding: 1.5rem 2rem;
+    border-bottom: $border;
+  }
+
+  .list {
+    padding: 1.5rem 2rem;
+  }
+}

@@ -33,10 +33,8 @@ const Note = () => {
     fetchNote();
   }, [noteId]);
 
-  console.log(selectedNote);
-
   return (
-    <div className={`main-container`}>
+    <>
       {isLoading && <p>Loading...</p>}
       {!isLoading && (
         <SelectedNote
@@ -46,7 +44,7 @@ const Note = () => {
           initialContent={selectedNote.content}
         />
       )}
-    </div>
+    </>
   );
 };
 

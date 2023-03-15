@@ -42,7 +42,7 @@ const Main = () => {
           </div>
         </div>
       </header>
-      <main>
+      <main className={styles.content}>
         <Outlet />
       </main>
     </div>

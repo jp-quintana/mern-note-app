@@ -2,14 +2,18 @@
   background: $background-primary;
   height: 100vh;
   width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 
   header {
     padding: 1.1rem;
+    position: relative;
     display: flex;
-    justify-content: space-between;
     user-select: none;
 
     .title_wrapper {
+      position: absolute;
       display: flex;
       gap: 0.5rem;
       padding: 0.4rem 0.75rem;
@@ -29,12 +33,17 @@
     }
 
     .controls_wrapper {
+      z-index: 1;
+      background: $background-primary;
+      margin-left: auto;
       display: flex;
       gap: 1rem;
       align-items: center;
+      padding-left: 1rem;
 
       .last_edit {
         color: $color_secondary;
+        white-space: nowrap;
       }
 
       .share {
@@ -64,5 +73,10 @@
         }
       }
     }
+  }
+
+  .content {
+    height: 100%;
+    overflow-y: auto;
   }
 }

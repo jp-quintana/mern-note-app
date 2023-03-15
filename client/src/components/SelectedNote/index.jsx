@@ -13,6 +13,8 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
     content: initialContent || '',
   });
 
+  console.log(userInput.title);
+
   const [showPicker, setShowPicker] = useState(false);
 
   const handleEmojiSelect = (e) => {
@@ -21,54 +23,57 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
   };
 
   return (
-    <form className={styles.form}>
-      <div className={styles.header}>
-        <div
-          onClick={() => setShowPicker(true)}
-          className={styles.emoji_wrapper}
-        >
-          <div className={styles.emoji}>{userInput.emoji}</div>
-        </div>
-        <div className={styles.header_content}>
-          <Modal
-            local
-            show={showPicker}
-            close={() => setShowPicker(false)}
-            modalClassName={styles.picker}
+    <div className={styles.container}>
+      <form className={styles.form}>
+        <div className={styles.header}>
+          <div
+            onClick={() => setShowPicker(true)}
+            className={styles.emoji_wrapper}
           >
-            <EmojiPicker onEmojiSelect={handleEmojiSelect} />
-          </Modal>
-          <ul className={styles.controls}>
-            {!userInput.emoji && (
-              <li onClick={() => setShowPicker(true)}>
-                <FaSmile /> Add Emoji
+            <div className={styles.emoji}>{userInput.emoji}</div>
+          </div>
+          <div className={styles.header_content}>
+            <Modal
+              local
+              show={showPicker}
+              close={() => setShowPicker(false)}
+              modalClassName={styles.picker}
+            >
+              <EmojiPicker onEmojiSelect={handleEmojiSelect} />
+            </Modal>
+            <ul className={styles.controls}>
+              {!userInput.emoji && (
+                <li onClick={() => setShowPicker(true)}>
+                  <FaSmile /> Add Emoji
+                </li>
+              )}
+              <li>
+                <FaImage /> Add Cover
               </li>
-            )}
-            <li>
-              <FaImage /> Add Cover
-            </li>
-          </ul>
-          <input
-            value={userInput.title}
-            onChange={(e) =>
-              setUserInput((prevState) => ({
-                ...prevState,
-                title: e.target.value,
-              }))
-            }
-            placeholder="Untitled"
-            className={styles.title}
+            </ul>
+            <div
+              contentEditable
+              value={userInput.title}
+              onChange={(e) =>
+                setUserInput((prevState) => ({
+                  ...prevState,
+                  title: e.target.value,
+                }))
+              }
+              placeholder="Untitled"
+              className={styles.title}
+            />
+          </div>
+        </div>
+        <div className={styles.body}>
+          <textarea
+            name="content"
+            className={styles.content}
+            placeholder="Enter notes"
           />
         </div>
-      </div>
-      <div className={styles.body}>
-        <textarea
-          name="content"
-          className={styles.content}
-          placeholder="Enter notes"
-        />
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 

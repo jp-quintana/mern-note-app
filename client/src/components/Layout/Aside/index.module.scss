@@ -1,9 +1,27 @@
+.search_modal_container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  .search_modal {
+    z-index: 2;
+    margin-top: 9rem;
+    min-width: 18rem;
+    width: 75%;
+    max-width: 66rem;
+    min-height: 5rem;
+    max-height: 80vh;
+    background: $background-modal;
+    border-radius: 1rem;
+  }
+}
+
 .container {
   background: $background-secondary;
-  width: 24rem;
   min-width: 24rem;
   display: flex;
   flex-direction: column;
+  border-right: $border;
 
   .header {
     padding: 1.5rem;
