@@ -1,0 +1,101 @@
+.container {
+  display: flex;
+  justify-content: center;
+
+  .note {
+    display: flex;
+    flex-direction: column;
+    max-width: 90rem;
+    width: 90%;
+
+    [contenteditable]:focus {
+      outline: 0px solid transparent;
+    }
+
+    .header {
+      padding: 6.5rem 10rem 0;
+      width: 100%;
+
+      .emoji_wrapper {
+        display: inline-block;
+        user-select: none;
+        margin-bottom: 1rem;
+        border-radius: 0.3rem;
+
+        &:hover {
+          background: $background-primary-h;
+          cursor: pointer;
+        }
+
+        .emoji {
+          font-size: 7rem;
+          line-height: 1;
+        }
+      }
+
+      &:hover > .header_content > .controls {
+        visibility: visible;
+        transition: opacity 0.1s ease-in;
+        opacity: 1;
+      }
+
+      .header_content {
+        position: relative;
+
+        .picker {
+          position: absolute;
+          top: 0;
+          z-index: 2;
+        }
+
+        .controls {
+          user-select: none;
+          display: flex;
+          visibility: hidden;
+
+          transition: all 0.1s ease-in;
+          opacity: 0;
+
+          li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            border-radius: 0.3rem;
+            color: $color-controls;
+
+            &:hover {
+              background: $background-primary-h;
+              cursor: pointer;
+            }
+          }
+        }
+
+        .title {
+          font-size: 4rem;
+          font-weight: 700;
+          width: 100%;
+
+          &::placeholder {
+            color: $color-placeholder;
+          }
+        }
+      }
+    }
+
+    .body {
+      padding: 0 10rem;
+      width: 100%;
+
+      .content {
+        padding: 1rem 0;
+        width: 100%;
+        max-height: 100%;
+        font-size: 1.6rem;
+        &::placeholder {
+          color: $color-placeholder;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,43 @@
+html {
+  box-sizing: border-box;
+  font-size: 62.5%;
+  height: 100vh;
+  // overflow: hidden;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: $font-f-app;
+  font-weight: 400;
+  color: $color-primary;
+  background: $background-primary;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  height: 100vh;
+  // overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+}
+
+ul {
+  list-style-type: none;
+}
+
+.app-page {
+  overflow: hidden;
+}
+
+// .main-container {
+//   max-width: 90rem;
+//   width: 90%;
+//   margin: 0 auto;
+// }

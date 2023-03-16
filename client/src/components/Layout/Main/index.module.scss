@@ -1,0 +1,87 @@
+.container {
+  background: $background-primary;
+  height: 100vh;
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+
+  header {
+    padding: 1.1rem;
+    position: relative;
+    display: flex;
+    user-select: none;
+    overflow: hidden;
+
+    .title_wrapper {
+      position: absolute;
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.4rem 0.75rem;
+
+      align-items: center;
+      border-radius: 0.3rem;
+
+      &:hover {
+        background: $background-primary-h;
+        cursor: pointer;
+      }
+
+      @media (max-width: 360px) {
+        display: none;
+      }
+
+      .emoji {
+        text-align: center;
+        width: 2rem;
+      }
+    }
+
+    .controls_wrapper {
+      z-index: 1;
+      background: $background-primary;
+      margin-left: auto;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      padding-left: 1rem;
+
+      .last_edit {
+        color: $color_secondary;
+        white-space: nowrap;
+      }
+
+      .share {
+        padding: 0.4rem 0.75rem;
+        border-radius: 0.3rem;
+        transition: all 0.1s ease-in;
+
+        &:hover {
+          background: $background-primary-h;
+          cursor: pointer;
+        }
+      }
+
+      .icon_wrapper {
+        display: flex;
+        align-items: center;
+        padding: 0 0.75rem;
+        height: 100%;
+        font-size: 1.6rem;
+        border-radius: 0.3rem;
+
+        transition: all 0.1s ease-in;
+
+        &:hover {
+          background: $background-primary-h;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .content {
+    height: 100%;
+    overflow-y: auto;
+  }
+}
