@@ -1,11 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
 $font-f-app: 'Inter', sans-serif;
 
 $color-primary: #d7d7d7;
 $color-secondary: #9b9b9b;
 $color-controls: #636363;
 $color-placeholder: #373737;
+$color-auth-button: rgb(235, 87, 87);
+$color-cancel-icon: #b4b3af;
 
 $background-primary: #191919;
 $background-secondary: #202020;
@@ -14,5 +15,8 @@ $background-input: #f7f7f4;
 
 $background-primary-h: #2c2c2c;
 $background-emoji-h: #383838;
+
+$background-auth-button: #fdf5f2;
+$background-auth-button-h: #fbebe8;
 
 $border: 1px solid #353535;
