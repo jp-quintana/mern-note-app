@@ -2,7 +2,7 @@ html {
   box-sizing: border-box;
   font-size: 62.5%;
   height: 100vh;
-  overflow: hidden;
+  // overflow: hidden;
 }
 
 *,
@@ -21,7 +21,7 @@ body {
   font-size: 1.4rem;
   line-height: 1.5;
   height: 100vh;
-  overflow: hidden;
+  // overflow: hidden;
 }
 
 a {
@@ -30,6 +30,10 @@ a {
 
 ul {
   list-style-type: none;
+}
+
+.app-page {
+  overflow: hidden;
 }
 
 // .main-container {

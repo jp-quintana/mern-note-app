@@ -2,8 +2,6 @@ import React from 'react';
 
 import styles from './index.module.scss';
 
-// TODO: Remove overflow:hidden from html & body when in auth page
-
 const AuthForm = () => {
   return (
     <div className={styles.container}>
