@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { FaSmile, FaImage } from 'react-icons/fa';
+import TextareaAutosize from 'react-textarea-autosize';
 
 import Modal from 'components/Modal';
 import EmojiPicker from 'components/EmojiPicker';
@@ -21,6 +22,8 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
   };
 
   //TODO: Add Editor
+
+  console.log(userInput.content);
 
   return (
     <div className={styles.container}>
@@ -51,23 +54,27 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
                 <FaImage /> Add Cover
               </li>
             </ul>
-            <div
-              contentEditable
-              dangerouslySetInnerHTML={{ __html: initialTitle }}
+            <TextareaAutosize
               onInput={(e) =>
                 setUserInput((prevState) => ({
                   ...prevState,
-                  title: e.target.innerText,
+                  title: e.target.value,
                 }))
               }
+              placeholder="Untitled"
               className={styles.title}
             />
           </div>
         </div>
         <div className={styles.body}>
-          <div
-            contentEditable
-            dangerouslySetInnerHTML={{ __html: initialContent }}
+          <TextareaAutosize
+            onInput={(e) =>
+              setUserInput((prevState) => ({
+                ...prevState,
+                content: e.target.value,
+              }))
+            }
+            placeholder="Add note"
             className={styles.content}
           />
         </div>
