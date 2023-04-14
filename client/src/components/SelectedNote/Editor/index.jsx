@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { createEditor } from 'slate';
 import { Slate, Editable, withReact } from 'slate-react';
+import TextareaAutosize from 'react-textarea-autosize';
 
 const initialValue = [
   {
