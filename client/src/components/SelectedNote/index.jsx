@@ -72,6 +72,7 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
               className={styles.title}
             /> */}
             <Editor
+              isTitle
               name="title"
               placeholder="Untitled"
               onInput={handleFormChange}
