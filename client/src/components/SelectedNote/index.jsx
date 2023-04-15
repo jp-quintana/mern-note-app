@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { FaSmile, FaImage } from 'react-icons/fa';
 import TextareaAutosize from 'react-textarea-autosize';
 
+import Editor from './Editor';
+
 import Modal from 'components/Modal';
 import EmojiPicker from 'components/EmojiPicker';
 
@@ -14,6 +16,8 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
     content: initialContent || '',
   });
 
+  const { title, emoji, content } = userInput;
+
   const [showPicker, setShowPicker] = useState(false);
 
   const handleEmojiSelect = (e) => {
@@ -21,9 +25,12 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
     setShowPicker(false);
   };
 
-  //TODO: Add Editor
-
-  console.log(userInput.content);
+  const handleFormChange = (e) => {
+    setUserInput((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
   return (
     <div className={styles.container}>
@@ -33,7 +40,7 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
             onClick={() => setShowPicker(true)}
             className={styles.emoji_wrapper}
           >
-            <div className={styles.emoji}>{userInput.emoji}</div>
+            <div className={styles.emoji}>{emoji}</div>
           </div>
           <div className={styles.header_content}>
             <Modal
@@ -45,7 +52,7 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
               <EmojiPicker onEmojiSelect={handleEmojiSelect} />
             </Modal>
             <ul className={styles.controls}>
-              {!userInput.emoji && (
+              {!emoji && (
                 <li onClick={() => setShowPicker(true)}>
                   <FaSmile /> Add Emoji
                 </li>
@@ -54,7 +61,7 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
                 <FaImage /> Add Cover
               </li>
             </ul>
-            <TextareaAutosize
+            {/* <TextareaAutosize
               onInput={(e) =>
                 setUserInput((prevState) => ({
                   ...prevState,
@@ -63,11 +70,17 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
               }
               placeholder="Untitled"
               className={styles.title}
+            /> */}
+            <Editor
+              name="title"
+              placeholder="Untitled"
+              onInput={handleFormChange}
+              className={styles.title}
             />
           </div>
         </div>
         <div className={styles.body}>
-          <TextareaAutosize
+          {/* <TextareaAutosize
             onInput={(e) =>
               setUserInput((prevState) => ({
                 ...prevState,
@@ -75,6 +88,12 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
               }))
             }
             placeholder="Add note"
+            className={styles.content}
+          /> */}
+          <Editor
+            name="content"
+            placeholder="Add note"
+            onInput={handleFormChange}
             className={styles.content}
           />
         </div>

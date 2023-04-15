@@ -1,21 +1,13 @@
-import { useState } from 'react';
-import { createEditor } from 'slate';
-import { Slate, Editable, withReact } from 'slate-react';
 import TextareaAutosize from 'react-textarea-autosize';
 
-const initialValue = [
-  {
-    type: 'paragraph',
-    children: [{ text: 'A line of text in a paragraph.' }],
-  },
-];
-
-const Editor = () => {
-  const [editor] = useState(() => withReact(createEditor()));
+const Editor = ({ isTitle, name, placeholder, onInput, className }) => {
   return (
-    <Slate editor={editor} value={initialValue}>
-      <Editable onChange={(e) => console.log(e.target.value)} />
-    </Slate>
+    <TextareaAutosize
+      name={name}
+      placeholder={placeholder}
+      onInput={onInput}
+      className={className}
+    />
   );
 };
 
