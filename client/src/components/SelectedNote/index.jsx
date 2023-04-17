@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { FaSmile, FaImage } from 'react-icons/fa';
 import TextareaAutosize from 'react-textarea-autosize';
 
@@ -10,6 +10,8 @@ import EmojiPicker from 'components/EmojiPicker';
 import styles from './index.module.scss';
 
 const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
+  const contentRef = useRef(0);
+
   const [userInput, setUserInput] = useState({
     title: initialTitle || '',
     emoji: initialEmoji || '',
@@ -23,6 +25,15 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
   const handleEmojiSelect = (e) => {
     setUserInput((prevState) => ({ ...prevState, emoji: e.native }));
     setShowPicker(false);
+  };
+
+  const handleKeyDown = (e, name) => {
+    if (name === 'title') {
+      if (e.key === 'Enter') {
+        e.preventDefault(0);
+        contentRef.current.focus();
+      }
+    }
   };
 
   const handleFormChange = (e) => {
@@ -61,41 +72,23 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
                 <FaImage /> Add Cover
               </li>
             </ul>
-            {/* <TextareaAutosize
-              onInput={(e) =>
-                setUserInput((prevState) => ({
-                  ...prevState,
-                  title: e.target.value,
-                }))
-              }
-              placeholder="Untitled"
-              className={styles.title}
-            /> */}
             <Editor
               isTitle
               name="title"
               placeholder="Untitled"
+              onKeyDown={handleKeyDown}
               onInput={handleFormChange}
               className={styles.title}
             />
           </div>
         </div>
         <div className={styles.body}>
-          {/* <TextareaAutosize
-            onInput={(e) =>
-              setUserInput((prevState) => ({
-                ...prevState,
-                content: e.target.value,
-              }))
-            }
-            placeholder="Add note"
-            className={styles.content}
-          /> */}
           <Editor
             name="content"
             placeholder="Add note"
             onInput={handleFormChange}
             className={styles.content}
+            ref={contentRef}
           />
         </div>
       </div>

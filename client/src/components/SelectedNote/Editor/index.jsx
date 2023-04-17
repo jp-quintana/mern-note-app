@@ -1,25 +1,20 @@
-import { useRef } from 'react';
+import { forwardRef } from 'react';
 
 import TextareaAutosize from 'react-textarea-autosize';
 
-const Editor = ({ isTitle, name, placeholder, onInput, className }) => {
-  const handleTitleKeyDown = (e) => {
-    if (e.key === 'Enter' && e.key !== 'Tab') {
-      e.preventDefault();
-      e.key === 'Tab';
-      e.target.dispatchEvent(new KeyboardEvent('keydown', e));
-    }
-  };
-
-  return (
-    <TextareaAutosize
-      name={name}
-      onKeyDown={isTitle && handleTitleKeyDown}
-      placeholder={placeholder}
-      onInput={onInput}
-      className={className}
-    />
-  );
-};
+const Editor = forwardRef(
+  ({ isTitle, name, placeholder, onInput, onKeyDown, className }, ref) => {
+    return (
+      <TextareaAutosize
+        name={name}
+        placeholder={placeholder}
+        onKeyDown={isTitle && ((e) => onKeyDown(e, name))}
+        onInput={onInput}
+        ref={ref}
+        className={className}
+      />
+    );
+  }
+);
 
 export default Editor;
