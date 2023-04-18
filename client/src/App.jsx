@@ -5,6 +5,8 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 
+import NotesProvider from './context/notes/NotesProvider';
+
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import LogIn from './pages/LogIn';
@@ -28,7 +30,11 @@ function App() {
     )
   );
 
-  return <RouterProvider router={router} />;
+  return (
+    <NotesProvider>
+      <RouterProvider router={router} />
+    </NotesProvider>
+  );
 }
 
 export default App;
