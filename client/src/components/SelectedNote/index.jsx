@@ -1,6 +1,5 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { FaSmile, FaImage } from 'react-icons/fa';
-import TextareaAutosize from 'react-textarea-autosize';
 
 import Editor from './Editor';
 
@@ -10,7 +9,9 @@ import EmojiPicker from 'components/EmojiPicker';
 import styles from './index.module.scss';
 
 const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
-  const contentRef = useRef(0);
+  const contentRef = useRef();
+
+  const [hasEdited, setHasEdited] = useState(false);
 
   const [userInput, setUserInput] = useState({
     title: initialTitle || '',
@@ -36,12 +37,27 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
     }
   };
 
-  const handleFormChange = (e) => {
+  const handleFormChange = useCallback((e) => {
+    if (!hasEdited) {
+      setHasEdited(true);
+    }
+
     setUserInput((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
-  };
+  });
+
+  useEffect(() => {
+    if (hasEdited) {
+      const timer = setTimeout(() => {
+        console.log(userInput);
+        // TODO: Add request
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [userInput, hasEdited]);
 
   return (
     <div className={styles.container}>
