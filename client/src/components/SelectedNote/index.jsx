@@ -1,6 +1,8 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { FaSmile, FaImage } from 'react-icons/fa';
 
+import { useNote } from 'hooks/useNote';
+
 import Editor from './Editor';
 
 import Modal from 'components/Modal';
@@ -9,6 +11,8 @@ import EmojiPicker from 'components/EmojiPicker';
 import styles from './index.module.scss';
 
 const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
+  const { editSelectedNote } = useNote();
+
   const contentRef = useRef();
 
   const [hasEdited, setHasEdited] = useState(false);
@@ -46,6 +50,8 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
       ...prevState,
       [e.target.name]: e.target.value,
     }));
+
+    editSelectedNote(e.target.name, e.target.value);
   });
 
   useEffect(() => {
@@ -76,7 +82,7 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
               close={() => setShowPicker(false)}
               modalClassName={styles.picker}
             >
-              <EmojiPicker onEmojiSelect={handleEmojiSelect} />
+              <EmojiPicker onEmojiSelect={handleEmojiSelect} theme="dark" />
             </Modal>
             <ul className={styles.controls}>
               {!emoji && (
@@ -90,6 +96,7 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
             </ul>
             <Editor
               isTitle
+              value={title}
               name="title"
               placeholder="Untitled"
               onKeyDown={handleKeyDown}
@@ -100,6 +107,7 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
         </div>
         <div className={styles.body}>
           <Editor
+            value={content}
             name="content"
             placeholder="Add note"
             onInput={handleFormChange}

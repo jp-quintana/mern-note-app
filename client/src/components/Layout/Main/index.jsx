@@ -8,22 +8,23 @@ import {
   FaEllipsisH,
 } from 'react-icons/fa';
 
+import { useNotesContext } from 'hooks/useNotesContext';
+
 import styles from './index.module.scss';
 
 // TODO: Remove
-const NOTE = {
-  id: '1',
-  title: 'TO DO',
-  emoji: '🐑',
-};
 
 const Main = () => {
+  const { selectedNote } = useNotesContext();
+
   return (
     <div className={styles.container}>
       <header>
         <div className={styles.title_wrapper}>
-          <div className={styles.emoji}>{NOTE.emoji || `\u{1F5CB}`}</div>
-          {NOTE.title}
+          <div className={styles.emoji}>
+            {selectedNote.emoji || `\u{1F5CB}`}
+          </div>
+          {selectedNote.title}
         </div>
         <div className={styles.controls_wrapper}>
           <p className={styles.last_edit}>Edited 2d ago</p>

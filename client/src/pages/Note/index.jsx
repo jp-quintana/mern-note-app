@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
+import { useNote } from 'hooks/useNote';
+import { useNotesContext } from 'hooks/useNotesContext';
+
 import SelectedNote from '../../components/SelectedNote';
 
 // TODO: Remove
@@ -17,21 +20,15 @@ const USER = {
 
 const Note = () => {
   const { noteId } = useParams();
-
-  const [isLoading, setIsLoading] = useState(true);
-
-  let selectedNote = USER.notes.find((note) => note.id === noteId);
+  const { setSelectedNote, isLoading, error } = useNote();
+  const { selectedNote } = useNotesContext();
 
   useEffect(() => {
-    setIsLoading(true);
-    const fetchNote = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      selectedNote = USER.notes.find((note) => note.id === noteId);
-      setIsLoading(false);
-    };
-
-    fetchNote();
+    console.log('is running');
+    setSelectedNote(noteId);
   }, [noteId]);
+
+  console.log(selectedNote);
 
   return (
     <>
