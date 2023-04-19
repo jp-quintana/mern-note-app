@@ -19,6 +19,7 @@
 .container {
   background: $background-secondary;
   min-width: 24rem;
+  max-width: 24rem;
   display: flex;
   flex-direction: column;
   border-right: $border;

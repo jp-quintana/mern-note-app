@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
 import { FaAngleRight } from 'react-icons/fa';
 
 import { useNotesContext } from 'hooks/useNotesContext';
+
+import NavElement from './NavElement';
 
 import styles from './index.module.scss';
 
@@ -13,10 +14,9 @@ const USER = {
 };
 
 const Nav = () => {
-  const { notes: fetchedNotes } = useNotesContext();
+  const { notes } = useNotesContext();
 
-  const notes = fetchedNotes.filter((note) => !note.isFavorite);
-  const favoriteNotes = fetchedNotes.filter((note) => note.isFavorite);
+  const favoriteNotes = notes.filter((note) => note.isFavorite);
 
   const [showFavorites, setShowFavorites] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
@@ -42,12 +42,13 @@ const Nav = () => {
             {showFavorites &&
               favoriteNotes.map((note) => (
                 <li key={note.id}>
-                  <NavLink to={`/notes/${note.id}`}>
-                    <div className={styles.emoji}>
-                      {note.emoji || `\u{1F5CB}`}
-                    </div>
-                    {note.title}
-                  </NavLink>
+                  <NavElement
+                    id={note.id}
+                    to={`/notes/${note.id}`}
+                    className={styles.emoji}
+                    emoji={note.emoji}
+                    title={note.title}
+                  />
                 </li>
               ))}
           </ul>
@@ -69,12 +70,13 @@ const Nav = () => {
           {showNotes &&
             notes.map((note) => (
               <li key={note.id}>
-                <NavLink to={`/notes/${note.id}`}>
-                  <div className={styles.emoji}>
-                    {note.emoji || `\u{1F5CB}`}
-                  </div>
-                  {note.title}
-                </NavLink>
+                <NavElement
+                  id={note.id}
+                  to={`/notes/${note.id}`}
+                  className={styles.emoji}
+                  emoji={note.emoji}
+                  title={note.title}
+                />
               </li>
             ))}
         </ul>

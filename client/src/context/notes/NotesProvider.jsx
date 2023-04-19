@@ -23,7 +23,7 @@ const notesReducer = (state, action) => {
       return {
         notesAreReady: true,
         notes: payload,
-        selectedNote: null,
+        selectedNote: payload[0],
       };
     }
     case 'SET_SELECTED_NOTE': {
@@ -50,7 +50,11 @@ const NotesProvider = ({ children }) => {
 
   useEffect(() => {
     // TODO: Add request
-    dispatch({ type: 'LOAD_NOTES', payload: DUMMY_NOTES });
+    if (DUMMY_NOTES.length > 0) {
+      dispatch({ type: 'LOAD_NOTES', payload: DUMMY_NOTES });
+    } else {
+      // TODO: Add "Getting Started" page
+    }
   }, []);
 
   console.log('hola', state);

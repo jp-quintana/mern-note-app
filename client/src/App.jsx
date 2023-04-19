@@ -23,13 +23,11 @@ function App() {
       <>
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
-        {notesAreReady && (
-          <Route path="/" element={<Layout />}>
-            <Route index path="/" element={<Home />} />
-            <Route path="/notes/:noteId" element={<Note />} />
-            <Route path="/login" element={<Home />} />
-          </Route>
-        )}
+        <Route path="/" element={<Layout />}>
+          <Route index path="/" element={notesAreReady && <Home />} />
+          <Route path="/notes/:noteId" element={<Note />} />
+          <Route path="/login" element={<Home />} />
+        </Route>
       </>
     )
   );

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useNote } from 'hooks/useNote';
@@ -13,16 +13,26 @@ const USER = {
 
 const Note = () => {
   const { noteId } = useParams();
-  const { setSelectedNote, isLoading, error } = useNote();
+  const { setSelectedNote, error } = useNote();
+
+  const [content, setContent] = useState(null);
 
   useEffect(() => {
-    setSelectedNote(noteId);
+    setContent(null);
+    const fetchSelectedNote = async () => {
+      const content = await setSelectedNote(noteId);
+      setContent(content);
+    };
+
+    fetchSelectedNote();
   }, [noteId]);
+
+  console.log('content', content);
 
   return (
     <>
-      {isLoading && <p>Loading...</p>}
-      {!isLoading && <SelectedNote />}
+      {!content && <p>Loading...</p>}
+      {content && <SelectedNote content={content} />}
     </>
   );
 };

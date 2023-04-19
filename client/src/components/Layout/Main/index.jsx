@@ -22,9 +22,9 @@ const Main = () => {
       <header>
         <div className={styles.title_wrapper}>
           <div className={styles.emoji}>
-            {selectedNote.emoji || `\u{1F5CB}`}
+            {(selectedNote && selectedNote.emoji) || `\u{1F5CB}`}
           </div>
-          {selectedNote.title}
+          <p className={styles.title}>{selectedNote && selectedNote.title}</p>
         </div>
         <div className={styles.controls_wrapper}>
           <p className={styles.last_edit}>Edited 2d ago</p>

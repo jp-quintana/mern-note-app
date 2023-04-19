@@ -9,28 +9,25 @@ const DUMMY_NOTES = [
 ];
 
 export const useNote = () => {
-  const { dispatch } = useNotesContext();
+  const { notes, dispatch } = useNotesContext();
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const createNote = () => {};
 
   const setSelectedNote = async (id) => {
     setError(null);
-    setIsLoading(true);
 
     // TODO: Add request
     try {
-      await new Promise((resolve) => setTimeout(resolve, 100));
-      const selectedNote = DUMMY_NOTES.find((note) => note.id === id);
-
+      const selectedNote = notes.find((note) => note.id === id);
       dispatch({ type: 'SET_SELECTED_NOTE', payload: selectedNote });
-      setIsLoading(false);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      return 'content';
     } catch (e) {
       console.error(e.message);
       setError(e);
-      setIsLoading(false);
     }
   };
 
@@ -41,7 +38,6 @@ export const useNote = () => {
   return {
     setSelectedNote,
     createNote,
-    editSelectedNote,
     editSelectedNote,
     isLoading,
     error,
