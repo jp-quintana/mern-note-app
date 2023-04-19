@@ -2,6 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import { FaSmile, FaImage } from 'react-icons/fa';
 
 import { useNote } from 'hooks/useNote';
+import { useNotesContext } from 'hooks/useNotesContext';
 
 import Editor from './Editor';
 
@@ -12,6 +13,7 @@ import styles from './index.module.scss';
 
 const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
   const { editSelectedNote } = useNote();
+  const { selectedNote } = useNotesContext();
 
   const contentRef = useRef();
 
@@ -23,7 +25,7 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
     content: initialContent || '',
   });
 
-  const { title, emoji, content } = userInput;
+  const { title, emoji, content } = selectedNote;
 
   const [showPicker, setShowPicker] = useState(false);
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNotesContext } from './useNotesContext';
 
 const DUMMY_NOTES = [
@@ -19,6 +19,7 @@ export const useNote = () => {
   const setSelectedNote = async (id) => {
     setError(null);
     setIsLoading(true);
+
     // TODO: Add request
     try {
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -29,6 +30,7 @@ export const useNote = () => {
     } catch (e) {
       console.error(e.message);
       setError(e);
+      setIsLoading(false);
     }
   };
 
