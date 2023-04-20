@@ -1,15 +1,8 @@
 import { useState } from 'react';
 import { useNotesContext } from './useNotesContext';
 
-const DUMMY_NOTES = [
-  { id: '1', title: 'TO DO', emoji: '🐑', isFavorite: true },
-  { id: '2', title: 'Grocery list', emoji: '', isFavorite: false },
-  { id: '3', title: 'Goals', emoji: '', isFavorite: false },
-  { id: '4', title: 'Weight loss', emoji: '', isFavorite: false },
-];
-
 export const useNote = () => {
-  const { notes, dispatch } = useNotesContext();
+  const { notes, selectedNote, dispatch } = useNotesContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -35,10 +28,29 @@ export const useNote = () => {
     dispatch({ type: 'EDIT_SELECTED_NOTE', payload: { key, value } });
   };
 
+  const saveChanges = async (id, content) => {
+    setError(null);
+
+    // TODO: Add request
+    try {
+      const updatedNotes = [...notes];
+
+      const existingNoteIndex = notes.findIndex((note) => note.id === id);
+      updatedNotes.splice(existingNoteIndex, 1, selectedNote);
+
+      dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    } catch (e) {
+      console.error(e.message);
+      setError(e);
+    }
+  };
+
   return {
     setSelectedNote,
     createNote,
     editSelectedNote,
+    saveChanges,
     isLoading,
     error,
   };

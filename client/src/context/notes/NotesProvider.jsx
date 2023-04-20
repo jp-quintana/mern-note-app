@@ -26,17 +26,27 @@ const notesReducer = (state, action) => {
         selectedNote: payload[0],
       };
     }
+
     case 'SET_SELECTED_NOTE': {
       return {
         ...state,
         selectedNote: payload,
       };
     }
+
     case 'EDIT_SELECTED_NOTE': {
       const { key, value } = payload;
       return {
         ...state,
         selectedNote: { ...state.selectedNote, [key]: value },
+      };
+    }
+
+    case 'SAVE_CHANGES': {
+      console.log('payload', payload);
+      return {
+        ...state,
+        notes: payload,
       };
     }
 
@@ -49,6 +59,7 @@ const NotesProvider = ({ children }) => {
   const [state, dispatch] = useReducer(notesReducer, initialState);
 
   useEffect(() => {
+    console.log('running here');
     // TODO: Add request
     if (DUMMY_NOTES.length > 0) {
       dispatch({ type: 'LOAD_NOTES', payload: DUMMY_NOTES });

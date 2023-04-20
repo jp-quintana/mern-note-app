@@ -32,7 +32,7 @@ const Note = () => {
   return (
     <>
       {!content && <p>Loading...</p>}
-      {content && <SelectedNote content={content} />}
+      {content && <SelectedNote initialContent={content} />}
     </>
   );
 };

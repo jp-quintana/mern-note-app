@@ -11,26 +11,26 @@ import EmojiPicker from 'components/EmojiPicker';
 
 import styles from './index.module.scss';
 
-const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
-  const { editSelectedNote } = useNote();
+const SelectedNote = ({ initialContent }) => {
+  const { editSelectedNote, saveChanges } = useNote();
   const { selectedNote } = useNotesContext();
 
   const contentRef = useRef();
 
   const [hasEdited, setHasEdited] = useState(false);
 
-  const [userInput, setUserInput] = useState({
-    title: initialTitle || '',
-    emoji: initialEmoji || '',
-    content: initialContent || '',
-  });
+  const [content, setContent] = useState(initialContent);
 
-  const { title, emoji, content } = selectedNote;
+  const { id, title, emoji } = selectedNote;
 
   const [showPicker, setShowPicker] = useState(false);
 
   const handleEmojiSelect = (e) => {
-    setUserInput((prevState) => ({ ...prevState, emoji: e.native }));
+    if (!hasEdited) {
+      setHasEdited(true);
+    }
+
+    editSelectedNote('emoji', e.native);
     setShowPicker(false);
   };
 
@@ -48,24 +48,23 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
       setHasEdited(true);
     }
 
-    setUserInput((prevState) => ({
-      ...prevState,
-      [e.target.name]: e.target.value,
-    }));
-
-    editSelectedNote(e.target.name, e.target.value);
+    if (e.target.name === 'content') {
+      setContent(e.target.value);
+    } else {
+      editSelectedNote(e.target.name, e.target.value);
+    }
   });
 
   useEffect(() => {
     if (hasEdited) {
       const timer = setTimeout(() => {
-        console.log(userInput);
         // TODO: Add request
-      }, 1000);
+        saveChanges(id, content);
+      }, 300);
 
       return () => clearTimeout(timer);
     }
-  }, [userInput, hasEdited]);
+  }, [title, emoji, content, hasEdited]);
 
   return (
     <div className={styles.container}>

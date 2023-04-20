@@ -17,7 +17,7 @@ const NavElement = ({ id, to, emoji, title, className }) => {
   return (
     <NavLink to={to}>
       <div className={className}>{emoji || `\u{1F5CB}`}</div>
-      {title}
+      <p>{title}</p>
     </NavLink>
   );
 };
