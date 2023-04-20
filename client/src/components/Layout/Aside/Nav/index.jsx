@@ -14,7 +14,7 @@ const USER = {
 };
 
 const Nav = () => {
-  const { notes } = useNotesContext();
+  const { notes, selectedNote } = useNotesContext();
 
   const favoriteNotes = notes.filter((note) => note.isFavorite);
 
@@ -41,7 +41,10 @@ const Nav = () => {
             </div>
             {showFavorites &&
               favoriteNotes.map((note) => (
-                <li key={note.id}>
+                <li
+                  className={selectedNote.id === note.id && styles.isSelected}
+                  key={note.id}
+                >
                   <NavElement
                     id={note.id}
                     to={`/notes/${note.id}`}
@@ -69,7 +72,10 @@ const Nav = () => {
           </div>
           {showNotes &&
             notes.map((note) => (
-              <li key={note.id}>
+              <li
+                className={selectedNote.id === note.id && styles.isSelected}
+                key={note.id}
+              >
                 <NavElement
                   id={note.id}
                   to={`/notes/${note.id}`}

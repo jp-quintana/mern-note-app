@@ -75,6 +75,10 @@
           }
         }
       }
+
+      .isSelected {
+        background: $background-primary-h;
+      }
     }
   }
 }

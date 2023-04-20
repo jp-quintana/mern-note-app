@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { v4 as uuid } from 'uuid';
+
 import { useNotesContext } from './useNotesContext';
 
 export const useNote = () => {
@@ -7,7 +9,11 @@ export const useNote = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const createNote = () => {};
+  const createNote = () => {
+    const updatedNotes = [...notes];
+    updatedNotes.push({ id: uuid(), title: '', emoji: '', isFavorite: false });
+    dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
+  };
 
   const setSelectedNote = async (id) => {
     setError(null);

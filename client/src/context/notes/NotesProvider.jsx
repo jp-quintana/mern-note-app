@@ -43,7 +43,6 @@ const notesReducer = (state, action) => {
     }
 
     case 'SAVE_CHANGES': {
-      console.log('payload', payload);
       return {
         ...state,
         notes: payload,
@@ -59,7 +58,6 @@ const NotesProvider = ({ children }) => {
   const [state, dispatch] = useReducer(notesReducer, initialState);
 
   useEffect(() => {
-    console.log('running here');
     // TODO: Add request
     if (DUMMY_NOTES.length > 0) {
       dispatch({ type: 'LOAD_NOTES', payload: DUMMY_NOTES });
@@ -67,8 +65,6 @@ const NotesProvider = ({ children }) => {
       // TODO: Add "Getting Started" page
     }
   }, []);
-
-  console.log('hola', state);
 
   return (
     <NotesContext.Provider value={{ ...state, dispatch }}>

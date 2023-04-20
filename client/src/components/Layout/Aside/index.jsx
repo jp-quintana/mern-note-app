@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { FaSearch, FaRegClock, FaCog, FaPlus } from 'react-icons/fa';
 
+import { useNote } from 'hooks/useNote';
+
 import Nav from './Nav';
 import SearchModal from './SearchModal';
 
@@ -15,6 +17,8 @@ const USER = {
 };
 
 const Aside = () => {
+  const { createNote } = useNote();
+
   const [showSearch, setShowSearch] = useState(false);
 
   return (
@@ -53,7 +57,7 @@ const Aside = () => {
           </li>
         </ul>
         <Nav />
-        <footer className={styles.footer}>
+        <footer onClick={createNote} className={styles.footer}>
           <div className={styles.icon_wrapper}>
             <FaPlus />
           </div>

@@ -27,8 +27,6 @@ const Note = () => {
     fetchSelectedNote();
   }, [noteId]);
 
-  console.log('content', content);
-
   return (
     <>
       {!content && <p>Loading...</p>}

@@ -9,7 +9,7 @@ const NavElement = ({ id, to, emoji, title, className }) => {
     return (
       <NavLink to={to}>
         <div className={className}>{selectedNote.emoji || `\u{1F5CB}`}</div>
-        <p>{selectedNote.title}</p>
+        <p>{selectedNote.title.length > 0 ? selectedNote.title : 'Untitled'}</p>
       </NavLink>
     );
   }
@@ -17,7 +17,7 @@ const NavElement = ({ id, to, emoji, title, className }) => {
   return (
     <NavLink to={to}>
       <div className={className}>{emoji || `\u{1F5CB}`}</div>
-      <p>{title}</p>
+      <p>{title.length > 0 ? title : 'Untitled'}</p>
     </NavLink>
   );
 };
