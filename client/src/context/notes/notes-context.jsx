@@ -3,7 +3,7 @@ import { createContext } from 'react';
 const NotesContext = createContext({
   notesAreReady: false,
   notes: [],
-  favoriteNotes: [],
+  toggleFavoriteNotes: [],
   selectedNote: null,
 });
 

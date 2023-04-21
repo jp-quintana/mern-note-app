@@ -16,7 +16,7 @@ const USER = {
 const Nav = () => {
   const { notes, selectedNote } = useNotesContext();
 
-  const favoriteNotes = notes.filter((note) => note.isFavorite);
+  const toggleFavoriteNotes = notes.filter((note) => note.isFavorite);
 
   const [showFavorites, setShowFavorites] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
@@ -24,7 +24,7 @@ const Nav = () => {
   return (
     <div className={styles.container}>
       <nav className={styles.nav}>
-        {favoriteNotes.length > 0 && (
+        {toggleFavoriteNotes.length > 0 && (
           <ul className={styles.list}>
             <div
               onClick={() => setShowFavorites((prevState) => !prevState)}
@@ -32,7 +32,7 @@ const Nav = () => {
             >
               <div
                 className={`${styles.icon_wrapper} ${
-                  showFavorites ? styles.icon_open : ''
+                  showFavorites ? styles.icon_open : undefined
                 }`}
               >
                 <FaAngleRight />
@@ -40,9 +40,11 @@ const Nav = () => {
               <p>Favorite Notes:</p>
             </div>
             {showFavorites &&
-              favoriteNotes.map((note) => (
+              toggleFavoriteNotes.map((note) => (
                 <li
-                  className={selectedNote.id === note.id && styles.isSelected}
+                  className={
+                    selectedNote.id === note.id ? styles.isSelected : undefined
+                  }
                   key={note.id}
                 >
                   <NavElement
@@ -63,7 +65,7 @@ const Nav = () => {
           >
             <div
               className={`${styles.icon_wrapper} ${
-                showNotes ? styles.icon_open : ''
+                showNotes ? styles.icon_open : undefined
               }`}
             >
               <FaAngleRight />
@@ -73,7 +75,9 @@ const Nav = () => {
           {showNotes &&
             notes.map((note) => (
               <li
-                className={selectedNote.id === note.id && styles.isSelected}
+                className={
+                  selectedNote.id === note.id ? styles.isSelected : undefined
+                }
                 key={note.id}
               >
                 <NavElement

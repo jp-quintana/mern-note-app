@@ -52,11 +52,42 @@ export const useNote = () => {
     }
   };
 
+  const toggleFavoriteNote = async () => {
+    // TODO: Add request
+
+    try {
+      const updatedSelectedNote = selectedNote;
+      const updatedNotes = [...notes];
+
+      updatedSelectedNote.isFavorite = !updatedSelectedNote.isFavorite;
+      console.log(updatedSelectedNote);
+
+      const existingNoteIndex = notes.findIndex(
+        (note) => note.id === selectedNote.id
+      );
+
+      updatedNotes.splice(existingNoteIndex, 1, updatedSelectedNote);
+
+      dispatch({
+        type: 'TOGGLE_FAVORITE_NOTE',
+        payload: { updatedSelectedNote, updatedNotes },
+      });
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    } catch (e) {
+      console.error(e.message);
+      setError(e);
+    }
+  };
+
+  const deleteNote = () => {};
+
   return {
     setSelectedNote,
     createNote,
     editSelectedNote,
     saveChanges,
+    toggleFavoriteNote,
+    deleteNote,
     isLoading,
     error,
   };
