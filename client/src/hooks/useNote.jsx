@@ -79,7 +79,21 @@ export const useNote = () => {
     }
   };
 
-  const deleteNote = () => {};
+  const deleteNote = (id) => {
+    const updatedNotes = [...notes];
+
+    const existingNoteIndex = notes.findIndex(note.id === id);
+    updatedNotes.splice(existingNoteIndex, 1);
+
+    let payload;
+
+    if (selectedNote.id === id) {
+      payload = { notes: updatedNotes, selectedNote: null };
+    } else {
+      payload = { notes: updatedNotes };
+    }
+    dispatch({ type: 'DELETE_NOTE', payload });
+  };
 
   return {
     setSelectedNote,

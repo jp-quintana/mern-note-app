@@ -42,18 +42,26 @@ const notesReducer = (state, action) => {
       };
     }
 
-    case 'SAVE_CHANGES': {
-      return {
-        ...state,
-        notes: payload,
-      };
-    }
     case 'TOGGLE_FAVORITE_NOTE': {
       const { updatedSelectedNote, updatedNotes } = payload;
       return {
         ...state,
         notes: updatedNotes,
         selectedNote: updatedSelectedNote,
+      };
+    }
+
+    case 'SAVE_CHANGES': {
+      return {
+        ...state,
+        notes: payload,
+      };
+    }
+
+    case 'DELETE_NOTE': {
+      return {
+        ...state,
+        ...payload,
       };
     }
 
