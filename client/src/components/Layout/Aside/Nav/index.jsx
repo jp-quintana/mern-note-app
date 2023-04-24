@@ -52,6 +52,7 @@ const Nav = () => {
                     to={`/notes/${note.id}`}
                     emoji={note.emoji}
                     title={note.title}
+                    isFavorite={note.isFavorite}
                     ellipsisClassName={styles.ellipsis}
                   />
                 </li>
@@ -85,6 +86,7 @@ const Nav = () => {
                   to={`/notes/${note.id}`}
                   emoji={note.emoji}
                   title={note.title}
+                  isFavorite={note.isFavorite}
                   ellipsisClassName={styles.ellipsis}
                 />
               </li>

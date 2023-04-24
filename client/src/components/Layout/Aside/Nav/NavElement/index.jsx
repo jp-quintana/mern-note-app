@@ -11,17 +11,35 @@ import Modal from 'components/Modal';
 
 import styles from './index.module.scss';
 
-const NavElement = ({ id, to, emoji, title, ellipsisClassName }) => {
+const NavElement = ({
+  id,
+  to,
+  emoji,
+  title,
+  isFavorite,
+  ellipsisClassName,
+}) => {
   const { selectedNote } = useNotesContext();
+  const [modalPosition, setModalPosition] = useState({});
   const [showMenu, setShowMenu] = useState(false);
 
   const handleToggleMenu = (e) => {
     e.preventDefault();
+    const targetRect = e.target.getBoundingClientRect();
+    console.log(targetRect);
+    const isAboveMidpoint =
+      targetRect.top + targetRect.height / 2 < window.innerHeight / 2;
+    const modalHeight = 200;
+    const modalTop = isAboveMidpoint
+      ? targetRect.bottom
+      : targetRect.top - modalHeight;
+    const modalLeft = targetRect.right;
+    setModalPosition({ top: modalTop, left: modalLeft });
     setShowMenu(true);
   };
 
   return (
-    <NavLink to={to}>
+    <NavLink className={styles.link} to={to}>
       <div className={styles.emoji}>
         {id === selectedNote.id
           ? selectedNote.emoji || `\u{1F5CB}`
@@ -36,17 +54,21 @@ const NavElement = ({ id, to, emoji, title, ellipsisClassName }) => {
           ? title
           : 'Untitled'}
       </p>
-      <div className={`${ellipsisClassName} ${styles.ellipsis}`}>
-        <FaEllipsisH onClick={handleToggleMenu} />
-        <Modal
-          local
-          show={showMenu}
-          close={() => setShowMenu(false)}
-          modalClassName={styles.menu}
-        >
-          <NavElementMenu />
-        </Modal>
+      <div
+        onClick={handleToggleMenu}
+        className={`${ellipsisClassName} ${styles.ellipsis}`}
+      >
+        <FaEllipsisH />
       </div>
+      <Modal
+        show={showMenu}
+        close={() => setShowMenu(false)}
+        modalPosition={modalPosition}
+        modalContainerClassName={styles.menu_container}
+        modalClassName={styles.menu}
+      >
+        <NavElementMenu isFavorite={isFavorite} />
+      </Modal>
     </NavLink>
   );
 };
