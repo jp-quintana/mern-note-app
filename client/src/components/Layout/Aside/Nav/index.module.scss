@@ -47,6 +47,11 @@
           cursor: pointer;
         }
 
+        &:hover .ellipsis {
+          display: flex;
+          opacity: 1;
+        }
+
         a {
           padding: 0.3rem 2.5rem;
           color: $color-secondary;
@@ -59,19 +64,6 @@
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-          }
-
-          .emoji {
-            text-align: center;
-            padding: 0.2rem;
-            min-width: 2.5rem;
-            border-radius: 0.3rem;
-
-            transition: all 0.1 ease-in;
-
-            &:hover {
-              background: $background-emoji-h;
-            }
           }
         }
       }

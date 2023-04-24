@@ -1,0 +1,27 @@
+.emoji,
+.ellipsis {
+  text-align: center;
+  padding: 0.2rem;
+  min-height: 2.5rem;
+  min-width: 2.5rem;
+  border-radius: 0.3rem;
+
+  transition: all 0.1 ease-in;
+
+  &:hover {
+    background: $background-emoji-h;
+  }
+}
+
+.ellipsis {
+  position: relative;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  opacity: 0;
+  margin-left: auto;
+}
+
+.menu {
+}

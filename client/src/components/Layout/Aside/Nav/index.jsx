@@ -16,7 +16,7 @@ const USER = {
 const Nav = () => {
   const { notes, selectedNote } = useNotesContext();
 
-  const toggleFavoriteNotes = notes.filter((note) => note.isFavorite);
+  const favoriteNotes = notes.filter((note) => note.isFavorite);
 
   const [showFavorites, setShowFavorites] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
@@ -24,7 +24,7 @@ const Nav = () => {
   return (
     <div className={styles.container}>
       <nav className={styles.nav}>
-        {toggleFavoriteNotes.length > 0 && (
+        {favoriteNotes.length > 0 && (
           <ul className={styles.list}>
             <div
               onClick={() => setShowFavorites((prevState) => !prevState)}
@@ -40,7 +40,7 @@ const Nav = () => {
               <p>Favorite Notes:</p>
             </div>
             {showFavorites &&
-              toggleFavoriteNotes.map((note) => (
+              favoriteNotes.map((note) => (
                 <li
                   className={
                     selectedNote.id === note.id ? styles.isSelected : undefined
@@ -50,9 +50,9 @@ const Nav = () => {
                   <NavElement
                     id={note.id}
                     to={`/notes/${note.id}`}
-                    className={styles.emoji}
                     emoji={note.emoji}
                     title={note.title}
+                    ellipsisClassName={styles.ellipsis}
                   />
                 </li>
               ))}
@@ -83,9 +83,9 @@ const Nav = () => {
                 <NavElement
                   id={note.id}
                   to={`/notes/${note.id}`}
-                  className={styles.emoji}
                   emoji={note.emoji}
                   title={note.title}
+                  ellipsisClassName={styles.ellipsis}
                 />
               </li>
             ))}
