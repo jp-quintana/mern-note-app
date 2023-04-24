@@ -12,12 +12,15 @@ $background-primary: #191919;
 $background-secondary: #202020;
 $background-modal: #252525;
 $background-input: #f7f7f4;
-$background-nav-element-menu: black;
 
 $background-primary-h: #2c2c2c;
+$background-modal-h: #313131;
 $background-emoji-h: #383838;
 
 $background-auth-button: #fdf5f2;
 $background-auth-button-h: #fbebe8;
 
 $border: 1px solid #353535;
+
+$box-shadow-modal: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px,
+  rgba(15, 15, 15, 0.2) 0px 3px 6px, rgba(15, 15, 15, 0.4) 0px 9px 24px;

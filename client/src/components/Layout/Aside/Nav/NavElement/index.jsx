@@ -26,7 +26,6 @@ const NavElement = ({
   const handleToggleMenu = (e) => {
     e.preventDefault();
     const targetRect = e.target.getBoundingClientRect();
-    console.log(targetRect);
     const isAboveMidpoint =
       targetRect.top + targetRect.height / 2 < window.innerHeight / 2;
     const modalHeight = 200;
@@ -67,7 +66,7 @@ const NavElement = ({
         modalContainerClassName={styles.menu_container}
         modalClassName={styles.menu}
       >
-        <NavElementMenu isFavorite={isFavorite} />
+        <NavElementMenu id={id} isFavorite={isFavorite} />
       </Modal>
     </NavLink>
   );

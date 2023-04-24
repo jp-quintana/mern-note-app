@@ -1,7 +1,8 @@
 .container {
-  background: $background-nav-element-menu;
+  background: $background-modal;
   border-radius: 0.4rem;
   user-select: none;
+  box-shadow: $box-shadow-modal;
 
   .list_wrapper,
   .move_to_wrapper,
@@ -24,7 +25,8 @@
     border-radius: 0.3rem;
 
     &:hover {
-      background: $background-primary-h;
+      background: $background-modal-h;
+      cursor: pointer;
     }
   }
 

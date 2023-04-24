@@ -1,18 +1,39 @@
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FaTrashAlt, FaRegClone, FaLink, FaEdit } from 'react-icons/fa';
 import { TbStar, TbStarOff, TbArrowForwardUp } from 'react-icons/tb';
 
+import { useNote } from 'hooks/useNote';
+
 import styles from './index.module.scss';
 
-const NavElementMenu = ({ isFavorite }) => {
+const NavElementMenu = ({ id, isFavorite }) => {
+  const navigate = useNavigate();
+
+  const { deleteNote, isLoading, error } = useNote();
+
+  const [navigation, setNavigation] = useState(false);
+
+  const handleDeleteNote = async () => {
+    console.log(id);
+    await deleteNote(id);
+    setNavigation(true);
+  };
+
+  useEffect(() => {
+    if (navigation) {
+      navigate('/');
+    } else {
+      setNavigation(false);
+    }
+  }, [navigation]);
+
   // TODO: Complete last edited
   return (
     <div className={styles.container}>
       <div className={styles.list_wrapper}>
         <ul className={styles.list}>
-          <li
-            onClick={() => console.log('delete')}
-            className={styles.list_item}
-          >
+          <li onClick={handleDeleteNote} className={styles.list_item}>
             <FaTrashAlt size={`1.6rem`} />
             <p>Delete</p>
           </li>

@@ -53,6 +53,8 @@ export const useNote = () => {
   };
 
   const toggleFavoriteNote = async () => {
+    setError(null);
+
     // TODO: Add request
 
     try {
@@ -79,20 +81,34 @@ export const useNote = () => {
     }
   };
 
-  const deleteNote = (id) => {
-    const updatedNotes = [...notes];
+  const deleteNote = async (id) => {
+    setError(null);
+    setIsLoading(true);
 
-    const existingNoteIndex = notes.findIndex(note.id === id);
-    updatedNotes.splice(existingNoteIndex, 1);
+    try {
+      const updatedNotes = [...notes];
 
-    let payload;
+      const existingNoteIndex = notes.findIndex((note) => note.id === id);
+      updatedNotes.splice(existingNoteIndex, 1);
 
-    if (selectedNote.id === id) {
-      payload = { notes: updatedNotes, selectedNote: null };
-    } else {
-      payload = { notes: updatedNotes };
+      let payload;
+
+      if (selectedNote.id === id) {
+        payload = { notes: updatedNotes, selectedNote: null };
+      } else {
+        payload = { notes: updatedNotes };
+      }
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      dispatch({ type: 'DELETE_NOTE', payload });
+
+      setIsLoading(false);
+    } catch (e) {
+      console.error(e.message);
+      setError(e.message);
+      setIsLoading(false);
     }
-    dispatch({ type: 'DELETE_NOTE', payload });
   };
 
   return {
