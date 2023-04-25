@@ -1,26 +1,71 @@
-import { useState } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { FaSmile, FaImage } from 'react-icons/fa';
+
+import { useNote } from 'hooks/useNote';
+import { useNotesContext } from 'hooks/useNotesContext';
+
+import Editor from './Editor';
 
 import Modal from 'components/Modal';
 import EmojiPicker from 'components/EmojiPicker';
 
 import styles from './index.module.scss';
 
-const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
-  const [userInput, setUserInput] = useState({
-    title: initialTitle || '',
-    emoji: initialEmoji || '',
-    content: initialContent || '',
-  });
+const SelectedNote = ({ initialContent }) => {
+  const { editSelectedNote, saveChanges } = useNote();
+  const { selectedNote } = useNotesContext();
+
+  const contentRef = useRef();
+
+  const [hasEdited, setHasEdited] = useState(false);
+
+  const [content, setContent] = useState(initialContent);
+
+  const { id, title, emoji } = selectedNote;
 
   const [showPicker, setShowPicker] = useState(false);
 
   const handleEmojiSelect = (e) => {
-    setUserInput((prevState) => ({ ...prevState, emoji: e.native }));
+    if (!hasEdited) {
+      setHasEdited(true);
+    }
+
+    editSelectedNote('emoji', e.native);
     setShowPicker(false);
   };
 
-  //TODO: Add Editor
+  const handleKeyDown = (e, name) => {
+    if (name === 'title') {
+      if (e.key === 'Enter') {
+        e.preventDefault(0);
+        contentRef.current.focus();
+      }
+    }
+  };
+
+  const handleFormChange = useCallback((e) => {
+    if (!hasEdited) {
+      setHasEdited(true);
+    }
+
+    if (e.target.name === 'content') {
+      setContent(e.target.value);
+    } else {
+      editSelectedNote(e.target.name, e.target.value);
+    }
+  });
+
+  useEffect(() => {
+    if (hasEdited) {
+      console.log('running');
+      const timer = setTimeout(() => {
+        // TODO: Add request
+        saveChanges(id, content);
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
+  }, [title, emoji, content, hasEdited]);
 
   return (
     <div className={styles.container}>
@@ -30,7 +75,7 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
             onClick={() => setShowPicker(true)}
             className={styles.emoji_wrapper}
           >
-            <div className={styles.emoji}>{userInput.emoji}</div>
+            <div className={styles.emoji}>{emoji}</div>
           </div>
           <div className={styles.header_content}>
             <Modal
@@ -39,10 +84,10 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
               close={() => setShowPicker(false)}
               modalClassName={styles.picker}
             >
-              <EmojiPicker onEmojiSelect={handleEmojiSelect} />
+              <EmojiPicker onEmojiSelect={handleEmojiSelect} theme="dark" />
             </Modal>
             <ul className={styles.controls}>
-              {!userInput.emoji && (
+              {!emoji && (
                 <li onClick={() => setShowPicker(true)}>
                   <FaSmile /> Add Emoji
                 </li>
@@ -51,24 +96,25 @@ const SelectedNote = ({ id, initialTitle, initialEmoji, initialContent }) => {
                 <FaImage /> Add Cover
               </li>
             </ul>
-            <div
-              contentEditable
-              dangerouslySetInnerHTML={{ __html: initialTitle }}
-              onInput={(e) =>
-                setUserInput((prevState) => ({
-                  ...prevState,
-                  title: e.target.innerText,
-                }))
-              }
+            <Editor
+              isTitle
+              value={title}
+              name="title"
+              placeholder="Untitled"
+              onKeyDown={handleKeyDown}
+              onInput={handleFormChange}
               className={styles.title}
             />
           </div>
         </div>
         <div className={styles.body}>
-          <div
-            contentEditable
-            dangerouslySetInnerHTML={{ __html: initialContent }}
+          <Editor
+            value={content}
+            name="content"
+            placeholder="Add note"
+            onInput={handleFormChange}
             className={styles.content}
+            ref={contentRef}
           />
         </div>
       </div>

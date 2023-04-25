@@ -1,5 +1,5 @@
-import { Outlet } from 'react-router-dom';
-
+import { useEffect } from 'react';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import {
   FaRegCommentAlt,
   FaRegClock,
@@ -8,25 +8,51 @@ import {
   FaEllipsisH,
 } from 'react-icons/fa';
 
+import { useNotesContext } from 'hooks/useNotesContext';
+import { useNote } from 'hooks/useNote';
+
 import styles from './index.module.scss';
 
-// TODO: Remove
-const NOTE = {
-  id: '1',
-  title: 'TO DO',
-  emoji: '🐑',
-};
-
 const Main = () => {
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  const { notes, selectedNote } = useNotesContext();
+  const { toggleFavoriteNote } = useNote();
+
+  useEffect(() => {
+    if (pathname === '/') {
+      if (selectedNote) {
+        navigate(`/notes/${selectedNote.id}`);
+      } else if (notes.length > 0) {
+        navigate(`/notes/${notes[0].id}`);
+      } else {
+        navigate(`/notes/getting-started`);
+      }
+    } else {
+      if (!selectedNote) {
+        if (notes.length > 0) {
+          navigate(`/notes/${notes[0].id}`);
+        } else {
+          navigate(`/notes/getting-started`);
+        }
+      }
+    }
+  }, [selectedNote, pathname]);
+
+  // TODO: Add last edit date
+
   return (
     <div className={styles.container}>
       <header>
         <div className={styles.title_wrapper}>
-          <div className={styles.emoji}>{NOTE.emoji || `\u{1F5CB}`}</div>
-          {NOTE.title}
+          <div className={styles.emoji}>
+            {selectedNote && (selectedNote.emoji || `\u{1F5CB}`)}
+          </div>
+          <p className={styles.title}>{selectedNote && selectedNote.title}</p>
         </div>
         <div className={styles.controls_wrapper}>
-          <p className={styles.last_edit}>Edited 2d ago</p>
+          <p className={styles.last_edit}>{selectedNote && 'Edited 2d ago'}</p>
           <p className={styles.share}>Share</p>
           <div className={styles.icon_wrapper}>
             <FaRegCommentAlt />
@@ -34,8 +60,17 @@ const Main = () => {
           <div className={styles.icon_wrapper}>
             <FaRegClock />
           </div>
-          <div className={styles.icon_wrapper}>
-            <FaRegStar />
+          <div
+            onClick={() => toggleFavoriteNote(selectedNote.id)}
+            className={styles.icon_wrapper}
+          >
+            {!selectedNote && <FaRegStar />}
+            {selectedNote && (
+              <>
+                {!selectedNote.isFavorite && <FaRegStar />}
+                {selectedNote.isFavorite && <FaStar />}
+              </>
+            )}
           </div>
           <div className={styles.icon_wrapper}>
             <FaEllipsisH />

@@ -40,12 +40,16 @@
         gap: 0.5rem;
         font-weight: 700;
         border-radius: 0.3rem;
-
         transition: all 0.1s ease-in;
 
         &:hover {
           background: $background-primary-h;
           cursor: pointer;
+        }
+
+        &:hover .ellipsis {
+          display: flex;
+          opacity: 1;
         }
 
         a {
@@ -56,19 +60,16 @@
           align-items: center;
           gap: 0.5rem;
 
-          .emoji {
-            text-align: center;
-            padding: 0.2rem;
-            width: 2.5rem;
-            border-radius: 0.3rem;
-
-            transition: all 0.1 ease-in;
-
-            &:hover {
-              background: $background-emoji-h;
-            }
+          p {
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
         }
+      }
+
+      .isSelected {
+        background: $background-primary-h;
       }
     }
   }

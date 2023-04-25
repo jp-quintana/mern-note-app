@@ -7,21 +7,42 @@ const Modal = ({
   local,
   show,
   close,
+  modalPosition,
   backdropClassName,
   modalContainerClassName,
   modalClassName,
   children,
 }) => {
+  const handleBackdropPropagation = (e) => {
+    e.stopPropagation();
+    close();
+  };
+
+  const handleModalPropagation = (e) => {
+    e.stopPropagation();
+  };
+
+  // TODO: Check local propagation if needed
   if (local) {
     return (
       <>
         {show && (
           <>
             {createPortal(
-              <div onClick={close} className={styles.backdrop} />,
+              <div
+                onClick={handleBackdropPropagation}
+                onMouseUp={handleBackdropPropagation}
+                className={styles.backdrop}
+              />,
               document.getElementById('overlay')
             )}
-            <div className={modalClassName}>{children}</div>
+            <div
+              onClick={handleModalPropagation}
+              onMouseUp={handleModalPropagation}
+              className={modalClassName}
+            >
+              {children}
+            </div>
           </>
         )}
       </>
@@ -33,7 +54,15 @@ const Modal = ({
           <>
             {createPortal(
               <div
+                onClick={handleModalPropagation}
+                onMouseUp={handleModalPropagation}
                 className={`${styles.modal_container} ${modalContainerClassName}`}
+                style={
+                  modalPosition && {
+                    top: modalPosition.top,
+                    left: modalPosition.left,
+                  }
+                }
               >
                 <div
                   onClick={close}

@@ -1,8 +1,9 @@
 import { useState } from 'react';
-
-import { NavLink } from 'react-router-dom';
-
 import { FaAngleRight } from 'react-icons/fa';
+
+import { useNotesContext } from 'hooks/useNotesContext';
+
+import NavElement from './NavElement';
 
 import styles from './index.module.scss';
 
@@ -10,22 +11,20 @@ import styles from './index.module.scss';
 const USER = {
   username: 'jpquintana',
   imageUrl: 'https://wallpaperaccess.com/full/1428034.jpg',
-  favoriteNotes: [{ id: '1', title: 'TO DO', emoji: '🐑' }],
-  notes: [
-    { id: '2', title: 'Grocery list', emoji: '' },
-    { id: '3', title: 'Goals', emoji: '' },
-    { id: '4', title: 'Weight loss', emoji: '' },
-  ],
 };
 
 const Nav = () => {
+  const { notes, selectedNote } = useNotesContext();
+
+  const favoriteNotes = notes.filter((note) => note.isFavorite);
+
   const [showFavorites, setShowFavorites] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
 
   return (
     <div className={styles.container}>
       <nav className={styles.nav}>
-        {USER.favoriteNotes.length > 0 && (
+        {favoriteNotes.length > 0 && (
           <ul className={styles.list}>
             <div
               onClick={() => setShowFavorites((prevState) => !prevState)}
@@ -33,7 +32,7 @@ const Nav = () => {
             >
               <div
                 className={`${styles.icon_wrapper} ${
-                  showFavorites ? styles.icon_open : ''
+                  showFavorites ? styles.icon_open : undefined
                 }`}
               >
                 <FaAngleRight />
@@ -41,14 +40,23 @@ const Nav = () => {
               <p>Favorite Notes:</p>
             </div>
             {showFavorites &&
-              USER.favoriteNotes.map((note) => (
-                <li key={note.id}>
-                  <NavLink to={`/notes/${note.id}`}>
-                    <div className={styles.emoji}>
-                      {note.emoji || `\u{1F5CB}`}
-                    </div>
-                    {note.title}
-                  </NavLink>
+              favoriteNotes.map((note) => (
+                <li
+                  className={
+                    selectedNote && selectedNote.id === note.id
+                      ? styles.isSelected
+                      : undefined
+                  }
+                  key={note.id}
+                >
+                  <NavElement
+                    id={note.id}
+                    to={`/notes/${note.id}`}
+                    emoji={note.emoji}
+                    title={note.title}
+                    isFavorite={note.isFavorite}
+                    ellipsisClassName={styles.ellipsis}
+                  />
                 </li>
               ))}
           </ul>
@@ -60,7 +68,7 @@ const Nav = () => {
           >
             <div
               className={`${styles.icon_wrapper} ${
-                showNotes ? styles.icon_open : ''
+                showNotes ? styles.icon_open : undefined
               }`}
             >
               <FaAngleRight />
@@ -68,14 +76,23 @@ const Nav = () => {
             <p>Notes:</p>
           </div>
           {showNotes &&
-            USER.notes.map((note) => (
-              <li key={note.id}>
-                <NavLink to={`/notes/${note.id}`}>
-                  <div className={styles.emoji}>
-                    {note.emoji || `\u{1F5CB}`}
-                  </div>
-                  {note.title}
-                </NavLink>
+            notes.map((note) => (
+              <li
+                className={
+                  selectedNote && selectedNote.id === note.id
+                    ? styles.isSelected
+                    : undefined
+                }
+                key={note.id}
+              >
+                <NavElement
+                  id={note.id}
+                  to={`/notes/${note.id}`}
+                  emoji={note.emoji}
+                  title={note.title}
+                  isFavorite={note.isFavorite}
+                  ellipsisClassName={styles.ellipsis}
+                />
               </li>
             ))}
         </ul>

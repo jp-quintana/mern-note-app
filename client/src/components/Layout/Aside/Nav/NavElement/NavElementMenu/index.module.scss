@@ -1,0 +1,36 @@
+.container {
+  background: $background-modal;
+  border-radius: 0.4rem;
+  user-select: none;
+  box-shadow: $box-shadow-modal;
+
+  .list_wrapper,
+  .move_to_wrapper,
+  .last_edit_wrapper {
+    padding: 0.6rem 0.5rem;
+  }
+
+  .list_wrapper,
+  .move_to_wrapper {
+    border-bottom: $border;
+  }
+
+  .list_item,
+  .move_to {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 0 1rem;
+    min-height: 2.8rem;
+    border-radius: 0.3rem;
+
+    &:hover {
+      background: $background-modal-h;
+      cursor: pointer;
+    }
+  }
+
+  .last_edit {
+    padding: 0 1rem;
+  }
+}
