@@ -85,6 +85,8 @@ export const useNote = () => {
     setError(null);
     setIsLoading(true);
 
+    // TODO: Add request
+
     try {
       const updatedNotes = [...notes];
 

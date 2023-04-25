@@ -4,25 +4,33 @@ import { FaTrashAlt, FaRegClone, FaLink, FaEdit } from 'react-icons/fa';
 import { TbStar, TbStarOff, TbArrowForwardUp } from 'react-icons/tb';
 
 import { useNote } from 'hooks/useNote';
+import { useNotesContext } from 'hooks/useNotesContext';
 
 import styles from './index.module.scss';
 
 const NavElementMenu = ({ id, isFavorite }) => {
   const navigate = useNavigate();
 
-  const { deleteNote, isLoading, error } = useNote();
+  const { deleteNote, error } = useNote();
+  const { selectedNote } = useNotesContext();
 
   const [navigation, setNavigation] = useState(false);
 
   const handleDeleteNote = async () => {
-    console.log(id);
     await deleteNote(id);
-    setNavigation(true);
+
+    console.log(selectedNote.id === id);
+
+    if (id === selectedNote.id) {
+      console.log('here');
+      setNavigation(true);
+    }
   };
 
   useEffect(() => {
-    if (navigation) {
-      navigate('/');
+    console.log('running');
+    if (navigation && !error) {
+      navigate(`notes/${selectedNote.id}`);
     } else {
       setNavigation(false);
     }

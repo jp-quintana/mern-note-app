@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FaAngleRight } from 'react-icons/fa';
 
 import { useNotesContext } from 'hooks/useNotesContext';
+import { useNote } from 'hooks/useNote';
 
 import NavElement from './NavElement';
 
@@ -15,11 +16,16 @@ const USER = {
 
 const Nav = () => {
   const { notes, selectedNote } = useNotesContext();
+  const { deleteNote } = useNote();
 
   const favoriteNotes = notes.filter((note) => note.isFavorite);
 
   const [showFavorites, setShowFavorites] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
+
+  const handleDeleteNote = async (id) => {
+    await deleteNote(id);
+  };
 
   return (
     <div className={styles.container}>
