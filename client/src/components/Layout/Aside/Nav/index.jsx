@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { FaAngleRight } from 'react-icons/fa';
 
 import { useNotesContext } from 'hooks/useNotesContext';
-import { useNote } from 'hooks/useNote';
 
 import NavElement from './NavElement';
 
@@ -16,16 +15,11 @@ const USER = {
 
 const Nav = () => {
   const { notes, selectedNote } = useNotesContext();
-  const { deleteNote } = useNote();
 
   const favoriteNotes = notes.filter((note) => note.isFavorite);
 
   const [showFavorites, setShowFavorites] = useState(false);
   const [showNotes, setShowNotes] = useState(false);
-
-  const handleDeleteNote = async (id) => {
-    await deleteNote(id);
-  };
 
   return (
     <div className={styles.container}>
@@ -49,7 +43,9 @@ const Nav = () => {
               favoriteNotes.map((note) => (
                 <li
                   className={
-                    selectedNote.id === note.id ? styles.isSelected : undefined
+                    selectedNote && selectedNote.id === note.id
+                      ? styles.isSelected
+                      : undefined
                   }
                   key={note.id}
                 >
@@ -83,7 +79,9 @@ const Nav = () => {
             notes.map((note) => (
               <li
                 className={
-                  selectedNote.id === note.id ? styles.isSelected : undefined
+                  selectedNote && selectedNote.id === note.id
+                    ? styles.isSelected
+                    : undefined
                 }
                 key={note.id}
               >

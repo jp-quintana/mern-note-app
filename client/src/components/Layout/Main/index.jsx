@@ -1,4 +1,5 @@
-import { Outlet } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import {
   FaRegCommentAlt,
   FaRegClock,
@@ -13,8 +14,31 @@ import { useNote } from 'hooks/useNote';
 import styles from './index.module.scss';
 
 const Main = () => {
-  const { selectedNote } = useNotesContext();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
+  const { notes, selectedNote } = useNotesContext();
   const { toggleFavoriteNote } = useNote();
+
+  useEffect(() => {
+    if (pathname === '/') {
+      if (selectedNote) {
+        navigate(`/notes/${selectedNote.id}`);
+      } else if (notes.length > 0) {
+        navigate(`/notes/${notes[0].id}`);
+      } else {
+        navigate(`/notes/getting-started`);
+      }
+    } else {
+      if (!selectedNote) {
+        if (notes.length > 0) {
+          navigate(`/notes/${notes[0].id}`);
+        } else {
+          navigate(`/notes/getting-started`);
+        }
+      }
+    }
+  }, [selectedNote, pathname]);
 
   // TODO: Add last edit date
 
@@ -36,7 +60,10 @@ const Main = () => {
           <div className={styles.icon_wrapper}>
             <FaRegClock />
           </div>
-          <div onClick={toggleFavoriteNote} className={styles.icon_wrapper}>
+          <div
+            onClick={() => toggleFavoriteNote(selectedNote.id)}
+            className={styles.icon_wrapper}
+          >
             {!selectedNote && <FaRegStar />}
             {selectedNote && (
               <>

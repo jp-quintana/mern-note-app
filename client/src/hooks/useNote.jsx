@@ -52,32 +52,75 @@ export const useNote = () => {
     }
   };
 
-  const toggleFavoriteNote = async () => {
+  const toggleFavoriteNote = async (id) => {
     setError(null);
 
     // TODO: Add request
 
     try {
-      const updatedSelectedNote = selectedNote;
       const updatedNotes = [...notes];
 
-      updatedSelectedNote.isFavorite = !updatedSelectedNote.isFavorite;
-      console.log(updatedSelectedNote);
+      const existingNoteIndex = notes.findIndex((note) => note.id === id);
 
-      const existingNoteIndex = notes.findIndex(
-        (note) => note.id === selectedNote.id
-      );
+      updatedNotes[existingNoteIndex].isFavorite =
+        !updatedNotes[existingNoteIndex].isFavorite;
 
-      updatedNotes.splice(existingNoteIndex, 1, updatedSelectedNote);
+      let payload;
+
+      if (selectedNote.id === id) {
+        console.log('acaaaaaaaaaaaaaaa');
+        payload = {
+          notes: updatedNotes,
+          selectedNote: updatedNotes[existingNoteIndex],
+        };
+      } else {
+        payload = { notes: updatedNotes, selectedNote };
+      }
 
       dispatch({
         type: 'TOGGLE_FAVORITE_NOTE',
-        payload: { updatedSelectedNote, updatedNotes },
+        payload,
       });
       await new Promise((resolve) => setTimeout(resolve, 100));
     } catch (e) {
       console.error(e.message);
       setError(e);
+    }
+  };
+
+  const duplicateNote = async (id) => {
+    setError(null);
+    // setIsLoading(true);
+
+    // TODO: Add request
+
+    try {
+      const updatedNotes = [...notes];
+
+      const existingNote = notes.find((note) => note.id === id);
+
+      console.log(existingNote);
+
+      const duplicate = {
+        id: uuid(),
+        title: `Copy of ${existingNote.title}`,
+        emoji: existingNote.emoji,
+        isFavorite: false,
+      };
+
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      const existingNoteIndex = notes.findIndex((note) => note.id === id);
+
+      updatedNotes.splice(existingNoteIndex + 1, 0, duplicate);
+      console.log(updatedNotes);
+      dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
+
+      // setIsLoading(false);
+    } catch (e) {
+      console.error(e.message);
+      setError(e.message);
+      // setIsLoading(false);
     }
   };
 
@@ -119,6 +162,7 @@ export const useNote = () => {
     editSelectedNote,
     saveChanges,
     toggleFavoriteNote,
+    duplicateNote,
     deleteNote,
     isLoading,
     error,

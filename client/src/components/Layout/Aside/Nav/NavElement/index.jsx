@@ -40,12 +40,12 @@ const NavElement = ({
   return (
     <NavLink className={styles.link} to={to}>
       <div className={styles.emoji}>
-        {id === selectedNote.id
+        {selectedNote && id === selectedNote.id
           ? selectedNote.emoji || `\u{1F5CB}`
           : emoji || `\u{1F5CB}`}
       </div>
       <p>
-        {id === selectedNote.id
+        {selectedNote && id === selectedNote.id
           ? selectedNote.title.length > 0
             ? selectedNote.title
             : 'Untitled'
@@ -66,7 +66,11 @@ const NavElement = ({
         modalContainerClassName={styles.menu_container}
         modalClassName={styles.menu}
       >
-        <NavElementMenu id={id} isFavorite={isFavorite} />
+        <NavElementMenu
+          id={id}
+          isFavorite={isFavorite}
+          closeMenu={() => setShowMenu(false)}
+        />
       </Modal>
     </NavLink>
   );

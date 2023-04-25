@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useNote } from 'hooks/useNote';
+import { useNotesContext } from 'hooks/useNotesContext';
 
 import SelectedNote from '../../components/SelectedNote';
 
@@ -14,6 +15,7 @@ const USER = {
 const Note = () => {
   const { noteId } = useParams();
   const { setSelectedNote, error } = useNote();
+  const { selectedNote } = useNotesContext();
 
   const [content, setContent] = useState(null);
 
@@ -29,8 +31,8 @@ const Note = () => {
 
   return (
     <>
-      {!content && <p>Loading...</p>}
-      {content && <SelectedNote initialContent={content} />}
+      {(!content || !selectedNote) && <p>Loading...</p>}
+      {content && selectedNote && <SelectedNote initialContent={content} />}
     </>
   );
 };

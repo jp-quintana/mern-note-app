@@ -1,82 +1,73 @@
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { FaTrashAlt, FaRegClone, FaLink, FaEdit } from 'react-icons/fa';
 import { TbStar, TbStarOff, TbArrowForwardUp } from 'react-icons/tb';
 
 import { useNote } from 'hooks/useNote';
-import { useNotesContext } from 'hooks/useNotesContext';
 
 import styles from './index.module.scss';
 
-const NavElementMenu = ({ id, isFavorite }) => {
-  const navigate = useNavigate();
-
-  const { deleteNote, error } = useNote();
-  const { selectedNote } = useNotesContext();
-
-  const [navigation, setNavigation] = useState(false);
+const NavElementMenu = ({ id, isFavorite, closeMenu }) => {
+  const { toggleFavoriteNote, duplicateNote, deleteNote } = useNote();
 
   const handleDeleteNote = async () => {
     await deleteNote(id);
-
-    console.log(selectedNote.id === id);
-
-    if (id === selectedNote.id) {
-      console.log('here');
-      setNavigation(true);
-    }
   };
 
-  useEffect(() => {
-    console.log('running');
-    if (navigation && !error) {
-      navigate(`notes/${selectedNote.id}`);
-    } else {
-      setNavigation(false);
-    }
-  }, [navigation]);
+  const handleToggleFavorite = async () => {
+    console.log(id);
+    await toggleFavoriteNote(id);
+    closeMenu();
+  };
 
-  // TODO: Complete last edited
+  const handleDuplicateNote = async () => {
+    await duplicateNote(id);
+    closeMenu();
+  };
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(`http://127.0.0.1:5173/notes/${id}`);
+    closeMenu();
+  };
+
+  // TODO: Complete last edited, rename, move to and handleCopyLink
+
   return (
     <div className={styles.container}>
       <div className={styles.list_wrapper}>
         <ul className={styles.list}>
-          <li onClick={handleDeleteNote} className={styles.list_item}>
+          <li onClick={() => handleDeleteNote(id)} className={styles.list_item}>
             <FaTrashAlt size={`1.6rem`} />
             <p>Delete</p>
           </li>
-          <li className={styles.list_item}>
-            <>
-              {!isFavorite && (
-                <>
-                  <TbStar size={`1.6rem`} />
-                  <p>Add to Favorites</p>
-                </>
-              )}
-              {isFavorite && (
-                <>
-                  <TbStarOff size={`1.6rem`} />
-                  <p>Remove from Favorites</p>
-                </>
-              )}
-            </>
+          <li className={styles.list_item} onClick={handleToggleFavorite}>
+            {!isFavorite && (
+              <>
+                <TbStar size={`1.6rem`} />
+                <p>Add to Favorites</p>
+              </>
+            )}
+            {isFavorite && (
+              <>
+                <TbStarOff size={`1.6rem`} />
+                <p>Remove from Favorites</p>
+              </>
+            )}
           </li>
-          <li className={styles.list_item}>
+          <li className={styles.list_item} onClick={handleDuplicateNote}>
             <FaRegClone size={`1.6rem`} />
             <p>Duplicate</p>
           </li>
-          <li className={styles.list_item}>
+          <li onClick={handleCopyLink} className={styles.list_item}>
             <FaLink size={`1.6rem`} />
             <p>Copy Link</p>
           </li>
-          <li className={styles.list_item}>
+          <li className={styles.list_item} onClick={closeMenu}>
             <FaEdit size={`1.6rem`} />
             <p>Rename</p>
           </li>
         </ul>
       </div>
       <div className={styles.move_to_wrapper}>
-        <div className={styles.move_to}>
+        <div className={styles.move_to} onClick={closeMenu}>
           <TbArrowForwardUp size={`1.6rem`} />
           <p>Move to</p>
         </div>

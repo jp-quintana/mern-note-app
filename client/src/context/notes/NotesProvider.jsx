@@ -43,11 +43,9 @@ const notesReducer = (state, action) => {
     }
 
     case 'TOGGLE_FAVORITE_NOTE': {
-      const { updatedSelectedNote, updatedNotes } = payload;
       return {
         ...state,
-        notes: updatedNotes,
-        selectedNote: updatedSelectedNote,
+        ...payload,
       };
     }
 
@@ -81,6 +79,8 @@ const NotesProvider = ({ children }) => {
       // TODO: Add "Getting Started" page
     }
   }, []);
+
+  console.log('state ===', state);
 
   return (
     <NotesContext.Provider value={{ ...state, dispatch }}>
