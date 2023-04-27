@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
+import { createNote } from '../controllers/noteController.js';
+
 const router = Router();
 
-router.get('/', (req, res, next) => {
-  res.send('Hello World!');
-});
+router.post('/', createNote);
 
 export default router;
