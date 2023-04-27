@@ -1,6 +1,6 @@
 class MongooseClass {
   constructor(collection) {
-    this.collection = this;
+    this.collection = collection;
   }
 
   async fetchAll() {
@@ -12,10 +12,16 @@ class MongooseClass {
   }
 
   async create(obj) {
-    return await this.collection.findById(obj);
+    return await this.collection.create(obj);
   }
 
   async update(id, obj) {
     return await this.collection.findOneAndUpdate({ _id: id }, obj);
   }
+
+  async delete(id) {
+    return await this.collection.findByIdAndRemove(id);
+  }
 }
+
+export default MongooseClass;

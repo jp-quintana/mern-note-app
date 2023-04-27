@@ -17,4 +17,7 @@ noteSchema.virtual('id').get(function () {
   return this._id.toHexString();
 });
 
+noteSchema.set('toJSON', { virtuals: true });
+noteSchema.set('toObject', { virtuals: true });
+
 export default mongoose.model('Note', noteSchema);
