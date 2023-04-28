@@ -5,6 +5,14 @@ class NoteMongooseDao extends MongooseClass {
   constructor() {
     super(Note);
   }
+
+  async fetchNoteContentById(id) {
+    return await this.collection.findById(id).select('content');
+  }
+
+  async fetchNotesByUserId(userId) {
+    // return await this.collection.findById(id).select('content');
+  }
 }
 
 export default NoteMongooseDao;

@@ -7,7 +7,7 @@ class MongooseClass {
     return await this.collection.find();
   }
 
-  async fetchById(id) {
+  async fetchById(id, select) {
     return await this.collection.findById(id);
   }
 
