@@ -9,12 +9,13 @@ import {
 // TODO: Add User Data
 export const getNote = async (req, res, next) => {
   const { noteId } = req.params;
+
   try {
     const noteContent = await getNoteContent(noteId);
 
     res.json(noteContent);
   } catch (err) {
-    console.error(err.message);
+    return next(err);
   }
 };
 
@@ -24,7 +25,7 @@ export const createNote = async (req, res, next) => {
 
     res.json(newNote);
   } catch (err) {
-    console.error(err.message);
+    return next(err);
   }
 };
 
@@ -35,7 +36,7 @@ export const editNote = async (req, res, next) => {
     await saveChangesToNote(noteId, req.body);
     res.json({ message: 'Success' });
   } catch (err) {
-    console.error(err.message);
+    return next(err);
   }
 };
 
@@ -46,7 +47,7 @@ export const createDuplicateNote = async (req, res, next) => {
     const newNote = await duplicateNote(noteId);
     res.json(newNote);
   } catch (err) {
-    console.error(err.message);
+    return next(err);
   }
 };
 
@@ -57,6 +58,6 @@ export const deleteNote = async (req, res, next) => {
     await removeNote(noteId);
     res.json({ message: 'Success' });
   } catch (err) {
-    console.error(err.message);
+    return next(err);
   }
 };
