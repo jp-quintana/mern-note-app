@@ -1,9 +1,9 @@
 import NoteDAO from '../daos/note/index.js';
 
 // TODO: Update User Data
-export const getNoteContent = async (id) => {
+export const getNoteContent = async (noteId) => {
   try {
-    return await NoteDAO.fetchNoteContentById(id);
+    return await NoteDAO.fetchNoteContentById(noteId);
   } catch (err) {
     console.error(err.message);
   }
@@ -43,10 +43,9 @@ export const duplicateNote = async (noteId, userId) => {
   }
 };
 
-export const eliminateNote = async (noteId, userId) => {
+export const removeNote = async (noteId) => {
   try {
-    const { content } = await getNoteContent(noteId);
-    return await addNote(userId, content);
+    return await await NoteDAO.delete(noteId);
   } catch (err) {
     console.error(err.message);
   }

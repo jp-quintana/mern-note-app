@@ -3,6 +3,7 @@ import {
   addNote,
   saveChangesToNote,
   duplicateNote,
+  removeNote,
 } from '../services/noteService.js';
 
 // TODO: Add User Data
@@ -53,8 +54,8 @@ export const deleteNote = async (req, res, next) => {
   const { noteId } = req.params;
 
   try {
-    const newNote = await duplicateNote(noteId);
-    res.json(newNote);
+    await removeNote(noteId);
+    res.json({ message: 'Success' });
   } catch (err) {
     console.error(err.message);
   }
