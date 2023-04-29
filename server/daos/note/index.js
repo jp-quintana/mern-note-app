@@ -2,16 +2,16 @@ import NoteMongooseDao from './NoteMongooseDao.js';
 
 const daoOption = process.env.DAO_OPTION;
 
-let NoteDAO;
+let NoteDao;
 
 switch (daoOption) {
   case 'MONGOOSE':
-    NoteDAO = new NoteMongooseDao();
+    NoteDao = new NoteMongooseDao();
     break;
   case 'FIREBASE':
     break;
   default:
-    NoteDAO = new NoteMongooseDao();
+    NoteDao = new NoteMongooseDao();
 }
 
-export default NoteDAO;
+export default NoteDao;

@@ -1,9 +1,9 @@
-import NoteDAO from '../daos/note/index.js';
+import NoteDao from '../daos/note/index.js';
 import CustomError from '../models/CustomError.js';
 
 // TODO: Update User Data
 export const getNoteContent = async (noteId) => {
-  const noteContent = await NoteDAO.fetchNoteContentById(noteId);
+  const noteContent = await NoteDao.fetchNoteContentById(noteId);
 
   if (!noteContent) {
     throw new CustomError('A note with that id does not exist', 404);
@@ -22,11 +22,11 @@ export const addNote = async (userId, content = '') => {
     isFavorite: false,
   };
 
-  return await NoteDAO.create(newNote);
+  return await NoteDao.create(newNote);
 };
 
-export const saveChangesToNote = async (noteId, obj) => {
-  const updatedNote = await NoteDAO.update(noteId, obj);
+export const saveChangesToNote = async (noteId, noteDetails) => {
+  const updatedNote = await NoteDao.update(noteId, noteDetails);
 
   if (!updatedNote) {
     throw new CustomError('A note with that id does not exist', 404);
@@ -42,7 +42,7 @@ export const duplicateNote = async (noteId, userId) => {
 };
 
 export const removeNote = async (noteId) => {
-  const deletedNote = await NoteDAO.delete(noteId);
+  const deletedNote = await NoteDao.delete(noteId);
 
   if (!deletedNote) {
     throw new CustomError('A note with that id does not exist', 404);
