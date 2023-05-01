@@ -8,10 +8,10 @@ import {
 
 // TODO: Add User Data
 export const getNote = async (req, res, next) => {
-  const { noteId } = req.params;
-
   try {
-    const noteContent = await getNoteContent(noteId);
+    const { noteId } = req.params;
+
+    const noteContent = await getNoteContent(req.user.id, noteId);
 
     res.json(noteContent);
   } catch (err) {
@@ -21,7 +21,7 @@ export const getNote = async (req, res, next) => {
 
 export const createNote = async (req, res, next) => {
   try {
-    const newNote = await addNote();
+    const newNote = await addNote(req.user.id);
 
     res.json(newNote);
   } catch (err) {
@@ -30,10 +30,10 @@ export const createNote = async (req, res, next) => {
 };
 
 export const editNote = async (req, res, next) => {
-  const { noteId } = req.params;
-
   try {
-    await saveChangesToNote(noteId, req.body);
+    const { noteId } = req.params;
+
+    await saveChangesToNote(req.user.id, noteId, req.body);
     res.json({ message: 'Success' });
   } catch (err) {
     return next(err);
@@ -41,10 +41,10 @@ export const editNote = async (req, res, next) => {
 };
 
 export const createDuplicateNote = async (req, res, next) => {
-  const { noteId } = req.params;
-
   try {
-    const newNote = await duplicateNote(noteId);
+    const { noteId } = req.params;
+
+    const newNote = await duplicateNote(req.user.id, noteId);
     res.json(newNote);
   } catch (err) {
     return next(err);
@@ -52,10 +52,10 @@ export const createDuplicateNote = async (req, res, next) => {
 };
 
 export const deleteNote = async (req, res, next) => {
-  const { noteId } = req.params;
-
   try {
-    await removeNote(noteId);
+    const { noteId } = req.params;
+
+    await removeNote(req.user.id, noteId);
     res.json({ message: 'Success' });
   } catch (err) {
     return next(err);

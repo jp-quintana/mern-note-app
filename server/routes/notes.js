@@ -8,13 +8,15 @@ import {
   deleteNote,
 } from '../controllers/noteController.js';
 
+import { checkAuth } from '../middlewares/checkAuth.js';
+
 const router = Router();
 
-router.get('/:noteId', getNote);
-router.post('/', createNote);
-router.put('/:noteId', editNote);
-router.put('/:noteId/favorite', editNote);
-router.post('/:noteId/duplicate', createDuplicateNote);
-router.delete('/:noteId', deleteNote);
+router.get('/:noteId', checkAuth, getNote);
+router.post('/', checkAuth, createNote);
+router.put('/:noteId', checkAuth, editNote);
+router.put('/:noteId/favorite', checkAuth, editNote);
+router.post('/:noteId/duplicate', checkAuth, createDuplicateNote);
+router.delete('/:noteId', checkAuth, deleteNote);
 
 export default router;

@@ -6,11 +6,11 @@ const noteSchema = new mongoose.Schema(
     emoji: { type: String },
     content: { type: String },
     isFavorite: { type: Boolean, required: 'true' },
-    // userId: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'User'
-    // }
-    userId: { type: String, required: 'true' },
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
   },
   { timestamps: true }
 );

@@ -6,7 +6,6 @@ import CustomError from '../models/CustomError.js';
 
 export const fetchUser = async (userId) => {
   const user = await UserDao.fetchById(userId);
-  delete user.password;
   return user;
 };
 
