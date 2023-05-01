@@ -59,7 +59,6 @@ const SelectedNote = ({ initialContent }) => {
     if (hasEdited) {
       console.log('running');
       const timer = setTimeout(() => {
-        // TODO: Add request
         saveChanges(id, content);
       }, 300);
 

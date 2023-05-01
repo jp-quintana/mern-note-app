@@ -68,7 +68,6 @@ export const useNote = () => {
       let payload;
 
       if (selectedNote.id === id) {
-        console.log('acaaaaaaaaaaaaaaa');
         payload = {
           notes: updatedNotes,
           selectedNote: updatedNotes[existingNoteIndex],
