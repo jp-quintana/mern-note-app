@@ -23,13 +23,23 @@ export const createUser = async (req, res, next) => {
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      console.log(errors.array());
-      throw new CustomError('Signup failed. ', 422, errors.array());
+      throw new CustomError('Signup failed.', 422, errors.array());
     }
-    const newUser = await signup(req.body);
-    res.json(newUser);
+
+    const { password, confirmPassword } = req.body;
+
+    if (!confirmPassword) {
+      throw new CustomError('Confirm password is needed.', 422);
+    }
+
+    if (password !== confirmPassword) {
+      throw new CustomError('Passwords do no match.', 422);
+    }
+
+    const token = await signup(req.body);
+
+    res.json({ token });
   } catch (err) {
-    console.log('aca', err.message);
     next(err);
   }
 };
