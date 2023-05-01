@@ -24,11 +24,12 @@ export const createUser = async (req, res, next) => {
 
     if (!errors.isEmpty()) {
       console.log(errors.array());
-      throw new CustomError(errors.array(), 422);
+      throw new CustomError('Signup failed. ', 422, errors.array());
     }
     const newUser = await signup(req.body);
     res.json(newUser);
   } catch (err) {
+    console.log('aca', err.message);
     next(err);
   }
 };
