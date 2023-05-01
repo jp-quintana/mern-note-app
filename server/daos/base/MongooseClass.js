@@ -7,8 +7,8 @@ class MongooseClass {
     return await this.collection.find();
   }
 
-  async fetchById(id, select) {
-    return await this.collection.findById(id);
+  async fetchById(id) {
+    return await this.collection.findById(id).select('-password');
   }
 
   async create(obj) {

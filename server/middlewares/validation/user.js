@@ -29,3 +29,12 @@ export const validateCreateUser = [
       'Password must contain at least 1 symbol and 1 capital letter'
     ),
 ];
+
+export const validateLoginUser = [
+  check('email')
+    .notEmpty()
+    .withMessage('Email is required')
+    .isEmail()
+    .withMessage('Invalid email address')
+    .normalizeEmail(),
+];

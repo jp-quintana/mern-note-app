@@ -1,3 +1,5 @@
+import jwt from 'jsonwebtoken';
+
 import CustomError from '../models/CustomError.js';
 
 export const checkAuth = (req, res, next) => {

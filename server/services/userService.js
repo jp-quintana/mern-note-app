@@ -6,27 +6,8 @@ import CustomError from '../models/CustomError.js';
 
 export const fetchUser = async (userId) => {
   const user = await UserDao.fetchById(userId);
+  delete user.password;
   return user;
-};
-
-export const login = async (userDetails) => {
-  const { email, password } = userDetails;
-
-  const existingUser = await UserDao.fetchByEmail(email);
-
-  if (!existingUser) {
-    throw new CustomError('User does not exist.', 400);
-  }
-
-  const isMatch = await bcrypt.compare(password, existingUser.password);
-
-  if (!isMatch) {
-    throw new CustomError('Wrong credentials', 401);
-  }
-
-  const payload = { user: { id: existingUser.id } };
-
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 36000 });
 };
 
 export const signup = async (userDetails) => {
@@ -51,5 +32,25 @@ export const signup = async (userDetails) => {
 
   const payload = { user: { id: newUser.id } };
 
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: 36000 });
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '365d' });
+};
+
+export const login = async (userDetails) => {
+  const { email, password } = userDetails;
+
+  const existingUser = await UserDao.fetchByEmail(email);
+
+  if (!existingUser) {
+    throw new CustomError('User does not exist.', 400);
+  }
+
+  const isMatch = await bcrypt.compare(password, existingUser.password);
+
+  if (!isMatch) {
+    throw new CustomError('Wrong credentials.', 401);
+  }
+
+  const payload = { user: { id: existingUser.id } };
+
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '365d' });
 };

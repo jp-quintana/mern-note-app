@@ -7,12 +7,15 @@ import {
 } from '../controllers/userController.js';
 
 import { checkAuth } from '../middlewares/checkAuth.js';
-import { validateCreateUser } from '../middlewares/validation/user.js';
+import {
+  validateCreateUser,
+  validateLoginUser,
+} from '../middlewares/validation/user.js';
 
 const router = Router();
 
 router.get('/', checkAuth, getUser);
-router.post('/login', loginUser);
+router.post('/login', validateLoginUser, loginUser);
 router.post('/signup', validateCreateUser, createUser);
 
 export default router;

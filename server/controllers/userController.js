@@ -1,11 +1,14 @@
 import CustomError from '../models/CustomError.js';
 
-import { signup } from '../services/userService.js';
+import { fetchUser, login, signup } from '../services/userService.js';
 
 import { validationResult } from 'express-validator';
 
 export const getUser = async (req, res, next) => {
   try {
+    const user = await fetchUser(req.user.id);
+
+    res.json(user);
   } catch (err) {
     next(err);
   }
@@ -13,6 +16,15 @@ export const getUser = async (req, res, next) => {
 
 export const loginUser = async (req, res, next) => {
   try {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      throw new CustomError('Login failed.', 422, errors.array());
+    }
+
+    const token = await login(req.body);
+
+    res.json({ token });
   } catch (err) {
     next(err);
   }
