@@ -16,6 +16,21 @@
   }
 }
 
+.profile_menu_container {
+  min-width: 18rem;
+  width: 25rem;
+  user-select: none;
+
+  .profile_menu {
+    z-index: 2;
+    position: absolute;
+    width: 100%;
+    min-height: 5rem;
+    min-width: 18rem;
+    background: $background-modal;
+  }
+}
+
 .container {
   background: $background-secondary;
   min-width: 24rem;

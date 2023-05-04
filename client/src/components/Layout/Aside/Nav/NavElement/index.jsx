@@ -20,7 +20,7 @@ const NavElement = ({
   ellipsisClassName,
 }) => {
   const { selectedNote } = useNoteContext();
-  const [modalPosition, setModalPosition] = useState({});
+  const [modalPosition, setModalPosition] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
 
   const handleToggleMenu = (e) => {

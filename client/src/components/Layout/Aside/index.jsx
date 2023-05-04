@@ -13,7 +13,6 @@ import styles from './index.module.scss';
 
 // TODO: Remove
 const USER = {
-  username: 'jpquintana',
   imageUrl: 'https://wallpaperaccess.com/full/1428034.jpg',
 };
 
@@ -22,9 +21,32 @@ const Aside = () => {
   const { user } = useAuthContext();
 
   const [showSearch, setShowSearch] = useState(false);
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [profileMenuPosition, setProfileMenuPosition] = useState(null);
+
+  const handleOpenProfileMenu = (e) => {
+    e.preventDefault();
+    const headerRect = e.currentTarget.getBoundingClientRect();
+    const imgRect = e.currentTarget
+      .querySelector('img')
+      .getBoundingClientRect();
+    const modalTop = headerRect.bottom;
+    const modalLeft = imgRect.left;
+    setProfileMenuPosition({ top: modalTop, left: modalLeft });
+    setShowProfileMenu(true);
+  };
 
   return (
     <>
+      <Modal
+        show={showProfileMenu}
+        close={() => setShowProfileMenu(false)}
+        modalPosition={profileMenuPosition}
+        modalContainerClassName={styles.profile_menu_container}
+        modalClassName={styles.profile_menu}
+      >
+        {/* <SearchModal />  */}
+      </Modal>
       <Modal
         show={showSearch}
         close={() => setShowSearch(false)}
@@ -34,7 +56,7 @@ const Aside = () => {
         <SearchModal />
       </Modal>
       <aside className={styles.container}>
-        <header className={styles.header}>
+        <header onClick={handleOpenProfileMenu} className={styles.header}>
           <img src={USER.imageUrl} alt={user.name} />{' '}
           <p>{`${user.name}'s Note App`}</p>{' '}
         </header>
