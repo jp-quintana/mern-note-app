@@ -49,7 +49,11 @@ const Main = () => {
           <div className={styles.emoji}>
             {selectedNote && (selectedNote.emoji || `\u{1F5CB}`)}
           </div>
-          <p className={styles.title}>{selectedNote && selectedNote.title}</p>
+          <p className={styles.title}>
+            {selectedNote && selectedNote.title.length > 0
+              ? selectedNote.title
+              : 'Untitled'}
+          </p>
         </div>
         <div className={styles.controls_wrapper}>
           <p className={styles.last_edit}>{selectedNote && 'Edited 2d ago'}</p>

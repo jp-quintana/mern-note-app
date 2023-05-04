@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { FaSearch, FaRegClock, FaCog, FaPlus } from 'react-icons/fa';
 
 import { useNote } from 'hooks/useNote';
+import { useAuthContext } from 'hooks/useAuthContext';
 
 import Nav from './Nav';
 import SearchModal from './SearchModal';
@@ -18,6 +19,7 @@ const USER = {
 
 const Aside = () => {
   const { createNote } = useNote();
+  const { user } = useAuthContext();
 
   const [showSearch, setShowSearch] = useState(false);
 
@@ -33,8 +35,8 @@ const Aside = () => {
       </Modal>
       <aside className={styles.container}>
         <header className={styles.header}>
-          <img src={USER.imageUrl} alt={USER.username} />{' '}
-          <p>{`${USER.username}'s Note App`}</p>{' '}
+          <img src={USER.imageUrl} alt={user.name} />{' '}
+          <p>{`${user.name}'s Note App`}</p>{' '}
         </header>
         <ul className={styles.controls}>
           <li onClick={() => setShowSearch(true)}>

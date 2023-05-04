@@ -22,7 +22,8 @@ const noteReducer = (state, action) => {
     case 'LOAD_NOTES': {
       return {
         notesAreReady: true,
-        notes: payload,
+        // notes: payload,
+        notes: [],
         selectedNote: payload[0],
       };
     }

@@ -67,7 +67,7 @@ export const useNote = () => {
 
       let payload;
 
-      if (selectedNote.id === id) {
+      if (selectedNote && selectedNote.id === id) {
         payload = {
           notes: updatedNotes,
           selectedNote: updatedNotes[existingNoteIndex],
@@ -135,7 +135,7 @@ export const useNote = () => {
 
       let payload;
 
-      if (selectedNote.id === id) {
+      if (selectedNote && selectedNote.id === id) {
         payload = { notes: updatedNotes, selectedNote: null };
       } else {
         payload = { notes: updatedNotes };

@@ -17,7 +17,7 @@ const authReducer = (state, action) => {
         ...state,
         authIsReady: true,
         isAuthorized: true,
-        user: payload.user,
+        user: payload,
       };
     }
     // case 'SIGNUP_SUCCESS': {
@@ -41,6 +41,8 @@ const authReducer = (state, action) => {
 
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
+
+  console.log(state);
 
   return (
     <AuthContext.Provider value={{ ...state, dispatch }}>
