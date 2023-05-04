@@ -12,14 +12,9 @@ const ProtectedRoutes = ({ needAuth }) => {
         return <Navigate to="/login" />;
       }
     }
-    case false: {
+    case undefined: {
       if (!isAuthorized) {
-        return (
-          <div>
-            holaaaaaaaaaaaaa
-            <Outlet />
-          </div>
-        );
+        return <Outlet />;
       } else {
         return <Navigate to="/" />;
       }

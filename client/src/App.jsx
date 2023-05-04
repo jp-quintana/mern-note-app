@@ -22,10 +22,10 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        {/* <Route element={<ProtectedRoutes />}> */}
-        <Route path="/login" element={<LogIn />} />
-        <Route path="/signup" element={<SignUp />} />
-        {/* </Route> */}
+        <Route element={<ProtectedRoutes />}>
+          <Route path="/login" element={<LogIn />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Route>
 
         <Route element={<ProtectedRoutes needAuth />}>
           <Route path="/" element={notesAreReady && <Layout />}>
