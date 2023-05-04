@@ -1,13 +1,9 @@
-import { useReducer, useEffect } from 'react';
-import axios from 'axios';
+import { useReducer } from 'react';
 
 import AuthContext from './auth-context';
 
-import setAuthToken from '../../utils/setAuthToken';
-
 const initialState = {
   authIsReady: false,
-  token: localStorage.getItem('token'),
   isAuthorized: false,
   user: null,
 };
@@ -17,7 +13,6 @@ const authReducer = (state, action) => {
 
   switch (type) {
     case 'LOAD_USER': {
-      console.log('in LOAD_USER', payload);
       return {
         ...state,
         authIsReady: true,
@@ -25,10 +20,14 @@ const authReducer = (state, action) => {
         user: payload.user,
       };
     }
+    // case 'SIGNUP_SUCCESS': {
+    //   return {
+    //     ...state,
+    //   };
+    // }
     case 'AUTH_ERROR': {
       return {
         authIsReady: true,
-        token: null,
         isAuthorized: false,
         user: null,
       };
@@ -42,19 +41,6 @@ const authReducer = (state, action) => {
 
 const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
-
-  useEffect(() => {
-    setAuthToken(localStorage.getItem('token'));
-
-    (async () => {
-      try {
-        const res = await axios.get('/api/user');
-        dispatch({ type: 'LOAD_USER', payload: res.data });
-      } catch (err) {
-        dispatch({ type: 'AUTH_ERROR' });
-      }
-    })();
-  }, []);
 
   return (
     <AuthContext.Provider value={{ ...state, dispatch }}>

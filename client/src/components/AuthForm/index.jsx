@@ -1,13 +1,16 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
 import { FaTimesCircle } from 'react-icons/fa';
+
+import { useAuth } from '../../hooks/useAuth';
 
 import styles from './index.module.scss';
 
 const AuthForm = () => {
   const { pathname } = useLocation();
   const isLogin = pathname === '/login';
+
+  const { signup, login } = useAuth();
 
   const [userInput, setUserInput] = useState({
     name: '',
@@ -34,15 +37,15 @@ const AuthForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (isLogin) {
-      console.log({
-        email: email,
-        password: password,
+      await login({
+        email,
+        password,
       });
     } else {
-      console.log(userInput);
+      await signup(userInput);
     }
   };
 
@@ -68,6 +71,7 @@ const AuthForm = () => {
                       value={name}
                       type="text"
                       placeholder="Enter your name..."
+                      required
                     />
                     {name.length > 0 && (
                       <FaTimesCircle
@@ -102,15 +106,7 @@ const AuthForm = () => {
             )}
             <label>
               <span>Email</span>
-              <div
-                onChange={(e) =>
-                  setUserInput((prevState) => ({
-                    ...prevState,
-                    email: e.target.value,
-                  }))
-                }
-                className={styles.input_wrapper}
-              >
+              <div className={styles.input_wrapper}>
                 <input
                   name="email"
                   onChange={handleInput}

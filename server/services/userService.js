@@ -31,7 +31,7 @@ export const signup = async (userDetails) => {
 
   const payload = { user: { id: newUser.id } };
 
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: null });
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '365d' });
 };
 
 export const login = async (userDetails) => {
@@ -51,5 +51,5 @@ export const login = async (userDetails) => {
 
   const payload = { user: { id: existingUser.id } };
 
-  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: null });
+  return jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '365d' });
 };

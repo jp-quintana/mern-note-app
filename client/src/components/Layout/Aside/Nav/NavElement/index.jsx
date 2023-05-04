@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import { FaEllipsisH } from 'react-icons/fa';
 
-import { useNotesContext } from 'hooks/useNotesContext';
+import { useNoteContext } from 'hooks/useNoteContext';
 
 import NavElementMenu from './NavElementMenu';
 
@@ -19,7 +19,7 @@ const NavElement = ({
   isFavorite,
   ellipsisClassName,
 }) => {
-  const { selectedNote } = useNotesContext();
+  const { selectedNote } = useNoteContext();
   const [modalPosition, setModalPosition] = useState({});
   const [showMenu, setShowMenu] = useState(false);
 

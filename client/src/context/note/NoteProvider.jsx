@@ -1,6 +1,6 @@
 import { useReducer, useEffect } from 'react';
 
-import NotesContext from './notes-context';
+import NoteContext from './note-context';
 
 const DUMMY_NOTES = [
   { id: '1', title: 'TO DO', emoji: '🐑', isFavorite: true },
@@ -15,7 +15,7 @@ const initialState = {
   selectedNote: null,
 };
 
-const notesReducer = (state, action) => {
+const noteReducer = (state, action) => {
   const { type, payload } = action;
 
   switch (type) {
@@ -68,8 +68,8 @@ const notesReducer = (state, action) => {
   }
 };
 
-const NotesProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(notesReducer, initialState);
+const NoteProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(noteReducer, initialState);
 
   useEffect(() => {
     // TODO: Add request
@@ -80,13 +80,11 @@ const NotesProvider = ({ children }) => {
     }
   }, []);
 
-  console.log('state ===', state);
-
   return (
-    <NotesContext.Provider value={{ ...state, dispatch }}>
+    <NoteContext.Provider value={{ ...state, dispatch }}>
       {children}
-    </NotesContext.Provider>
+    </NoteContext.Provider>
   );
 };
 
-export default NotesProvider;
+export default NoteProvider;

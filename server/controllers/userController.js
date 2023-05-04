@@ -31,6 +31,7 @@ export const loginUser = async (req, res, next) => {
 };
 
 export const createUser = async (req, res, next) => {
+  console.log('in here');
   try {
     const errors = validationResult(req);
 

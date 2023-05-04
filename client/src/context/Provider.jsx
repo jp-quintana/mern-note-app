@@ -1,10 +1,10 @@
 import AuthProvider from './auth/AuthProvider';
-import NotesProvider from './notes/NotesProvider';
+import NoteProvider from './note/NoteProvider';
 
 const Provider = ({ children }) => {
   return (
     <AuthProvider>
-      <NotesProvider>{children}</NotesProvider>
+      <NoteProvider>{children}</NoteProvider>
     </AuthProvider>
   );
 };

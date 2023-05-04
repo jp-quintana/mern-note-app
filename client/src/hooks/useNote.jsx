@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
 
-import { useNotesContext } from './useNotesContext';
+import { useNoteContext } from './useNoteContext';
 
 export const useNote = () => {
-  const { notes, selectedNote, dispatch } = useNotesContext();
+  const { notes, selectedNote, dispatch } = useNoteContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -24,9 +24,9 @@ export const useNote = () => {
       dispatch({ type: 'SET_SELECTED_NOTE', payload: selectedNote });
       await new Promise((resolve) => setTimeout(resolve, 1000));
       return 'content';
-    } catch (e) {
-      console.error(e.message);
-      setError(e);
+    } catch (err) {
+      console.error(err.message);
+      setError(err);
     }
   };
 
@@ -46,9 +46,9 @@ export const useNote = () => {
 
       dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
       await new Promise((resolve) => setTimeout(resolve, 100));
-    } catch (e) {
-      console.error(e.message);
-      setError(e);
+    } catch (err) {
+      console.error(err.message);
+      setError(err);
     }
   };
 
@@ -81,9 +81,9 @@ export const useNote = () => {
         payload,
       });
       await new Promise((resolve) => setTimeout(resolve, 100));
-    } catch (e) {
-      console.error(e.message);
-      setError(e);
+    } catch (err) {
+      console.error(err.message);
+      setError(err);
     }
   };
 
@@ -98,8 +98,6 @@ export const useNote = () => {
 
       const existingNote = notes.find((note) => note.id === id);
 
-      console.log(existingNote);
-
       const duplicate = {
         id: uuid(),
         title: `Copy of ${existingNote.title}`,
@@ -112,13 +110,13 @@ export const useNote = () => {
       const existingNoteIndex = notes.findIndex((note) => note.id === id);
 
       updatedNotes.splice(existingNoteIndex + 1, 0, duplicate);
-      console.log(updatedNotes);
+
       dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
 
       // setIsLoading(false);
-    } catch (e) {
-      console.error(e.message);
-      setError(e.message);
+    } catch (err) {
+      console.error(err.message);
+      setError(err.message);
       // setIsLoading(false);
     }
   };
@@ -148,9 +146,9 @@ export const useNote = () => {
       dispatch({ type: 'DELETE_NOTE', payload });
 
       setIsLoading(false);
-    } catch (e) {
-      console.error(e.message);
-      setError(e.message);
+    } catch (err) {
+      console.error(err.message);
+      setError(err.message);
       setIsLoading(false);
     }
   };

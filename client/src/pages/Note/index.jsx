@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useNote } from 'hooks/useNote';
-import { useNotesContext } from 'hooks/useNotesContext';
+import { useNoteContext } from 'hooks/useNoteContext';
 
 import SelectedNote from '../../components/SelectedNote';
 
@@ -15,7 +15,7 @@ const USER = {
 const Note = () => {
   const { noteId } = useParams();
   const { setSelectedNote, error } = useNote();
-  const { selectedNote } = useNotesContext();
+  const { selectedNote } = useNoteContext();
 
   const [content, setContent] = useState(null);
 

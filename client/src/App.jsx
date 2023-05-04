@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import {
   createRoutesFromElements,
   createBrowserRouter,
@@ -6,7 +8,9 @@ import {
   Navigate,
 } from 'react-router-dom';
 
-import { useNotesContext } from 'hooks/useNotesContext';
+import { useAuth } from 'hooks/useAuth';
+import { useAuthContext } from 'hooks/useAuthContext';
+import { useNoteContext } from 'hooks/useNoteContext';
 
 import Layout from './components/Layout';
 import ProtectedRoutes from './components/ProtectedRoutes';
@@ -17,7 +21,15 @@ import Note from './pages/Note';
 import './App.scss';
 
 function App() {
-  const { notesAreReady } = useNotesContext();
+  const { loadUser } = useAuth();
+  const { authIsReady } = useAuthContext();
+  const { notesAreReady } = useNoteContext();
+
+  useEffect(() => {
+    (async () => {
+      await loadUser();
+    })();
+  }, []);
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -38,7 +50,7 @@ function App() {
     )
   );
 
-  return <RouterProvider router={router} />;
+  return <>{authIsReady && <RouterProvider router={router} />}</>;
 }
 
 export default App;

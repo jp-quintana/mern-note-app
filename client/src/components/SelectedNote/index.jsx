@@ -2,7 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import { FaSmile, FaImage } from 'react-icons/fa';
 
 import { useNote } from 'hooks/useNote';
-import { useNotesContext } from 'hooks/useNotesContext';
+import { useNoteContext } from 'hooks/useNoteContext';
 
 import Editor from './Editor';
 
@@ -13,7 +13,7 @@ import styles from './index.module.scss';
 
 const SelectedNote = ({ initialContent }) => {
   const { editSelectedNote, saveChanges } = useNote();
-  const { selectedNote } = useNotesContext();
+  const { selectedNote } = useNoteContext();
 
   const contentRef = useRef();
 

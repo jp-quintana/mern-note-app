@@ -8,7 +8,7 @@ import {
   FaEllipsisH,
 } from 'react-icons/fa';
 
-import { useNotesContext } from 'hooks/useNotesContext';
+import { useNoteContext } from 'hooks/useNoteContext';
 import { useNote } from 'hooks/useNote';
 
 import styles from './index.module.scss';
@@ -17,7 +17,7 @@ const Main = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
 
-  const { notes, selectedNote } = useNotesContext();
+  const { notes, selectedNote } = useNoteContext();
   const { toggleFavoriteNote } = useNote();
 
   useEffect(() => {

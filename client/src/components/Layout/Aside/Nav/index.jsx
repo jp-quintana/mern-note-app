@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { FaAngleRight } from 'react-icons/fa';
 
-import { useNotesContext } from 'hooks/useNotesContext';
+import { useNoteContext } from 'hooks/useNoteContext';
 
 import NavElement from './NavElement';
 
@@ -14,7 +14,7 @@ const USER = {
 };
 
 const Nav = () => {
-  const { notes, selectedNote } = useNotesContext();
+  const { notes, selectedNote } = useNoteContext();
 
   const favoriteNotes = notes.filter((note) => note.isFavorite);
 
