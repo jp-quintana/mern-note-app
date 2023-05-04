@@ -3,12 +3,13 @@ import {
   createBrowserRouter,
   Route,
   RouterProvider,
+  Navigate,
 } from 'react-router-dom';
 
 import { useNotesContext } from 'hooks/useNotesContext';
 
 import Layout from './components/Layout';
-import Home from './pages/Home';
+import ProtectedRoutes from './components/ProtectedRoutes';
 import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
 import Note from './pages/Note';
@@ -21,13 +22,18 @@ function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
+        {/* <Route element={<ProtectedRoutes />}> */}
         <Route path="/login" element={<LogIn />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/" element={notesAreReady && <Layout />}>
-          {/* <Route index element={<Home />} /> */}
-          <Route path="/notes/:noteId" element={<Note />} />
-          <Route path="/login" element={<Home />} />
+        {/* </Route> */}
+
+        <Route element={<ProtectedRoutes needAuth />}>
+          <Route path="/" element={notesAreReady && <Layout />}>
+            <Route path="/notes/:noteId" element={<Note />} />
+          </Route>
         </Route>
+
+        <Route path="*" element={<Navigate to="/" />} />
       </>
     )
   );
