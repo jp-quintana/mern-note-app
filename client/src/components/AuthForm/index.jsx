@@ -14,15 +14,35 @@ const AuthForm = () => {
     lastName: '',
     email: '',
     password: '',
+    confirmPassword: '',
   });
+
+  const { name, lastName, email, password, confirmPassword } = userInput;
+
+  const handleInput = (e) => {
+    setUserInput((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.value,
+    }));
+  };
+
+  const handleClearInput = (e) => {
+    const inputName = e.target.closest('div').querySelector('input').name;
+    setUserInput((prevState) => ({
+      ...prevState,
+      [inputName]: '',
+    }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isLogin) {
       console.log({
-        email: userInput.email,
-        password: userInput.password,
+        email: email,
+        password: password,
       });
+    } else {
+      console.log(userInput);
     }
   };
 
@@ -41,18 +61,17 @@ const AuthForm = () => {
               <>
                 <label>
                   <span>Name</span>
-                  <div
-                    onChange={(e) =>
-                      setUserInput((prevState) => ({
-                        ...prevState,
-                        name: e.target.value,
-                      }))
-                    }
-                    className={styles.input_wrapper}
-                  >
-                    <input type="text" placeholder="Enter your name..." />
-                    {userInput.name.length > 0 && (
+                  <div className={styles.input_wrapper}>
+                    <input
+                      name="name"
+                      onChange={handleInput}
+                      value={name}
+                      type="text"
+                      placeholder="Enter your name..."
+                    />
+                    {name.length > 0 && (
                       <FaTimesCircle
+                        onClick={handleClearInput}
                         className={styles.cancel_icon}
                         size={'1.6rem'}
                       />
@@ -61,18 +80,18 @@ const AuthForm = () => {
                 </label>
                 <label>
                   <span>Last Name</span>
-                  <div
-                    onChange={(e) =>
-                      setUserInput((prevState) => ({
-                        ...prevState,
-                        lastName: e.target.value,
-                      }))
-                    }
-                    className={styles.input_wrapper}
-                  >
-                    <input type="text" placeholder="Enter your last name..." />
-                    {userInput.lastName.length > 0 && (
+                  <div className={styles.input_wrapper}>
+                    <input
+                      name="lastName"
+                      onChange={handleInput}
+                      value={lastName}
+                      type="text"
+                      placeholder="Enter your last name..."
+                      required
+                    />
+                    {lastName.length > 0 && (
                       <FaTimesCircle
+                        onClick={handleClearInput}
                         className={styles.cancel_icon}
                         size={'1.6rem'}
                       />
@@ -92,9 +111,17 @@ const AuthForm = () => {
                 }
                 className={styles.input_wrapper}
               >
-                <input type="email" placeholder="Enter your email address..." />
-                {userInput.email.length > 0 && (
+                <input
+                  name="email"
+                  onChange={handleInput}
+                  value={email}
+                  type="email"
+                  placeholder="Enter your email address..."
+                  required
+                />
+                {email.length > 0 && (
                   <FaTimesCircle
+                    onClick={handleClearInput}
                     className={styles.cancel_icon}
                     size={'1.6rem'}
                   />
@@ -103,24 +130,46 @@ const AuthForm = () => {
             </label>
             <label>
               <span>Password</span>
-              <div
-                onChange={(e) =>
-                  setUserInput((prevState) => ({
-                    ...prevState,
-                    password: e.target.value,
-                  }))
-                }
-                className={styles.input_wrapper}
-              >
-                <input type="password" placeholder="Enter your password..." />
-                {userInput.password.length > 0 && (
+              <div className={styles.input_wrapper}>
+                <input
+                  name="password"
+                  onChange={handleInput}
+                  value={password}
+                  type="password"
+                  placeholder="Enter your password..."
+                  required
+                />
+                {password.length > 0 && (
                   <FaTimesCircle
+                    onClick={handleClearInput}
                     className={styles.cancel_icon}
                     size={'1.6rem'}
                   />
                 )}
               </div>
             </label>
+            {!isLogin && (
+              <label>
+                <span>Confirm Password</span>
+                <div className={styles.input_wrapper}>
+                  <input
+                    name="confirmPassword"
+                    onChange={handleInput}
+                    value={confirmPassword}
+                    type="password"
+                    placeholder="Confirm your password..."
+                    required
+                  />
+                  {password.length > 0 && (
+                    <FaTimesCircle
+                      onClick={handleClearInput}
+                      className={styles.cancel_icon}
+                      size={'1.6rem'}
+                    />
+                  )}
+                </div>
+              </label>
+            )}
           </div>
           <button className={styles.submit} type="submit">
             {isLogin ? 'Log in' : 'Sign up'}
