@@ -44,16 +44,21 @@ const Main = () => {
 
   return (
     <div className={styles.container}>
-      <header>
-        <div className={styles.title_wrapper}>
-          <div className={styles.emoji}>
-            {selectedNote && (selectedNote.emoji || `\u{1F5CB}`)}
+      <header className={styles.header}>
+        {selectedNote && (
+          <div className={styles.title_wrapper}>
+            <>
+              <div className={styles.emoji}>
+                {selectedNote.emoji || `\u{1F5CB}`}
+              </div>
+              <p className={styles.title}>
+                {selectedNote.title.length > 0
+                  ? selectedNote.title
+                  : 'Untitled'}
+              </p>
+            </>
           </div>
-          <p className={styles.title}>
-            {selectedNote &&
-              (selectedNote.title.length > 0 ? selectedNote.title : 'Untitled')}
-          </p>
-        </div>
+        )}
         <div className={styles.controls_wrapper}>
           <p className={styles.last_edit}>{selectedNote && 'Edited 2d ago'}</p>
           <p className={styles.share}>Share</p>

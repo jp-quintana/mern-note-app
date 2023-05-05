@@ -28,7 +28,7 @@ const ProfileMenu = ({ close }) => {
       </div>
       <div className={styles.options_list}>
         <ul className={styles.options}>
-          <li onClick={() => logout()} className={styles.option}>
+          <li onClick={logout} className={styles.option}>
             Logout
           </li>
         </ul>
