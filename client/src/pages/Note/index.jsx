@@ -14,8 +14,10 @@ const USER = {
 
 const Note = () => {
   const { noteId } = useParams();
-  const { setSelectedNote, error } = useNote();
+  const { setSelectedNote, isLoading, error } = useNote();
   const { selectedNote } = useNoteContext();
+
+  console.log(isLoading);
 
   const [content, setContent] = useState(null);
 
@@ -32,7 +34,9 @@ const Note = () => {
   return (
     <>
       {(!content || !selectedNote) && <p>Loading...</p>}
-      {content && selectedNote && <SelectedNote initialContent={content} />}
+      {content && selectedNote && (
+        <SelectedNote initialContent={selectedNote.content} />
+      )}
     </>
   );
 };

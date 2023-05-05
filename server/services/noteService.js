@@ -29,6 +29,20 @@ export const getNoteContent = async (userId, noteId) => {
   return { content: note.content };
 };
 
+export const fetchUserNotes = async (userId) => {
+  const notes = await NoteDao.fetchUserNotes(userId);
+
+  // if (!note) {
+  //   throw new CustomError('A note with that id does not exist', 404);
+  // }
+
+  // if (note.userId.toString() !== userId) {
+  //   throw new CustomError('Not authorized to access this resource', 403);
+  // }
+
+  return notes;
+};
+
 export const addNote = async (userId, content = '') => {
   const newNote = {
     userId,

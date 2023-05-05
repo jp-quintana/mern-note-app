@@ -12,7 +12,7 @@ import EmojiPicker from 'components/EmojiPicker';
 import styles from './index.module.scss';
 
 const SelectedNote = ({ initialContent }) => {
-  const { editSelectedNote, saveChanges } = useNote();
+  const { editSelectedNote, saveChanges, error } = useNote();
   const { selectedNote } = useNoteContext();
 
   const contentRef = useRef();

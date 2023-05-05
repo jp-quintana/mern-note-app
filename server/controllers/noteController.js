@@ -1,5 +1,6 @@
 import {
   getNoteContent,
+  fetchUserNotes,
   addNote,
   saveChangesToNote,
   duplicateNote,
@@ -14,6 +15,15 @@ export const getNote = async (req, res, next) => {
     const noteContent = await getNoteContent(req.user.id, noteId);
 
     res.json(noteContent);
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const getUserNotes = async (req, res, next) => {
+  try {
+    const notes = await fetchUserNotes(req.user.id);
+    res.json(notes);
   } catch (err) {
     return next(err);
   }

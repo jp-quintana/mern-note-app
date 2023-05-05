@@ -21,21 +21,11 @@ const Main = () => {
   const { toggleFavoriteNote } = useNote();
 
   useEffect(() => {
-    if (pathname === '/') {
-      if (selectedNote) {
-        navigate(`/notes/${selectedNote.id}`);
-      } else if (notes.length > 0) {
+    if (pathname === '/' || !selectedNote) {
+      if (notes.length > 0) {
         navigate(`/notes/${notes[0].id}`);
       } else {
         navigate(`/notes/getting-started`);
-      }
-    } else {
-      if (!selectedNote) {
-        if (notes.length > 0) {
-          navigate(`/notes/${notes[0].id}`);
-        } else {
-          navigate(`/notes/getting-started`);
-        }
       }
     }
   }, [selectedNote, pathname]);

@@ -1,4 +1,7 @@
 import { useReducer, useEffect } from 'react';
+import axios from 'axios';
+
+import { useAuthContext } from 'hooks/useAuthContext';
 
 import NoteContext from './note-context';
 
@@ -21,10 +24,10 @@ const noteReducer = (state, action) => {
   switch (type) {
     case 'LOAD_NOTES': {
       return {
+        ...state,
         notesAreReady: true,
-        // notes: payload,
-        notes: [],
-        selectedNote: payload[0],
+        notes: payload,
+        // notes: [],
       };
     }
 
@@ -70,16 +73,20 @@ const noteReducer = (state, action) => {
 };
 
 const NoteProvider = ({ children }) => {
+  const { user } = useAuthContext();
+
   const [state, dispatch] = useReducer(noteReducer, initialState);
 
+  console.log('notes', state);
+
   useEffect(() => {
-    // TODO: Add request
-    if (DUMMY_NOTES.length > 0) {
-      dispatch({ type: 'LOAD_NOTES', payload: DUMMY_NOTES });
-    } else {
-      // TODO: Add "Getting Started" page
-    }
-  }, []);
+    (async () => {
+      if (user) {
+        const res = await axios.get('/api/notes');
+        dispatch({ type: 'LOAD_NOTES', payload: res.data });
+      }
+    })();
+  }, [user]);
 
   return (
     <NoteContext.Provider value={{ ...state, dispatch }}>

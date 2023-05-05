@@ -17,16 +17,24 @@ export const useNote = () => {
 
   const setSelectedNote = async (id) => {
     setError(null);
+    setIsLoading(true);
 
     // TODO: Add request
     try {
       const selectedNote = notes.find((note) => note.id === id);
-      dispatch({ type: 'SET_SELECTED_NOTE', payload: selectedNote });
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return 'content';
+
+      if (selectedNote) {
+        dispatch({ type: 'SET_SELECTED_NOTE', payload: selectedNote });
+        setIsLoading(false);
+        await new Promise((resolve) => setTimeout(resolve, 1000000000));
+        console.log('done');
+      }
+
+      setIsLoading(false);
     } catch (err) {
       console.error(err.message);
       setError(err);
+      setIsLoading(false);
     }
   };
 
