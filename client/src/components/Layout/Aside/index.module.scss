@@ -25,9 +25,6 @@
     z-index: 2;
     position: absolute;
     width: 100%;
-    min-height: 5rem;
-    min-width: 18rem;
-    background: $background-modal;
   }
 }
 
@@ -76,7 +73,7 @@
       display: flex;
       gap: 1rem;
       align-items: center;
-      color: $color-secondary;
+      color: $color-lg;
       border-radius: 0.2rem;
       font-weight: 700;
       user-select: none;
@@ -104,7 +101,7 @@
     font-weight: 700;
     gap: 0.5rem;
     padding: 1.5rem;
-    color: $color-secondary;
+    color: $color-lg;
 
     transition: all 0.1s ease-in;
 

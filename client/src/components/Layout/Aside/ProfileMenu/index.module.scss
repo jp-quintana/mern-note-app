@@ -1,0 +1,85 @@
+.container {
+  background: $background-modal;
+  border-radius: 0.4rem;
+  user-select: none;
+  box-shadow: $box-shadow-modal;
+  min-width: 27rem;
+  max-width: 36rem;
+
+  .profile_wrapper {
+    border-bottom: $border;
+    .profile {
+      .email {
+        padding: 0.8rem 1.2rem;
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: $color-lg;
+      }
+
+      .details {
+        padding: 1rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        font-size: 1.4rem;
+
+        transition: all 0.1s ease-in;
+
+        &:hover {
+          background: $background-modal-h;
+          cursor: pointer;
+        }
+
+        img {
+          width: 3.2rem;
+          height: 3.2rem;
+          border-radius: 0.4rem;
+        }
+      }
+    }
+  }
+
+  .options_list {
+    border-bottom: $border;
+
+    .options {
+      padding: 0.4rem;
+
+      .option {
+        padding: 0.3rem 1.2rem;
+        font-weight: 700;
+        font-size: 1.2rem;
+        border-radius: 0.3rem;
+        color: $color-lg;
+
+        transition: all 0.1s ease-in;
+
+        &:hover {
+          background: $background-modal-h;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  .footer {
+    .install_wrapper {
+      padding: 0.4rem;
+
+      .install {
+        padding: 0.3rem 1.2rem;
+        font-weight: 700;
+        font-size: 1.2rem;
+        border-radius: 0.3rem;
+        color: $color-lg;
+
+        transition: all 0.1s ease-in;
+
+        &:hover {
+          background: $background-modal-h;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

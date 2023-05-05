@@ -6,6 +6,7 @@ import { useAuthContext } from 'hooks/useAuthContext';
 
 import Nav from './Nav';
 import SearchModal from './SearchModal';
+import ProfileMenu from './ProfileMenu';
 
 import Modal from 'components/Modal';
 
@@ -45,7 +46,7 @@ const Aside = () => {
         modalContainerClassName={styles.profile_menu_container}
         modalClassName={styles.profile_menu}
       >
-        {/* <SearchModal />  */}
+        <ProfileMenu close={() => setShowProfileMenu(false)} />
       </Modal>
       <Modal
         show={showSearch}
