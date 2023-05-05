@@ -12,6 +12,9 @@ const ProfileMenu = ({ close }) => {
   const {
     user: { email, name },
   } = useAuthContext();
+
+  const { logout } = useAuth();
+
   return (
     <div className={styles.container}>
       <div className={styles.profile_wrapper}>
@@ -25,7 +28,9 @@ const ProfileMenu = ({ close }) => {
       </div>
       <div className={styles.options_list}>
         <ul className={styles.options}>
-          <li className={styles.option}>Logout</li>
+          <li onClick={() => logout()} className={styles.option}>
+            Logout
+          </li>
         </ul>
       </div>
       <div className={styles.footer}>

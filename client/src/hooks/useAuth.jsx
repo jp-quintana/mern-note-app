@@ -96,5 +96,10 @@ export const useAuth = () => {
       setIsLoading(false);
     }
   };
-  return { loadUser, signup, login, isLoading, error };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    dispatch({ type: 'LOGOUT' });
+  };
+  return { loadUser, signup, login, logout, isLoading, error };
 };
