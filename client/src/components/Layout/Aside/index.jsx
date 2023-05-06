@@ -18,7 +18,7 @@ const USER = {
 };
 
 const Aside = () => {
-  const { createNote } = useNote();
+  const { createNote, isLoading } = useNote();
   const { user } = useAuthContext();
 
   const [showSearch, setShowSearch] = useState(false);
@@ -82,7 +82,10 @@ const Aside = () => {
           </li>
         </ul>
         <Nav />
-        <footer onClick={createNote} className={styles.footer}>
+        <footer
+          onClick={!isLoading ? createNote : undefined}
+          className={styles.footer}
+        >
           <div className={styles.icon_wrapper}>
             <FaPlus />
           </div>

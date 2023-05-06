@@ -27,14 +27,30 @@ const noteReducer = (state, action) => {
         ...state,
         notesAreReady: true,
         notes: payload,
+        // notes: DUMMY_NOTES,
         // notes: [],
       };
     }
 
-    case 'SET_SELECTED_NOTE': {
+    case 'NOTE_NOT_FOUND': {
+      return {
+        ...state,
+        selectedNote: null,
+        notes: payload,
+      };
+    }
+
+    case 'SET_SELECTED_HEADER': {
       return {
         ...state,
         selectedNote: payload,
+      };
+    }
+
+    case 'SET_SELECTED_CONTENT': {
+      return {
+        ...state,
+        selectedNote: { ...state.selectedNote, content: payload },
       };
     }
 

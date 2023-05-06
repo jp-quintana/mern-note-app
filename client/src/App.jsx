@@ -17,6 +17,7 @@ import ProtectedRoutes from './components/ProtectedRoutes';
 import LogIn from './pages/LogIn';
 import SignUp from './pages/SignUp';
 import Note from './pages/Note';
+import Home from './pages/Home';
 
 import './App.scss';
 
@@ -41,6 +42,7 @@ function App() {
 
         <Route element={<ProtectedRoutes needAuth />}>
           <Route path="/" element={notesAreReady && <Layout />}>
+            <Route path="/notes/getting-started" element={<Home />} />
             <Route path="/notes/:noteId" element={<Note />} />
           </Route>
         </Route>

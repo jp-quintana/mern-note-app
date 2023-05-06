@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 
 import { useNote } from 'hooks/useNote';
 import { useNoteContext } from 'hooks/useNoteContext';
@@ -15,27 +15,32 @@ const USER = {
 const Note = () => {
   const { noteId } = useParams();
   const { setSelectedNote, isLoading, error } = useNote();
-  const { selectedNote } = useNoteContext();
-
-  console.log(isLoading);
-
-  const [content, setContent] = useState(null);
+  const { notes, selectedNote } = useNoteContext();
 
   useEffect(() => {
-    setContent(null);
     const fetchSelectedNote = async () => {
-      const content = await setSelectedNote(noteId);
-      setContent(content);
+      await setSelectedNote(noteId);
     };
 
     fetchSelectedNote();
   }, [noteId]);
 
+  if (!notes.find((note) => note.id === noteId)) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <>
-      {(!content || !selectedNote) && <p>Loading...</p>}
-      {content && selectedNote && (
-        <SelectedNote initialContent={selectedNote.content} />
+      {selectedNote && (
+        <>
+          {!selectedNote.content && selectedNote.content !== '' && (
+            <p>Loading...</p>
+          )}
+          {selectedNote.content ||
+            (selectedNote.content === '' && (
+              <SelectedNote initialContent={selectedNote.content} />
+            ))}
+        </>
       )}
     </>
   );

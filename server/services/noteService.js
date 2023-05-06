@@ -5,7 +5,7 @@ const checkForExistingNoteAndPermission = async (userId, noteId) => {
   const existingNote = await NoteDao.fetchById(noteId);
 
   if (!existingNote) {
-    throw new CustomError('A note with that id does not exist', 404);
+    throw new CustomError('', 404);
   }
 
   if (existingNote.userId.toString() !== userId) {
@@ -43,8 +43,9 @@ export const fetchUserNotes = async (userId) => {
   return notes;
 };
 
-export const addNote = async (userId, content = '') => {
+export const addNote = async (userId, noteId, content = '') => {
   const newNote = {
+    id: noteId,
     userId,
     title: '',
     emoji: '',

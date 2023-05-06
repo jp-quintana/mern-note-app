@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
+import axios from 'axios';
 
 import { useNoteContext } from './useNoteContext';
 
@@ -9,31 +10,68 @@ export const useNote = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const createNote = () => {
-    const updatedNotes = [...notes];
-    updatedNotes.push({ id: uuid(), title: '', emoji: '', isFavorite: false });
-    dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
+  const createNote = async () => {
+    setIsLoading(true);
+
+    try {
+      const updatedNotes = [...notes];
+      const newNote = { id: uuid(), title: '', emoji: '', isFavorite: false };
+      updatedNotes.push(newNote);
+
+      dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const body = JSON.stringify({
+        id: newNote.id,
+      });
+
+      await axios.post('/api/notes/', body, config);
+      setIsLoading(false);
+    } catch (err) {
+      console.error(err.message);
+      setIsLoading(false);
+    }
   };
 
   const setSelectedNote = async (id) => {
-    setError(null);
     setIsLoading(true);
-
-    // TODO: Add request
     try {
       const selectedNote = notes.find((note) => note.id === id);
 
-      if (selectedNote) {
-        dispatch({ type: 'SET_SELECTED_NOTE', payload: selectedNote });
-        setIsLoading(false);
-        await new Promise((resolve) => setTimeout(resolve, 1000000000));
-        console.log('done');
-      }
+      dispatch({
+        type: 'SET_SELECTED_HEADER',
+        payload: { ...selectedNote, content: null },
+      });
+
+      const res = await axios.get(`/api/notes/${id}`);
+
+      dispatch({ type: 'SET_SELECTED_CONTENT', payload: res.data.content });
 
       setIsLoading(false);
     } catch (err) {
       console.error(err.message);
-      setError(err);
+      if (err.response.status === 404) {
+        const updatedNotes = [...notes];
+
+        const existingNoteIndex = notes.findIndex((note) => note.id === id);
+
+        if (existingNoteIndex >= 0) {
+          updatedNotes.splice(existingNoteIndex, 1);
+
+          console.log(updatedNotes);
+
+          dispatch({
+            type: 'NOTE_NOT_FOUND',
+            payload: updatedNotes,
+          });
+        }
+      }
+
       setIsLoading(false);
     }
   };

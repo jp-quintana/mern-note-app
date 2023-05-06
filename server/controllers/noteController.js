@@ -31,7 +31,9 @@ export const getUserNotes = async (req, res, next) => {
 
 export const createNote = async (req, res, next) => {
   try {
-    const newNote = await addNote(req.user.id);
+    const { id } = req.body;
+
+    const newNote = await addNote(req.user.id, id);
 
     res.json(newNote);
   } catch (err) {

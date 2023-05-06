@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation, Outlet } from 'react-router-dom';
 import {
   FaRegCommentAlt,
@@ -20,15 +20,29 @@ const Main = () => {
   const { notes, selectedNote } = useNoteContext();
   const { toggleFavoriteNote } = useNote();
 
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
+
   useEffect(() => {
-    if (pathname === '/' || !selectedNote) {
+    if (pathname === '/') {
+      if (notes.length > 0) {
+        navigate(`/notes/${notes[0].id}`);
+      } else {
+        navigate(`/notes/getting-started`);
+      }
+    } else if (!isFirstLoad && !selectedNote) {
       if (notes.length > 0) {
         navigate(`/notes/${notes[0].id}`);
       } else {
         navigate(`/notes/getting-started`);
       }
     }
+
+    if (isFirstLoad) {
+      setIsFirstLoad(false);
+    }
   }, [selectedNote, pathname]);
+
+  console.log('isFirstLoad', isFirstLoad);
 
   // TODO: Add last edit date
 

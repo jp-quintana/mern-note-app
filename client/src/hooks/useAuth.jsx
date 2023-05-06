@@ -35,6 +35,7 @@ export const useAuth = () => {
       if (password !== confirmPassword) {
         throw new Error('Passwords do not match. Please try again.');
       }
+
       const config = {
         headers: {
           'Content-Type': 'application/json',

@@ -24,11 +24,11 @@ const Nav = () => {
   const favoriteNotes = notes.filter((note) => note.isFavorite);
 
   const [showFavorites, setShowFavorites] = useState(false);
-  const [showNotes, setShowNotes] = useState(false);
+  const [showNotes, setShowNotes] = useState(true);
   const [needToNavigate, setNeedToNavigate] = useState(false);
 
-  const handleAddNote = (e) => {
-    createNote();
+  const handleAddNote = async (e) => {
+    await createNote();
     setShowNotes(true);
     setNeedToNavigate(true);
   };
