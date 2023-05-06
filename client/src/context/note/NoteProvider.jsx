@@ -27,8 +27,6 @@ const noteReducer = (state, action) => {
         ...state,
         notesAreReady: true,
         notes: payload,
-        // notes: DUMMY_NOTES,
-        // notes: [],
       };
     }
 
@@ -73,6 +71,14 @@ const noteReducer = (state, action) => {
       return {
         ...state,
         notes: payload,
+      };
+    }
+
+    case 'SAVE_SELECTED_CHANGES': {
+      return {
+        ...state,
+        notes: payload.notes,
+        selectedNote: { ...state.selectedNote, content: payload.content },
       };
     }
 

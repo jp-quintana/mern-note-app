@@ -80,18 +80,36 @@ export const useNote = () => {
     dispatch({ type: 'EDIT_SELECTED_NOTE', payload: { key, value } });
   };
 
-  const saveChanges = async (id, content) => {
+  const saveSelectedChanges = async ({ id, title, emoji, content }) => {
     setError(null);
 
     // TODO: Add request
     try {
       const updatedNotes = [...notes];
+      const currentSelectedNote = selectedNote;
+
+      delete currentSelectedNote.content;
 
       const existingNoteIndex = notes.findIndex((note) => note.id === id);
-      updatedNotes.splice(existingNoteIndex, 1, selectedNote);
+      updatedNotes.splice(existingNoteIndex, 1, currentSelectedNote);
 
-      dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      dispatch({
+        type: 'SAVE_SELECTED_CHANGES',
+        payload: { notes: updatedNotes, content },
+      });
+
+      // TODO: create object to pass to server
+      // const config = {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // };
+
+      // const body = JSON.stringify({
+      //   id: newNote.id,
+      // });
+
+      // await axios.post('/api/notes/', body, config);
     } catch (err) {
       console.error(err.message);
       setError(err);
@@ -203,7 +221,7 @@ export const useNote = () => {
     setSelectedNote,
     createNote,
     editSelectedNote,
-    saveChanges,
+    saveSelectedChanges,
     toggleFavoriteNote,
     duplicateNote,
     deleteNote,

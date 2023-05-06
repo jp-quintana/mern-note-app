@@ -12,7 +12,7 @@ import EmojiPicker from 'components/EmojiPicker';
 import styles from './index.module.scss';
 
 const SelectedNote = ({ initialContent }) => {
-  const { editSelectedNote, saveChanges, error } = useNote();
+  const { editSelectedNote, saveSelectedChanges, error } = useNote();
   const { selectedNote } = useNoteContext();
 
   const contentRef = useRef();
@@ -59,7 +59,7 @@ const SelectedNote = ({ initialContent }) => {
     if (hasEdited) {
       console.log('running');
       const timer = setTimeout(() => {
-        saveChanges(id, content);
+        saveSelectedChanges({ id, title, emoji, content });
       }, 300);
 
       return () => clearTimeout(timer);
