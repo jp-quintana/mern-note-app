@@ -29,6 +29,8 @@ const Note = () => {
     return <Navigate to="/" />;
   }
 
+  console.log(selectedNote);
+
   return (
     <>
       {selectedNote && (
@@ -36,10 +38,9 @@ const Note = () => {
           {!selectedNote.content && selectedNote.content !== '' && (
             <p>Loading...</p>
           )}
-          {selectedNote.content ||
-            (selectedNote.content === '' && (
-              <SelectedNote initialContent={selectedNote.content} />
-            ))}
+          {(selectedNote.content || selectedNote.content === '') && (
+            <SelectedNote initialContent={selectedNote.content} />
+          )}
         </>
       )}
     </>

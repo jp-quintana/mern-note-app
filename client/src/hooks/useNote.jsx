@@ -60,16 +60,12 @@ export const useNote = () => {
 
         const existingNoteIndex = notes.findIndex((note) => note.id === id);
 
-        if (existingNoteIndex >= 0) {
-          updatedNotes.splice(existingNoteIndex, 1);
+        updatedNotes.splice(existingNoteIndex, 1);
 
-          console.log(updatedNotes);
-
-          dispatch({
-            type: 'NOTE_NOT_FOUND',
-            payload: updatedNotes,
-          });
-        }
+        dispatch({
+          type: 'NOTE_NOT_FOUND',
+          payload: updatedNotes,
+        });
       }
 
       setIsLoading(false);
@@ -83,7 +79,6 @@ export const useNote = () => {
   const saveSelectedChanges = async ({ id, title, emoji, content }) => {
     setError(null);
 
-    // TODO: Add request
     try {
       const updatedNotes = [...notes];
       const currentSelectedNote = selectedNote;
@@ -98,18 +93,19 @@ export const useNote = () => {
         payload: { notes: updatedNotes, content },
       });
 
-      // TODO: create object to pass to server
-      // const config = {
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // };
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
 
-      // const body = JSON.stringify({
-      //   id: newNote.id,
-      // });
+      const body = JSON.stringify({
+        title,
+        emoji,
+        content,
+      });
 
-      // await axios.post('/api/notes/', body, config);
+      await axios.put(`/api/notes/${id}`, body, config);
     } catch (err) {
       console.error(err.message);
       setError(err);
