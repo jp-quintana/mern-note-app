@@ -63,7 +63,8 @@ const noteReducer = (state, action) => {
     case 'TOGGLE_FAVORITE_NOTE': {
       return {
         ...state,
-        ...payload,
+        notes: [...payload.notes],
+        selectedNote: { ...state.selectedNote, ...payload.selectedNote },
       };
     }
 

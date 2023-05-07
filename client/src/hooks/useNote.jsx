@@ -115,8 +115,6 @@ export const useNote = () => {
   const toggleFavoriteNote = async (id) => {
     setError(null);
 
-    // TODO: Add request
-
     try {
       const updatedNotes = [...notes];
 
@@ -140,7 +138,18 @@ export const useNote = () => {
         type: 'TOGGLE_FAVORITE_NOTE',
         payload,
       });
-      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const body = JSON.stringify({
+        isFavorite: updatedNotes[existingNoteIndex].isFavorite,
+      });
+
+      await axios.put(`/api/notes/${id}/favorite`, body, config);
     } catch (err) {
       console.error(err.message);
       setError(err);
@@ -165,13 +174,21 @@ export const useNote = () => {
         isFavorite: false,
       };
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
       const existingNoteIndex = notes.findIndex((note) => note.id === id);
 
       updatedNotes.splice(existingNoteIndex + 1, 0, duplicate);
 
       dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const body = JSON.stringify(duplicate);
+
+      await axios.post(`/api/notes/${id}/duplicate`, body, config);
 
       // setIsLoading(false);
     } catch (err) {
@@ -204,6 +221,8 @@ export const useNote = () => {
       await new Promise((resolve) => setTimeout(resolve, 100));
 
       dispatch({ type: 'DELETE_NOTE', payload });
+
+      await axios.delete(`/api/notes/${id}`);
 
       setIsLoading(false);
     } catch (err) {

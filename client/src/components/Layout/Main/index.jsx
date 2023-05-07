@@ -64,7 +64,7 @@ const Main = () => {
           </div>
         )}
         <div className={styles.controls_wrapper}>
-          <p className={styles.last_edit}>{selectedNote && 'Edited 2d ago'}</p>
+          {/* <p className={styles.last_edit}>{selectedNote && 'Edited 2d ago'}</p> */}
           <p className={styles.share}>Share</p>
           <div className={styles.icon_wrapper}>
             <FaRegCommentAlt />

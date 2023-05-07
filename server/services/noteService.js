@@ -43,12 +43,18 @@ export const fetchUserNotes = async (userId) => {
   return notes;
 };
 
-export const addNote = async (userId, noteId, content = '') => {
+export const addNote = async ({
+  userId,
+  noteId,
+  title = '',
+  emoji = '',
+  content = '',
+}) => {
   const newNote = {
     id: noteId,
     userId,
-    title: '',
-    emoji: '',
+    title,
+    emoji,
     content,
     isFavorite: false,
   };
@@ -61,9 +67,19 @@ export const saveChangesToNote = async (userId, noteId, noteDetails) => {
   return await NoteDao.update(noteId, noteDetails);
 };
 
-export const duplicateNote = async (userId, noteId) => {
-  const { content } = await getNoteContent(userId, noteId);
-  return await addNote(userId, content);
+export const duplicateNote = async ({
+  userId,
+  existingNoteId,
+  newNoteId,
+  noteDetails,
+}) => {
+  const { content } = await getNoteContent(userId, existingNoteId);
+  return await addNote({
+    userId,
+    noteId: newNoteId,
+    content,
+    ...noteDetails,
+  });
 };
 
 export const removeNote = async (userId, noteId) => {

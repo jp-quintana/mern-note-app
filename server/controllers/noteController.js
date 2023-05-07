@@ -7,7 +7,6 @@ import {
   removeNote,
 } from '../services/noteService.js';
 
-// TODO: Add User Data
 export const getNote = async (req, res, next) => {
   try {
     const { noteId } = req.params;
@@ -33,7 +32,7 @@ export const createNote = async (req, res, next) => {
   try {
     const { id } = req.body;
 
-    const newNote = await addNote(req.user.id, id);
+    const newNote = await addNote({ userId: req.user.id, noteId: id });
 
     res.json(newNote);
   } catch (err) {
@@ -55,8 +54,15 @@ export const editNote = async (req, res, next) => {
 export const createDuplicateNote = async (req, res, next) => {
   try {
     const { noteId } = req.params;
+    const { id: newNoteId, ...noteDetails } = req.body;
 
-    const newNote = await duplicateNote(req.user.id, noteId);
+    const newNote = await duplicateNote({
+      userId: req.user.id,
+      existingNoteId: noteId,
+      newNoteId,
+      noteDetails,
+    });
+
     res.json(newNote);
   } catch (err) {
     return next(err);
