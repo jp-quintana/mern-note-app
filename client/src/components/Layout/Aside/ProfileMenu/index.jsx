@@ -5,7 +5,8 @@ import styles from './index.module.scss';
 
 // TODO: Remove
 const USER = {
-  imageUrl: 'https://wallpaperaccess.com/full/1428034.jpg',
+  imageUrl:
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8e9K9hRmNl8KnuD4p6GuprKObXs3DpLlQcbcx5fSQIFQjiL7rwL3TRsiAyZScoVOKoaE',
 };
 
 const ProfileMenu = ({ close }) => {
