@@ -56,11 +56,6 @@ export const useAuth = () => {
         config
       );
 
-      //   dispatch({
-      //     type: 'SIGNUP_SUCCESS',
-      //     payload: res.data,
-      //   });
-
       localStorage.setItem('token', res.data.token);
 
       await loadUser();
@@ -68,7 +63,11 @@ export const useAuth = () => {
       setIsLoading(false);
     } catch (err) {
       console.error(err.message);
-      setError(err.message);
+      if (err.response) {
+        setError(err.response.data.array[0].msg);
+      } else {
+        setError(err.message);
+      }
       setIsLoading(false);
     }
   };

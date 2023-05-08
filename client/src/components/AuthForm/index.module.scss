@@ -111,6 +111,13 @@
         }
       }
 
+      .error {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: $color-auth-button;
+        font-weight: 400;
+      }
+
       .switch_mode_wrapper {
         text-align: center;
         .switch_mode {

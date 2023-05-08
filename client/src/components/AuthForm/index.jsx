@@ -10,7 +10,7 @@ const AuthForm = () => {
   const { pathname } = useLocation();
   const isLogin = pathname === '/login';
 
-  const { signup, login } = useAuth();
+  const { signup, login, error } = useAuth();
 
   const [userInput, setUserInput] = useState({
     name: '',
@@ -71,7 +71,7 @@ const AuthForm = () => {
                       value={name}
                       type="text"
                       placeholder="Enter your name..."
-                      required
+                      // required
                     />
                     {name.length > 0 && (
                       <FaTimesCircle
@@ -91,7 +91,7 @@ const AuthForm = () => {
                       value={lastName}
                       type="text"
                       placeholder="Enter your last name..."
-                      required
+                      // required
                     />
                     {lastName.length > 0 && (
                       <FaTimesCircle
@@ -113,7 +113,7 @@ const AuthForm = () => {
                   value={email}
                   type="email"
                   placeholder="Enter your email address..."
-                  required
+                  // required
                 />
                 {email.length > 0 && (
                   <FaTimesCircle
@@ -133,7 +133,7 @@ const AuthForm = () => {
                   value={password}
                   type="password"
                   placeholder="Enter your password..."
-                  required
+                  // required
                 />
                 {password.length > 0 && (
                   <FaTimesCircle
@@ -154,7 +154,7 @@ const AuthForm = () => {
                     value={confirmPassword}
                     type="password"
                     placeholder="Confirm your password..."
-                    required
+                    // required
                   />
                   {password.length > 0 && (
                     <FaTimesCircle
@@ -170,6 +170,7 @@ const AuthForm = () => {
           <button className={styles.submit} type="submit">
             {isLogin ? 'Log in' : 'Sign up'}
           </button>
+          {error && <p className={styles.error}>{error}</p>}
           <div className={styles.switch_mode_wrapper}>
             <Link
               to={isLogin ? '/signup' : '/login'}
