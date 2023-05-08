@@ -5,7 +5,7 @@ const checkForExistingNoteAndPermission = async (userId, noteId) => {
   const existingNote = await NoteDao.fetchById(noteId);
 
   if (!existingNote) {
-    throw new CustomError('A note with that id does not exist', 404);
+    throw new CustomError('', 404);
   }
 
   if (existingNote.userId.toString() !== userId) {
@@ -29,11 +29,32 @@ export const getNoteContent = async (userId, noteId) => {
   return { content: note.content };
 };
 
-export const addNote = async (userId, content = '') => {
+export const fetchUserNotes = async (userId) => {
+  const notes = await NoteDao.fetchUserNotes(userId);
+
+  // if (!note) {
+  //   throw new CustomError('A note with that id does not exist', 404);
+  // }
+
+  // if (note.userId.toString() !== userId) {
+  //   throw new CustomError('Not authorized to access this resource', 403);
+  // }
+
+  return notes;
+};
+
+export const addNote = async ({
+  userId,
+  noteId,
+  title = '',
+  emoji = '',
+  content = '',
+}) => {
   const newNote = {
+    id: noteId,
     userId,
-    title: '',
-    emoji: '',
+    title,
+    emoji,
     content,
     isFavorite: false,
   };
@@ -46,9 +67,19 @@ export const saveChangesToNote = async (userId, noteId, noteDetails) => {
   return await NoteDao.update(noteId, noteDetails);
 };
 
-export const duplicateNote = async (userId, noteId) => {
-  const { content } = await getNoteContent(userId, noteId);
-  return await addNote(userId, content);
+export const duplicateNote = async ({
+  userId,
+  existingNoteId,
+  newNoteId,
+  noteDetails,
+}) => {
+  const { content } = await getNoteContent(userId, existingNoteId);
+  return await addNote({
+    userId,
+    noteId: newNoteId,
+    content,
+    ...noteDetails,
+  });
 };
 
 export const removeNote = async (userId, noteId) => {

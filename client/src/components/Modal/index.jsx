@@ -59,8 +59,7 @@ const Modal = ({
                 className={`${styles.modal_container} ${modalContainerClassName}`}
                 style={
                   modalPosition && {
-                    top: modalPosition.top,
-                    left: modalPosition.left,
+                    ...modalPosition,
                   }
                 }
               >

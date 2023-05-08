@@ -1,7 +1,9 @@
-import { useState } from 'react';
-import { FaAngleRight } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { FaAngleRight, FaPlus } from 'react-icons/fa';
 
-import { useNotesContext } from 'hooks/useNotesContext';
+import { useNoteContext } from 'hooks/useNoteContext';
+import { useNote } from 'hooks/useNote';
 
 import NavElement from './NavElement';
 
@@ -14,12 +16,29 @@ const USER = {
 };
 
 const Nav = () => {
-  const { notes, selectedNote } = useNotesContext();
+  const navigate = useNavigate();
+
+  const { notes, selectedNote } = useNoteContext();
+  const { createNote } = useNote();
 
   const favoriteNotes = notes.filter((note) => note.isFavorite);
 
   const [showFavorites, setShowFavorites] = useState(false);
-  const [showNotes, setShowNotes] = useState(false);
+  const [showNotes, setShowNotes] = useState(true);
+  const [needToNavigate, setNeedToNavigate] = useState(false);
+
+  const handleAddNote = async (e) => {
+    await createNote();
+    setShowNotes(true);
+    setNeedToNavigate(true);
+  };
+
+  useEffect(() => {
+    if (needToNavigate) {
+      navigate(`/notes/${notes[0].id}`);
+      setNeedToNavigate(false);
+    }
+  }, [needToNavigate]);
 
   return (
     <div className={styles.container}>
@@ -61,41 +80,57 @@ const Nav = () => {
               ))}
           </ul>
         )}
-        <ul className={styles.list}>
-          <div
-            onClick={() => setShowNotes((prevState) => !prevState)}
-            className={styles.list_header}
-          >
+        {notes.length > 0 && (
+          <ul className={styles.list}>
             <div
-              className={`${styles.icon_wrapper} ${
-                showNotes ? styles.icon_open : undefined
-              }`}
+              onClick={() => setShowNotes((prevState) => !prevState)}
+              className={styles.list_header}
             >
-              <FaAngleRight />
-            </div>
-            <p>Notes:</p>
-          </div>
-          {showNotes &&
-            notes.map((note) => (
-              <li
-                className={
-                  selectedNote && selectedNote.id === note.id
-                    ? styles.isSelected
-                    : undefined
-                }
-                key={note.id}
+              <div
+                className={`${styles.icon_wrapper} ${
+                  showNotes ? styles.icon_open : undefined
+                }`}
               >
-                <NavElement
-                  id={note.id}
-                  to={`/notes/${note.id}`}
-                  emoji={note.emoji}
-                  title={note.title}
-                  isFavorite={note.isFavorite}
-                  ellipsisClassName={styles.ellipsis}
-                />
-              </li>
-            ))}
-        </ul>
+                <FaAngleRight />
+              </div>
+              <p>Notes:</p>
+            </div>
+            {showNotes &&
+              notes.map((note) => (
+                <li
+                  className={
+                    selectedNote && selectedNote.id === note.id
+                      ? styles.isSelected
+                      : undefined
+                  }
+                  key={note.id}
+                >
+                  <NavElement
+                    id={note.id}
+                    to={`/notes/${note.id}`}
+                    emoji={note.emoji}
+                    title={note.title}
+                    isFavorite={note.isFavorite}
+                    ellipsisClassName={styles.ellipsis}
+                  />
+                </li>
+              ))}
+          </ul>
+        )}
+        {notes.length === 0 && (
+          <div className={styles.list}>
+            <div onClick={handleAddNote} className={styles.list_header}>
+              <div
+                className={`${styles.icon_wrapper} ${
+                  showFavorites ? styles.icon_open : undefined
+                }`}
+              >
+                <FaPlus size={'1.3rem'} />
+              </div>
+              <p>Add Note</p>
+            </div>
+          </div>
+        )}
       </nav>
     </div>
   );

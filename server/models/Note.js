@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 const noteSchema = new mongoose.Schema(
   {
+    id: { type: String, required: true },
     title: { type: String },
     emoji: { type: String },
     content: { type: String },
@@ -11,13 +12,20 @@ const noteSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
+    _id: {
+      type: String,
+      default: function () {
+        return this.id;
+      },
+    },
   },
+
   { timestamps: true }
 );
 
-noteSchema.virtual('id').get(function () {
-  return this._id.toHexString();
-});
+// noteSchema.virtual('id').get(function () {
+//   return this._id.toHexString();
+// });
 
 noteSchema.set('toJSON', { virtuals: true });
 noteSchema.set('toObject', { virtuals: true });

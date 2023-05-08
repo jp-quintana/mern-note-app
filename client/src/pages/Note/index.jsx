@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 
 import { useNote } from 'hooks/useNote';
-import { useNotesContext } from 'hooks/useNotesContext';
+import { useNoteContext } from 'hooks/useNoteContext';
 
 import SelectedNote from '../../components/SelectedNote';
 
@@ -14,25 +14,35 @@ const USER = {
 
 const Note = () => {
   const { noteId } = useParams();
-  const { setSelectedNote, error } = useNote();
-  const { selectedNote } = useNotesContext();
-
-  const [content, setContent] = useState(null);
+  const { setSelectedNote, isLoading, error } = useNote();
+  const { notes, selectedNote } = useNoteContext();
 
   useEffect(() => {
-    setContent(null);
     const fetchSelectedNote = async () => {
-      const content = await setSelectedNote(noteId);
-      setContent(content);
+      await setSelectedNote(noteId);
     };
 
     fetchSelectedNote();
   }, [noteId]);
 
+  if (!notes.find((note) => note.id === noteId)) {
+    return <Navigate to="/" />;
+  }
+
+  console.log(selectedNote);
+
   return (
     <>
-      {(!content || !selectedNote) && <p>Loading...</p>}
-      {content && selectedNote && <SelectedNote initialContent={content} />}
+      {selectedNote && (
+        <>
+          {!selectedNote.content && selectedNote.content !== '' && (
+            <p>Loading...</p>
+          )}
+          {(selectedNote.content || selectedNote.content === '') && (
+            <SelectedNote initialContent={selectedNote.content} />
+          )}
+        </>
+      )}
     </>
   );
 };

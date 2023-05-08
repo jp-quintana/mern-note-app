@@ -1,32 +1,74 @@
 import { useState } from 'react';
 import { v4 as uuid } from 'uuid';
+import axios from 'axios';
 
-import { useNotesContext } from './useNotesContext';
+import { useNoteContext } from './useNoteContext';
 
 export const useNote = () => {
-  const { notes, selectedNote, dispatch } = useNotesContext();
+  const { notes, selectedNote, dispatch } = useNoteContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const createNote = () => {
-    const updatedNotes = [...notes];
-    updatedNotes.push({ id: uuid(), title: '', emoji: '', isFavorite: false });
-    dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
+  const createNote = async () => {
+    setIsLoading(true);
+
+    try {
+      const updatedNotes = [...notes];
+      const newNote = { id: uuid(), title: '', emoji: '', isFavorite: false };
+      updatedNotes.push(newNote);
+
+      dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const body = JSON.stringify({
+        id: newNote.id,
+      });
+
+      await axios.post('/api/notes/', body, config);
+      setIsLoading(false);
+    } catch (err) {
+      console.error(err.message);
+      setIsLoading(false);
+    }
   };
 
   const setSelectedNote = async (id) => {
-    setError(null);
-
-    // TODO: Add request
+    setIsLoading(true);
     try {
       const selectedNote = notes.find((note) => note.id === id);
-      dispatch({ type: 'SET_SELECTED_NOTE', payload: selectedNote });
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      return 'content';
-    } catch (e) {
-      console.error(e.message);
-      setError(e);
+
+      dispatch({
+        type: 'SET_SELECTED_HEADER',
+        payload: { ...selectedNote, content: null },
+      });
+
+      const res = await axios.get(`/api/notes/${id}`);
+
+      dispatch({ type: 'SET_SELECTED_CONTENT', payload: res.data.content });
+
+      setIsLoading(false);
+    } catch (err) {
+      console.error(err.message);
+      if (err.response.status === 404) {
+        const updatedNotes = [...notes];
+
+        const existingNoteIndex = notes.findIndex((note) => note.id === id);
+
+        updatedNotes.splice(existingNoteIndex, 1);
+
+        dispatch({
+          type: 'NOTE_NOT_FOUND',
+          payload: updatedNotes,
+        });
+      }
+
+      setIsLoading(false);
     }
   };
 
@@ -34,28 +76,44 @@ export const useNote = () => {
     dispatch({ type: 'EDIT_SELECTED_NOTE', payload: { key, value } });
   };
 
-  const saveChanges = async (id, content) => {
+  const saveSelectedChanges = async ({ id, title, emoji, content }) => {
     setError(null);
 
-    // TODO: Add request
     try {
       const updatedNotes = [...notes];
+      const currentSelectedNote = selectedNote;
+
+      delete currentSelectedNote.content;
 
       const existingNoteIndex = notes.findIndex((note) => note.id === id);
-      updatedNotes.splice(existingNoteIndex, 1, selectedNote);
+      updatedNotes.splice(existingNoteIndex, 1, currentSelectedNote);
 
-      dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
-      await new Promise((resolve) => setTimeout(resolve, 100));
-    } catch (e) {
-      console.error(e.message);
-      setError(e);
+      dispatch({
+        type: 'SAVE_SELECTED_CHANGES',
+        payload: { notes: updatedNotes, content },
+      });
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const body = JSON.stringify({
+        title,
+        emoji,
+        content,
+      });
+
+      await axios.put(`/api/notes/${id}`, body, config);
+    } catch (err) {
+      console.error(err.message);
+      setError(err);
     }
   };
 
   const toggleFavoriteNote = async (id) => {
     setError(null);
-
-    // TODO: Add request
 
     try {
       const updatedNotes = [...notes];
@@ -67,7 +125,7 @@ export const useNote = () => {
 
       let payload;
 
-      if (selectedNote.id === id) {
+      if (selectedNote && selectedNote.id === id) {
         payload = {
           notes: updatedNotes,
           selectedNote: updatedNotes[existingNoteIndex],
@@ -80,10 +138,21 @@ export const useNote = () => {
         type: 'TOGGLE_FAVORITE_NOTE',
         payload,
       });
-      await new Promise((resolve) => setTimeout(resolve, 100));
-    } catch (e) {
-      console.error(e.message);
-      setError(e);
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const body = JSON.stringify({
+        isFavorite: updatedNotes[existingNoteIndex].isFavorite,
+      });
+
+      await axios.put(`/api/notes/${id}/favorite`, body, config);
+    } catch (err) {
+      console.error(err.message);
+      setError(err);
     }
   };
 
@@ -98,8 +167,6 @@ export const useNote = () => {
 
       const existingNote = notes.find((note) => note.id === id);
 
-      console.log(existingNote);
-
       const duplicate = {
         id: uuid(),
         title: `Copy of ${existingNote.title}`,
@@ -107,18 +174,26 @@ export const useNote = () => {
         isFavorite: false,
       };
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
       const existingNoteIndex = notes.findIndex((note) => note.id === id);
 
       updatedNotes.splice(existingNoteIndex + 1, 0, duplicate);
-      console.log(updatedNotes);
+
       dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
 
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const body = JSON.stringify(duplicate);
+
+      await axios.post(`/api/notes/${id}/duplicate`, body, config);
+
       // setIsLoading(false);
-    } catch (e) {
-      console.error(e.message);
-      setError(e.message);
+    } catch (err) {
+      console.error(err.message);
+      setError(err.message);
       // setIsLoading(false);
     }
   };
@@ -137,7 +212,7 @@ export const useNote = () => {
 
       let payload;
 
-      if (selectedNote.id === id) {
+      if (selectedNote && selectedNote.id === id) {
         payload = { notes: updatedNotes, selectedNote: null };
       } else {
         payload = { notes: updatedNotes };
@@ -147,10 +222,12 @@ export const useNote = () => {
 
       dispatch({ type: 'DELETE_NOTE', payload });
 
+      await axios.delete(`/api/notes/${id}`);
+
       setIsLoading(false);
-    } catch (e) {
-      console.error(e.message);
-      setError(e.message);
+    } catch (err) {
+      console.error(err.message);
+      setError(err.message);
       setIsLoading(false);
     }
   };
@@ -159,7 +236,7 @@ export const useNote = () => {
     setSelectedNote,
     createNote,
     editSelectedNote,
-    saveChanges,
+    saveSelectedChanges,
     toggleFavoriteNote,
     duplicateNote,
     deleteNote,

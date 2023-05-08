@@ -2,7 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import { FaSmile, FaImage } from 'react-icons/fa';
 
 import { useNote } from 'hooks/useNote';
-import { useNotesContext } from 'hooks/useNotesContext';
+import { useNoteContext } from 'hooks/useNoteContext';
 
 import Editor from './Editor';
 
@@ -12,8 +12,8 @@ import EmojiPicker from 'components/EmojiPicker';
 import styles from './index.module.scss';
 
 const SelectedNote = ({ initialContent }) => {
-  const { editSelectedNote, saveChanges } = useNote();
-  const { selectedNote } = useNotesContext();
+  const { editSelectedNote, saveSelectedChanges, error } = useNote();
+  const { selectedNote } = useNoteContext();
 
   const contentRef = useRef();
 
@@ -59,7 +59,7 @@ const SelectedNote = ({ initialContent }) => {
     if (hasEdited) {
       console.log('running');
       const timer = setTimeout(() => {
-        saveChanges(id, content);
+        saveSelectedChanges({ id, title, emoji, content });
       }, 300);
 
       return () => clearTimeout(timer);

@@ -3,15 +3,17 @@
   overflow-y: auto;
 
   .nav {
-    .list {
+    .list,
+    .add_page {
       overflow: hidden;
 
-      .list_header {
+      .list_header,
+      .add_page_header {
         padding: 0.5rem;
         display: flex;
         align-items: center;
         font-weight: 700;
-        color: $color-secondary;
+        color: $color-lg;
         border-radius: 0.3rem;
         user-select: none;
 
@@ -54,7 +56,7 @@
 
         a {
           padding: 0.3rem 2.5rem;
-          color: $color-secondary;
+          color: $color-lg;
           width: 100%;
           display: flex;
           align-items: center;
