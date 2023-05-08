@@ -1,7 +1,7 @@
 import CustomError from '../models/CustomError.js';
 
 export const handleError = (err, req, res, next) => {
-  console.log(err);
+  console.error(err);
   if (err instanceof CustomError) {
     if (err.array) {
       return res

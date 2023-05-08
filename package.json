@@ -1,29 +1,25 @@
 {
-  "name": "note-app",
+  "name": "mern-note-app",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "client": "npm run dev --prefix client",
-    "server": "nodemon server --prefix server",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "client-dependencies": "npm i --prefix client",
+    "server": "npm run server --prefix server",
+    "server-dependencies": "npm i --prefix server",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "setup": "concurrently \"npm run server-dependencies\" \"npm run client-dependencies\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jp-quintana/mern-note-app.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "concurrently": "^8.0.1",
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "express-validator": "^7.0.1",
-    "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.0.5"
-  },
-  "devDependencies": {
-    "nodemon": "^2.0.21"
+    "concurrently": "^8.0.1"
   }
 }

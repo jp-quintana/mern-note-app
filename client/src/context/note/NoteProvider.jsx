@@ -95,6 +95,8 @@ const noteReducer = (state, action) => {
   }
 };
 
+console.log(import.meta.env);
+
 const NoteProvider = ({ children }) => {
   const { user } = useAuthContext();
 
@@ -105,7 +107,9 @@ const NoteProvider = ({ children }) => {
   useEffect(() => {
     (async () => {
       if (user) {
-        const res = await axios.get('/api/notes');
+        const res = await axios.get(
+          `${import.meta.env.VITE_API_URL}/api/notes`
+        );
         dispatch({ type: 'LOAD_NOTES', payload: res.data });
       }
     })();

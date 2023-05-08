@@ -30,7 +30,11 @@ export const useNote = () => {
         id: newNote.id,
       });
 
-      await axios.post('/api/notes/', body, config);
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/notes/`,
+        body,
+        config
+      );
       setIsLoading(false);
     } catch (err) {
       console.error(err.message);
@@ -48,7 +52,9 @@ export const useNote = () => {
         payload: { ...selectedNote, content: null },
       });
 
-      const res = await axios.get(`/api/notes/${id}`);
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/api/notes/${id}`
+      );
 
       dispatch({ type: 'SET_SELECTED_CONTENT', payload: res.data.content });
 
@@ -105,7 +111,11 @@ export const useNote = () => {
         content,
       });
 
-      await axios.put(`/api/notes/${id}`, body, config);
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/notes/${id}`,
+        body,
+        config
+      );
     } catch (err) {
       console.error(err.message);
       setError(err);
@@ -149,7 +159,11 @@ export const useNote = () => {
         isFavorite: updatedNotes[existingNoteIndex].isFavorite,
       });
 
-      await axios.put(`/api/notes/${id}/favorite`, body, config);
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/notes/${id}/favorite`,
+        body,
+        config
+      );
     } catch (err) {
       console.error(err.message);
       setError(err);
@@ -188,7 +202,11 @@ export const useNote = () => {
 
       const body = JSON.stringify(duplicate);
 
-      await axios.post(`/api/notes/${id}/duplicate`, body, config);
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/notes/${id}/duplicate`,
+        body,
+        config
+      );
 
       // setIsLoading(false);
     } catch (err) {
@@ -222,7 +240,7 @@ export const useNote = () => {
 
       dispatch({ type: 'DELETE_NOTE', payload });
 
-      await axios.delete(`/api/notes/${id}`);
+      await axios.delete(`${import.meta.env.VITE_API_URL}/api/notes/${id}`);
 
       setIsLoading(false);
     } catch (err) {

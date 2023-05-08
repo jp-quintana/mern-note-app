@@ -15,7 +15,7 @@ export const useAuth = () => {
     setHeaderAuthToken(localStorage.getItem('token'));
 
     try {
-      const res = await axios.get('/api/user');
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/user`);
       dispatch({ type: 'LOAD_USER', payload: res.data });
     } catch (err) {
       dispatch({ type: 'AUTH_ERROR' });
@@ -50,7 +50,11 @@ export const useAuth = () => {
         confirmPassword,
       });
 
-      const res = await axios.post('/api/user/signup', body, config);
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/user/signup`,
+        body,
+        config
+      );
 
       //   dispatch({
       //     type: 'SIGNUP_SUCCESS',
@@ -84,7 +88,11 @@ export const useAuth = () => {
         password,
       });
 
-      const res = await axios.post('/api/user/login', body, config);
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/user/login`,
+        body,
+        config
+      );
 
       localStorage.setItem('token', res.data.token);
 
