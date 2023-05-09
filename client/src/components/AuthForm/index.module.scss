@@ -1,6 +1,6 @@
 .container {
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
 
@@ -31,7 +31,7 @@
     min-height: calc(100vh - 10rem);
 
     .form {
-      padding-top: 10vh;
+      padding: 10vh 0;
       max-width: 32rem;
       width: 100%;
 
@@ -109,6 +109,13 @@
           cursor: pointer;
           background: $background-auth-button-h;
         }
+      }
+
+      .error {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: $color-auth-button;
+        font-weight: 400;
       }
 
       .switch_mode_wrapper {

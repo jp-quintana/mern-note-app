@@ -40,13 +40,16 @@ export const login = async (userDetails) => {
   const existingUser = await UserDao.fetchByEmail(email);
 
   if (!existingUser) {
-    throw new CustomError('User does not exist.', 400);
+    throw new CustomError('A user with that email does not exist.', 400);
   }
 
   const isMatch = await bcrypt.compare(password, existingUser.password);
 
   if (!isMatch) {
-    throw new CustomError('Wrong credentials.', 401);
+    throw new CustomError(
+      'Sorry, your email or password is incorrect. Please try again.',
+      401
+    );
   }
 
   const payload = { user: { id: existingUser.id } };

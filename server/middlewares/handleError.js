@@ -11,6 +11,6 @@ export const handleError = (err, req, res, next) => {
       return res.status(err.code).json({ message: err.message });
     }
   } else {
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ message: 'Internal server error.' });
   }
 };

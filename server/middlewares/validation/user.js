@@ -26,7 +26,7 @@ export const validateCreateUser = [
       /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).*$/
     )
     .withMessage(
-      'Password must contain at least 1 symbol and 1 capital letter'
+      'Password must contain at least 1 symbol and 1 capital letter.'
     ),
 ];
 
