@@ -5,11 +5,11 @@ const checkForExistingNoteAndPermission = async (userId, noteId) => {
   const existingNote = await NoteDao.fetchById(noteId);
 
   if (!existingNote) {
-    throw new CustomError('', 404);
+    throw new CustomError('A note with that id does not exist.', 404);
   }
 
   if (existingNote.userId.toString() !== userId) {
-    throw new CustomError('Not authorized to access this resource', 403);
+    throw new CustomError('Not authorized to access this resource.', 403);
   }
 
   return existingNote;
@@ -19,11 +19,11 @@ export const getNoteContent = async (userId, noteId) => {
   const note = await NoteDao.fetchNoteContentById(noteId);
 
   if (!note) {
-    throw new CustomError('A note with that id does not exist', 404);
+    throw new CustomError('A note with that id does not exist.', 404);
   }
 
   if (note.userId.toString() !== userId) {
-    throw new CustomError('Not authorized to access this resource', 403);
+    throw new CustomError('Not authorized to access this resource.', 403);
   }
 
   return { content: note.content };
@@ -31,14 +31,6 @@ export const getNoteContent = async (userId, noteId) => {
 
 export const fetchUserNotes = async (userId) => {
   const notes = await NoteDao.fetchUserNotes(userId);
-
-  // if (!note) {
-  //   throw new CustomError('A note with that id does not exist', 404);
-  // }
-
-  // if (note.userId.toString() !== userId) {
-  //   throw new CustomError('Not authorized to access this resource', 403);
-  // }
 
   return notes;
 };
