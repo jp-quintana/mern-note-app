@@ -32,6 +32,26 @@ export const useAuth = () => {
     setError(null);
     setIsLoading(true);
     try {
+      if (!name) {
+        throw new Error('Name is required.');
+      }
+
+      if (!lastName) {
+        throw new Error('Last name is required.');
+      }
+
+      if (!email) {
+        throw new Error('Email is required.');
+      }
+
+      if (!password) {
+        throw new Error('Password is required.');
+      }
+
+      if (!confirmPassword) {
+        throw new Error('You must confirm the password.');
+      }
+
       if (password !== confirmPassword) {
         throw new Error('Passwords do not match. Please try again.');
       }
@@ -63,11 +83,17 @@ export const useAuth = () => {
       setIsLoading(false);
     } catch (err) {
       console.error(err.message);
+
       if (err.response) {
-        setError(err.response.data.array[0].msg);
+        if (err.response.data.array) {
+          setError(err.response.data.array[0].msg);
+        } else if (err.response.data.message) {
+          setError(err.response.data.message);
+        }
       } else {
         setError(err.message);
       }
+
       setIsLoading(false);
     }
   };
@@ -76,6 +102,14 @@ export const useAuth = () => {
     setError(null);
     setIsLoading(true);
     try {
+      if (!email) {
+        throw new Error('Email is required.');
+      }
+
+      if (!password) {
+        throw new Error('Password is required.');
+      }
+
       const config = {
         headers: {
           'Content-Type': 'application/json',
@@ -100,7 +134,17 @@ export const useAuth = () => {
       setIsLoading(false);
     } catch (err) {
       console.error(err.message);
-      setError(err.message);
+
+      if (err.response) {
+        if (err.response.data.array) {
+          setError(err.response.data.array[0].msg);
+        } else if (err.response.data.message) {
+          setError(err.response.data.message);
+        }
+      } else {
+        setError(err.message);
+      }
+
       setIsLoading(false);
     }
   };
