@@ -1,7 +1,7 @@
-import React from 'react';
+import GettingStarted from 'components/GettingStarted';
 
 const Home = () => {
-  return <div>Home</div>;
+  return <GettingStarted />;
 };
 
 export default Home;

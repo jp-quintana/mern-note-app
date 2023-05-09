@@ -1,0 +1,59 @@
+.container {
+  display: flex;
+  justify-content: center;
+
+  .note {
+    display: flex;
+    flex-direction: column;
+    max-width: 90rem;
+    width: 90%;
+    user-select: none;
+
+    .header {
+      padding: 6.5rem 10rem 0;
+      width: 100%;
+
+      .emoji_wrapper {
+        display: inline-block;
+        user-select: none;
+        margin-bottom: 1rem;
+        border-radius: 0.3rem;
+
+        &:hover {
+          background: $background-primary-h;
+        }
+
+        .emoji {
+          font-size: 7rem;
+          line-height: 1;
+        }
+      }
+
+      .header_content {
+        position: relative;
+
+        .title {
+          font-size: 4rem;
+          font-weight: 700;
+          width: 100%;
+          color: $color-light;
+          font-family: $font-f-app;
+        }
+      }
+    }
+
+    .body {
+      padding: 0 10rem;
+      width: 100%;
+
+      .content {
+        padding: 1rem 0;
+        width: 100%;
+        max-height: 100%;
+        font-size: 1.6rem;
+        color: $color-light;
+        font-family: $font-f-app;
+      }
+    }
+  }
+}
