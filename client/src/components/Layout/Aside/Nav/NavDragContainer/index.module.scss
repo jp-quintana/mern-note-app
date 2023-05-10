@@ -1,0 +1,42 @@
+.container {
+  padding: 0.2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+
+  li {
+    gap: 0.5rem;
+    font-weight: 700;
+    border-radius: 0.3rem;
+    transition: all 0.1s ease-in;
+
+    &:hover {
+      background: $background-primary-h;
+      cursor: pointer;
+    }
+
+    &:hover .ellipsis {
+      display: flex;
+      opacity: 1;
+    }
+
+    a {
+      padding: 0.3rem 2.5rem;
+      color: $color-lg;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      p {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+
+  .isSelected {
+    background: $background-primary-h;
+  }
+}

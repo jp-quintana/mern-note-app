@@ -5,7 +5,7 @@ import { FaAngleRight, FaPlus } from 'react-icons/fa';
 import { useNoteContext } from 'hooks/useNoteContext';
 import { useNote } from 'hooks/useNote';
 
-import NavElement from './NavElement';
+import NavDragContainer from './NavDragContainer';
 
 import styles from './index.module.scss';
 
@@ -40,17 +40,23 @@ const Nav = () => {
     }
   }, [needToNavigate]);
 
-  const handleDragStart = (e) => {
-    const targetRect = e.currentTarget.getBoundingClientRect();
-    const xOffset = e.clientX - targetRect.left;
-    const yOffset = e.clientY - targetRect.top;
-
-    e.dataTransfer.setDragImage(e.currentTarget, xOffset, yOffset);
-  };
-
   return (
     <div className={styles.container}>
       <nav className={styles.nav}>
+        {notes.length === 0 && (
+          <div className={styles.list}>
+            <div onClick={handleAddNote} className={styles.list_header}>
+              <div
+                className={`${styles.icon_wrapper} ${
+                  showFavorites ? styles.icon_open : undefined
+                }`}
+              >
+                <FaPlus size={'1.3rem'} />
+              </div>
+              <p>Add Note</p>
+            </div>
+          </div>
+        )}
         {favoriteNotes.length > 0 && (
           <ul className={styles.list}>
             <div
@@ -66,7 +72,7 @@ const Nav = () => {
               </div>
               <p>Favorite Notes:</p>
             </div>
-            {showFavorites &&
+            {/* {showFavorites &&
               favoriteNotes.map((note) => (
                 <li
                   className={
@@ -85,9 +91,10 @@ const Nav = () => {
                     ellipsisClassName={styles.ellipsis}
                   />
                 </li>
-              ))}
+              ))} */}
           </ul>
         )}
+
         {notes.length > 0 && (
           <ul className={styles.list}>
             <div
@@ -104,45 +111,9 @@ const Nav = () => {
               <p>Notes:</p>
             </div>
             {showNotes && (
-              <div className={styles.list_items_container}>
-                {notes.map((note) => (
-                  <li
-                    draggable
-                    onDragStart={handleDragStart}
-                    className={
-                      selectedNote && selectedNote.id === note.id
-                        ? styles.isSelected
-                        : undefined
-                    }
-                    key={note.id}
-                  >
-                    <NavElement
-                      id={note.id}
-                      to={`/notes/${note.id}`}
-                      emoji={note.emoji}
-                      title={note.title}
-                      isFavorite={note.isFavorite}
-                      ellipsisClassName={styles.ellipsis}
-                    />
-                  </li>
-                ))}
-              </div>
+              <NavDragContainer notes={notes} selectedNote={selectedNote} />
             )}
           </ul>
-        )}
-        {notes.length === 0 && (
-          <div className={styles.list}>
-            <div onClick={handleAddNote} className={styles.list_header}>
-              <div
-                className={`${styles.icon_wrapper} ${
-                  showFavorites ? styles.icon_open : undefined
-                }`}
-              >
-                <FaPlus size={'1.3rem'} />
-              </div>
-              <p>Add Note</p>
-            </div>
-          </div>
         )}
       </nav>
     </div>
