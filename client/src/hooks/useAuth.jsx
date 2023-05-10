@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import { useAuthContext } from './useAuthContext';
 
-import setHeaderAuthToken from '../utils/setHeaderAuthToken';
+import setHeaderAuthToken from 'utils/setHeaderAuthToken';
 
 export const useAuth = () => {
   const { dispatch } = useAuthContext();

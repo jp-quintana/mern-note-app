@@ -19,6 +19,8 @@ export default defineConfig({
       components: path.resolve('src/components/'),
       pages: path.resolve('src/pages/'),
       hooks: path.resolve('src/hooks/'),
+      context: path.resolve('src/context/'),
+      utils: path.resolve('src/utils/'),
     },
   },
   css: {

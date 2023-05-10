@@ -79,7 +79,13 @@ export const useNote = () => {
   };
 
   const editSelectedNote = (key, value) => {
-    dispatch({ type: 'EDIT_SELECTED_NOTE', payload: { key, value } });
+    if (key !== 'updatedAt') {
+    }
+
+    dispatch({
+      type: 'EDIT_SELECTED_NOTE',
+      payload: { key, value },
+    });
   };
 
   const saveSelectedChanges = async ({ id, title, emoji, content }) => {

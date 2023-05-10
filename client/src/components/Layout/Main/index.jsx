@@ -7,9 +7,12 @@ import {
   FaStar,
   FaEllipsisH,
 } from 'react-icons/fa';
+import moment from 'moment';
 
 import { useNoteContext } from 'hooks/useNoteContext';
 import { useNote } from 'hooks/useNote';
+
+import formatDate from 'utils/formatDate';
 
 import styles from './index.module.scss';
 
@@ -42,10 +45,6 @@ const Main = () => {
     }
   }, [selectedNote, pathname]);
 
-  console.log('isFirstLoad', isFirstLoad);
-
-  // TODO: Add last edit date
-
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -64,7 +63,11 @@ const Main = () => {
           </div>
         )}
         <div className={styles.controls_wrapper}>
-          {/* <p className={styles.last_edit}>{selectedNote && 'Edited 2d ago'}</p> */}
+          <p className={styles.last_edit}>
+            {selectedNote &&
+              selectedNote.updatedAt &&
+              formatDate(selectedNote.updatedAt)}
+          </p>
           <p className={styles.share}>Share</p>
           <div className={styles.icon_wrapper}>
             <FaRegCommentAlt />

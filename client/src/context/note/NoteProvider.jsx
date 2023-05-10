@@ -56,7 +56,11 @@ const noteReducer = (state, action) => {
       const { key, value } = payload;
       return {
         ...state,
-        selectedNote: { ...state.selectedNote, [key]: value },
+        selectedNote: {
+          ...state.selectedNote,
+          [key]: value,
+          updatedAt: new Date(),
+        },
       };
     }
 

@@ -4,7 +4,7 @@ import { useParams, Navigate } from 'react-router-dom';
 import { useNote } from 'hooks/useNote';
 import { useNoteContext } from 'hooks/useNoteContext';
 
-import SelectedNote from '../../components/SelectedNote';
+import SelectedNote from 'components/SelectedNote';
 
 // TODO: Remove
 const USER = {
@@ -39,7 +39,7 @@ const Note = () => {
             <p>Loading...</p>
           )}
           {(selectedNote.content || selectedNote.content === '') && (
-            <SelectedNote initialContent={selectedNote.content} />
+            <SelectedNote />
           )}
         </>
       )}
