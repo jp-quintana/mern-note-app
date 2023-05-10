@@ -15,6 +15,7 @@
     "emoji-mart": "^5.5.2",
     "mern-note-app": "file:..",
     "mern-note-app-prueba": "file:..",
+    "moment": "^2.29.4",
     "note-app": "file:..",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

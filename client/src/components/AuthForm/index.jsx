@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FaTimesCircle } from 'react-icons/fa';
 
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from 'hooks/useAuth';
 
 import styles from './index.module.scss';
 

@@ -11,7 +11,7 @@ import EmojiPicker from 'components/EmojiPicker';
 
 import styles from './index.module.scss';
 
-const SelectedNote = ({ initialContent }) => {
+const SelectedNote = () => {
   const { editSelectedNote, saveSelectedChanges, error } = useNote();
   const { selectedNote } = useNoteContext();
 
@@ -19,9 +19,7 @@ const SelectedNote = ({ initialContent }) => {
 
   const [hasEdited, setHasEdited] = useState(false);
 
-  const [content, setContent] = useState(initialContent);
-
-  const { id, title, emoji } = selectedNote;
+  const { id, title, emoji, content } = selectedNote;
 
   const [showPicker, setShowPicker] = useState(false);
 
@@ -48,16 +46,11 @@ const SelectedNote = ({ initialContent }) => {
       setHasEdited(true);
     }
 
-    if (e.target.name === 'content') {
-      setContent(e.target.value);
-    } else {
-      editSelectedNote(e.target.name, e.target.value);
-    }
+    editSelectedNote(e.target.name, e.target.value);
   });
 
   useEffect(() => {
     if (hasEdited) {
-      console.log('running');
       const timer = setTimeout(() => {
         saveSelectedChanges({ id, title, emoji, content });
       }, 300);
