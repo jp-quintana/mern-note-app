@@ -40,6 +40,14 @@ const Nav = () => {
     }
   }, [needToNavigate]);
 
+  const handleDragStart = (e) => {
+    const targetRect = e.currentTarget.getBoundingClientRect();
+    const xOffset = e.clientX - targetRect.left;
+    const yOffset = e.clientY - targetRect.top;
+
+    e.dataTransfer.setDragImage(e.currentTarget, xOffset, yOffset);
+  };
+
   return (
     <div className={styles.container}>
       <nav className={styles.nav}>
@@ -95,26 +103,31 @@ const Nav = () => {
               </div>
               <p>Notes:</p>
             </div>
-            {showNotes &&
-              notes.map((note) => (
-                <li
-                  className={
-                    selectedNote && selectedNote.id === note.id
-                      ? styles.isSelected
-                      : undefined
-                  }
-                  key={note.id}
-                >
-                  <NavElement
-                    id={note.id}
-                    to={`/notes/${note.id}`}
-                    emoji={note.emoji}
-                    title={note.title}
-                    isFavorite={note.isFavorite}
-                    ellipsisClassName={styles.ellipsis}
-                  />
-                </li>
-              ))}
+            {showNotes && (
+              <div className={styles.list_items_container}>
+                {notes.map((note) => (
+                  <li
+                    draggable
+                    onDragStart={handleDragStart}
+                    className={
+                      selectedNote && selectedNote.id === note.id
+                        ? styles.isSelected
+                        : undefined
+                    }
+                    key={note.id}
+                  >
+                    <NavElement
+                      id={note.id}
+                      to={`/notes/${note.id}`}
+                      emoji={note.emoji}
+                      title={note.title}
+                      isFavorite={note.isFavorite}
+                      ellipsisClassName={styles.ellipsis}
+                    />
+                  </li>
+                ))}
+              </div>
+            )}
           </ul>
         )}
         {notes.length === 0 && (

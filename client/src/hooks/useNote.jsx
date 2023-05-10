@@ -15,7 +15,14 @@ export const useNote = () => {
 
     try {
       const updatedNotes = [...notes];
-      const newNote = { id: uuid(), title: '', emoji: '', isFavorite: false };
+      const newNote = {
+        id: uuid(),
+        title: '',
+        emoji: '',
+        isFavorite: false,
+        order: notes.length + 1,
+        favoriteOrder: null,
+      };
       updatedNotes.push(newNote);
 
       dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
