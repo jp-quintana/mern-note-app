@@ -20,8 +20,8 @@ export const useNote = () => {
         title: '',
         emoji: '',
         isFavorite: false,
-        order: notes.length + 1,
-        favoriteOrder: null,
+        index: notes.length,
+        favoriteIndex: null,
       };
       updatedNotes.push(newNote);
 
@@ -263,6 +263,25 @@ export const useNote = () => {
     }
   };
 
+  const sortNotes = (id, newIndex, isFavorite) => {
+    const notesToUpdate = notes.filter((note) => note.id !== id);
+
+    notesToUpdate.splice(
+      newIndex,
+      0,
+      notes.find((note) => note.id === id)
+    );
+
+    const updatedNotes = notesToUpdate.map((note, index) => ({
+      ...note,
+      index,
+    }));
+
+    dispatch({ type: 'SORT_NOTES', payload: updatedNotes });
+
+    console.log('in here', updatedNotes);
+  };
+
   return {
     setSelectedNote,
     createNote,
@@ -271,6 +290,7 @@ export const useNote = () => {
     toggleFavoriteNote,
     duplicateNote,
     deleteNote,
+    sortNotes,
     isLoading,
     error,
   };

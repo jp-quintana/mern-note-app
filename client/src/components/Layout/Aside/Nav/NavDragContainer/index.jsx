@@ -1,13 +1,16 @@
 import { useState, useRef } from 'react';
 
+import { useNote } from 'hooks/useNote';
+
 import NavElement from './NavElement';
 
 import styles from './index.module.scss';
 
 const NavDragContainer = ({ notes, selectedNote }) => {
+  const { sortNotes } = useNote();
+  const dragId = useRef(null);
   const dragStartingIndex = useRef(null);
-  // const currentDragIndex = useRef(null);
-  // const [dragStartingIndex, setDragStartingIndex] = useState(null);
+
   const [currentDragIndex, setCurrentDragIndex] = useState(null);
   const [highlightIndex, setHighlightIndex] = useState(null);
 
@@ -20,9 +23,18 @@ const NavDragContainer = ({ notes, selectedNote }) => {
 
     setCurrentDragIndex(index);
     dragStartingIndex.current = index;
+    dragId.current = e.currentTarget.id;
   };
+
+  const handleDrop = (e) => {
+    if (dragStartingIndex !== currentDragIndex) {
+      sortNotes(dragId.current, currentDragIndex);
+    }
+  };
+
   const handleDragStop = (e) => {
     dragStartingIndex.current = null;
+    dragId.current = null;
     setCurrentDragIndex(null);
     setHighlightIndex(null);
   };
@@ -30,9 +42,10 @@ const NavDragContainer = ({ notes, selectedNote }) => {
   console.log(dragStartingIndex, currentDragIndex, highlightIndex);
 
   return (
-    <div className={styles.container}>
+    <div onDrop={(e) => handleDrop(e)} className={styles.container}>
       {notes.map((note, index) => (
         <li
+          id={note.id}
           draggable
           onDragStart={(e) => handleDragStart(e, index)}
           onDragEnd={handleDragStop}

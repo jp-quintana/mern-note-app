@@ -94,6 +94,13 @@ const noteReducer = (state, action) => {
       };
     }
 
+    case 'SORT_NOTES': {
+      return {
+        ...state,
+        notes: payload,
+      };
+    }
+
     default:
       return state;
   }
