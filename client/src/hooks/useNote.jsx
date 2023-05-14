@@ -264,22 +264,32 @@ export const useNote = () => {
   };
 
   const sortNotes = (id, newIndex, isFavorite) => {
-    const notesToUpdate = notes.filter((note) => note.id !== id);
+    if (isFavorite) {
+      // const currentFavoriteNotes = notes.filter((note) => note.isFavorite);
+      // const notesToUpdate = currentFavoriteNotes.filter(
+      //   (note) => note.id !== id
+      // );
+      // notesToUpdate.splice(
+      //   newIndex,
+      //   0,
+      //   currentFavoriteNotes.find((note) => note.id === id)
+      // );
+    } else {
+      const notesToUpdate = notes.filter((note) => note.id !== id);
 
-    notesToUpdate.splice(
-      newIndex,
-      0,
-      notes.find((note) => note.id === id)
-    );
+      notesToUpdate.splice(
+        newIndex,
+        0,
+        notes.find((note) => note.id === id)
+      );
 
-    const updatedNotes = notesToUpdate.map((note, index) => ({
-      ...note,
-      index,
-    }));
+      const updatedNotes = notesToUpdate.map((note, index) => ({
+        ...note,
+        index,
+      }));
 
-    dispatch({ type: 'SORT_NOTES', payload: updatedNotes });
-
-    console.log('in here', updatedNotes);
+      dispatch({ type: 'SORT_NOTES', payload: updatedNotes });
+    }
   };
 
   return {
