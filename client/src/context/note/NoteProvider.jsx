@@ -5,16 +5,18 @@ import { useAuthContext } from 'hooks/useAuthContext';
 
 import NoteContext from './note-context';
 
-const DUMMY_NOTES = [
-  { id: '1', title: 'TO DO', emoji: '🐑', isFavorite: true },
-  { id: '2', title: 'Grocery list', emoji: '', isFavorite: false },
-  { id: '3', title: 'Goals', emoji: '', isFavorite: false },
-  { id: '4', title: 'Weight loss', emoji: '', isFavorite: false },
-];
+// TODO: remove
+// const DUMMY_NOTES = [
+//   { id: '1', title: 'TO DO', emoji: '🐑', isFavorite: true },
+//   { id: '2', title: 'Grocery list', emoji: '', isFavorite: false },
+//   { id: '3', title: 'Goals', emoji: '', isFavorite: false },
+//   { id: '4', title: 'Weight loss', emoji: '', isFavorite: false },
+// ];
 
 const initialState = {
   notesAreReady: false,
   notes: [],
+  favoriteNotesTab: [],
   selectedNote: null,
 };
 
