@@ -16,7 +16,7 @@ import NoteContext from './note-context';
 const initialState = {
   notesAreReady: false,
   notes: [],
-  favoriteNotesTab: [],
+  favoriteNotes: [],
   selectedNote: null,
 };
 

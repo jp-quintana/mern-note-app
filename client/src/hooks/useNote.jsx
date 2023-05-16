@@ -42,6 +42,7 @@ export const useNote = () => {
         body,
         config
       );
+
       setIsLoading(false);
     } catch (err) {
       console.error(err.message);
@@ -187,8 +188,6 @@ export const useNote = () => {
     setError(null);
     // setIsLoading(true);
 
-    // TODO: Add request
-
     try {
       const updatedNotes = [...notes];
 
@@ -265,15 +264,15 @@ export const useNote = () => {
 
   const sortNotes = (id, newIndex, isFavorite) => {
     if (isFavorite) {
-      // const currentFavoriteNotes = notes.filter((note) => note.isFavorite);
-      // const notesToUpdate = currentFavoriteNotes.filter(
-      //   (note) => note.id !== id
-      // );
-      // notesToUpdate.splice(
-      //   newIndex,
-      //   0,
-      //   currentFavoriteNotes.find((note) => note.id === id)
-      // );
+      const currentFavoriteNotes = notes.filter((note) => note.isFavorite);
+      const notesToUpdate = currentFavoriteNotes.filter(
+        (note) => note.id !== id
+      );
+      notesToUpdate.splice(
+        newIndex,
+        0,
+        currentFavoriteNotes.find((note) => note.id === id)
+      );
     } else {
       const notesToUpdate = notes.filter((note) => note.id !== id);
 
