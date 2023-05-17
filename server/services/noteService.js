@@ -43,7 +43,6 @@ export const addNote = async ({
   emoji = '',
   content = '',
 }) => {
-  console.log(NoteListDao);
   const newNote = {
     id: noteId,
     userId,
@@ -53,12 +52,7 @@ export const addNote = async ({
     isFavorite: false,
   };
 
-  const createdNote = await NoteDao.create(newNote);
-
-  console.log('createdNote', createdNote);
-  await NoteListDao.addToList(userId, noteId);
-
-  return;
+  return await NoteDao.createNote(newNote);
 };
 
 export const saveChangesToNote = async (userId, noteId, noteDetails) => {

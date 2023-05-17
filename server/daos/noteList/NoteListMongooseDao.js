@@ -1,4 +1,3 @@
-import mongoose from 'mongoose';
 import MongooseClass from '../base/MongooseClass.js';
 import NoteList from '../../models/NoteList.js';
 
@@ -22,8 +21,8 @@ class NoteListMongooseDao extends MongooseClass {
 
   async addToList(userId, noteId) {
     return await this.collection.findOneAndUpdate(
-      { userId: new mongoose.Types.ObjectId(userId) },
-      { $push: { normalListOrder: new mongoose.Types.ObjectId(noteId) } }
+      { userId },
+      { $push: { normalListOrder: noteId } }
     );
   }
 }
