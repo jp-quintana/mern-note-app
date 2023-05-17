@@ -9,13 +9,6 @@ class NoteMongooseDao extends MongooseClass {
   async fetchNoteContentById(id) {
     return await this.collection.findById(id).select('content userId');
   }
-
-  async fetchUserNotes(userId) {
-    return await this.collection
-      .find({ userId: userId })
-      .select('-content')
-      .sort({ createdAt: -1 });
-  }
 }
 
 export default NoteMongooseDao;

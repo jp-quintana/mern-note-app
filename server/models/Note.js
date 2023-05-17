@@ -12,12 +12,12 @@ const noteSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    _id: {
-      type: String,
-      default: function () {
-        return this.id;
-      },
-    },
+    // _id: {
+    //   type: String,
+    //   default: function () {
+    //     return this.id;
+    //   },
+    // },
   },
 
   { timestamps: true }

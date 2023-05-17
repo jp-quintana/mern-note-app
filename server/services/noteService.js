@@ -1,4 +1,5 @@
 import NoteDao from '../daos/note/index.js';
+import NoteListDao from '../daos/noteList/index.js';
 import CustomError from '../models/CustomError.js';
 
 const checkForExistingNoteAndPermission = async (userId, noteId) => {
@@ -15,6 +16,12 @@ const checkForExistingNoteAndPermission = async (userId, noteId) => {
   return existingNote;
 };
 
+export const fetchUserNotes = async (userId) => {
+  const notes = await NoteListDao.fetchUserNotes(userId);
+
+  return notes;
+};
+
 export const getNoteContent = async (userId, noteId) => {
   const note = await NoteDao.fetchNoteContentById(noteId);
 
@@ -29,12 +36,6 @@ export const getNoteContent = async (userId, noteId) => {
   return { content: note.content };
 };
 
-export const fetchUserNotes = async (userId) => {
-  const notes = await NoteDao.fetchUserNotes(userId);
-
-  return notes;
-};
-
 export const addNote = async ({
   userId,
   noteId,
@@ -42,6 +43,7 @@ export const addNote = async ({
   emoji = '',
   content = '',
 }) => {
+  console.log(NoteListDao);
   const newNote = {
     id: noteId,
     userId,
@@ -51,7 +53,12 @@ export const addNote = async ({
     isFavorite: false,
   };
 
-  return await NoteDao.create(newNote);
+  const createdNote = await NoteDao.create(newNote);
+
+  console.log('createdNote', createdNote);
+  await NoteListDao.addToList(userId, noteId);
+
+  return;
 };
 
 export const saveChangesToNote = async (userId, noteId, noteDetails) => {
