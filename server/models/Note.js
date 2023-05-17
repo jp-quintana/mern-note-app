@@ -6,7 +6,7 @@ const noteSchema = new mongoose.Schema(
     title: { type: String },
     emoji: { type: String },
     content: { type: String },
-    isFavorite: { type: Boolean, required: 'true' },
+    // isFavorite: { type: Boolean, required: 'true' },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

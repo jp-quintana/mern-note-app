@@ -3,6 +3,8 @@ import {
   fetchUserNotes,
   addNote,
   saveChangesToNote,
+  favoriteNote,
+  unfavoriteNote,
   duplicateNote,
   removeNote,
 } from '../services/noteService.js';
@@ -45,6 +47,28 @@ export const editNote = async (req, res, next) => {
     const { noteId } = req.params;
 
     await saveChangesToNote(req.user.id, noteId, req.body);
+    res.json({ message: 'Success' });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const addNoteToFavorites = async (req, res, next) => {
+  try {
+    const { noteId } = req.params;
+
+    await favoriteNote(req.user.id, noteId);
+    res.json({ message: 'Success' });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const removeNoteFromFavorites = async (req, res, next) => {
+  try {
+    const { noteId } = req.params;
+
+    await unfavoriteNote(req.user.id, noteId);
     res.json({ message: 'Success' });
   } catch (err) {
     return next(err);

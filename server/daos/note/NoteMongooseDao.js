@@ -11,13 +11,13 @@ class NoteMongooseDao extends MongooseClass {
   async createNote(noteDetails) {
     const createdNote = await this.collection.create(noteDetails);
 
-    await NoteListDao.addToList(createdNote.userId, createdNote._id);
+    await NoteListDao.addNoteToNormalList(createdNote.userId, createdNote._id);
 
     return createdNote;
   }
 
   async fetchNoteContentById(id) {
-    return await this.collection.findById(id).select('content userId');
+    return await this.collection.findOne({ id }).select('content userId');
   }
 }
 

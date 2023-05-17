@@ -49,7 +49,7 @@ export const addNote = async ({
     title,
     emoji,
     content,
-    isFavorite: false,
+    // isFavorite: false,
   };
 
   return await NoteDao.createNote(newNote);
@@ -60,6 +60,14 @@ export const saveChangesToNote = async (userId, noteId, noteDetails) => {
   return await NoteDao.update(noteId, noteDetails);
 };
 
+export const favoriteNote = async (userId, noteId) => {
+  return await NoteListDao.favoriteNote(userId, noteId);
+};
+
+export const unfavoriteNote = async (userId, noteId) => {
+  return await NoteListDao.unfavoriteNote(userId, noteId);
+};
+
 export const duplicateNote = async ({
   userId,
   existingNoteId,
@@ -67,6 +75,7 @@ export const duplicateNote = async ({
   noteDetails,
 }) => {
   const { content } = await getNoteContent(userId, existingNoteId);
+
   return await addNote({
     userId,
     noteId: newNoteId,
@@ -76,6 +85,14 @@ export const duplicateNote = async ({
 };
 
 export const removeNote = async (userId, noteId) => {
+  await checkForExistingNoteAndPermission(userId, noteId);
+
+  const deletedNote = await NoteDao.delete(noteId);
+
+  return deletedNote;
+};
+
+export const removeFavoriteNote = async (userId, noteId) => {
   await checkForExistingNoteAndPermission(userId, noteId);
 
   const deletedNote = await NoteDao.delete(noteId);

@@ -5,6 +5,8 @@ import {
   getNote,
   createNote,
   editNote,
+  addNoteToFavorites,
+  removeNoteFromFavorites,
   createDuplicateNote,
   deleteNote,
 } from '../controllers/noteController.js';
@@ -17,7 +19,8 @@ router.get('/', checkAuth, getUserNotes);
 router.get('/:noteId', checkAuth, getNote);
 router.post('/', checkAuth, createNote);
 router.put('/:noteId', checkAuth, editNote);
-router.put('/:noteId/favorite', checkAuth, editNote);
+router.put('/:noteId/favorite', checkAuth, addNoteToFavorites);
+router.put('/:noteId/unfavorite', checkAuth, removeNoteFromFavorites);
 router.post('/:noteId/duplicate', checkAuth, createDuplicateNote);
 router.delete('/:noteId', checkAuth, deleteNote);
 
