@@ -3,7 +3,7 @@ import NoteListDao from '../daos/noteList/index.js';
 import CustomError from '../models/CustomError.js';
 
 const checkForExistingNoteAndPermission = async (userId, noteId) => {
-  const existingNote = await NoteDao.fetchById(noteId);
+  const existingNote = await NoteDao.fetchNoteById(noteId);
 
   if (!existingNote) {
     throw new CustomError('A note with that id does not exist.', 404);
@@ -84,10 +84,10 @@ export const duplicateNote = async ({
   });
 };
 
-export const removeNote = async (userId, noteId, isFavorite) => {
+export const removeNote = async (userId, noteId) => {
   await checkForExistingNoteAndPermission(userId, noteId);
 
-  const deletedNote = await NoteDao.deleteNote(noteId, isFavorite);
+  const deletedNote = await NoteDao.deleteNote(userId, noteId);
 
   return deletedNote;
 };

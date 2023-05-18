@@ -16,15 +16,19 @@ class NoteMongooseDao extends MongooseClass {
     return createdNote;
   }
 
+  async fetchNoteById(id) {
+    return await this.collection.findOne({ id });
+  }
+
   async fetchNoteContentById(id) {
     return await this.collection.findOne({ id }).select('content userId');
   }
 
   // TODO: use session or cascading middleware
-  async deleteNote(noteId, isFavorite) {
-    const _id = await this.collection.findOneAndDelete({ id: noteId });
+  async deleteNote(userId, noteId) {
+    const { _id } = await this.collection.findOneAndDelete({ id: noteId });
 
-    console.log(_id);
+    await NoteListDao.deleteNote(userId, _id);
   }
 }
 

@@ -93,12 +93,13 @@ export const createDuplicateNote = async (req, res, next) => {
   }
 };
 
+// TODO: check for isFavorite
 export const deleteNote = async (req, res, next) => {
   try {
     const { noteId } = req.params;
-    const { isFavorite } = req.body;
+    // const { isFavorite } = req.body;
 
-    await removeNote(req.user.id, noteId, isFavorite);
+    await removeNote(req.user.id, noteId);
     res.json({ message: 'Success' });
   } catch (err) {
     return next(err);

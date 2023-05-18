@@ -51,19 +51,26 @@ class NoteListMongooseDao extends MongooseClass {
     return await noteList.save();
   }
 
-  async deleteFavoriteNote(userId, noteId) {
+  async deleteNote(userId, noteId) {
     return await this.collection.findOneAndUpdate(
       { userId },
       { $pull: { normalListOrder: noteId, favoriteListOrder: noteId } }
     );
   }
 
-  async deleteNote(userId, noteId) {
-    return await this.collection.findOneAndUpdate(
-      { userId },
-      { $pull: { normalListOrder: noteId } }
-    );
-  }
+  // async deleteFavoriteNote(userId, noteId) {
+  //   return await this.collection.findOneAndUpdate(
+  //     { userId },
+  //     { $pull: { normalListOrder: noteId, favoriteListOrder: noteId } }
+  //   );
+  // }
+
+  // async deleteNote(userId, noteId) {
+  //   return await this.collection.findOneAndUpdate(
+  //     { userId },
+  //     { $pull: { normalListOrder: noteId } }
+  //   );
+  // }
 }
 
 export default NoteListMongooseDao;

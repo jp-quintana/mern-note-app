@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 const noteSchema = new mongoose.Schema(
   {
-    id: { type: String, required: true },
+    id: { type: String, required: true, unique: true },
     title: { type: String },
     emoji: { type: String },
     content: { type: String },
