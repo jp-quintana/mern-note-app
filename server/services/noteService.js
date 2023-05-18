@@ -19,10 +19,16 @@ const checkForExistingNoteAndPermission = async (userId, noteId) => {
 export const fetchUserNotes = async (userId) => {
   const notes = await NoteListDao.fetchUserNotes(userId);
 
+  for (let i = 0; i < notes.normalListOrder.length; i++) {
+    notes.normalListOrder[i].isFavorite = notes.favoriteListOrder.some(
+      (favoriteNote) => favoriteNote.id === notes.normalListOrder[i].id
+    );
+  }
+
   return notes;
 };
 
-export const getNoteContent = async (userId, noteId) => {
+export const fetchNoteContent = async (userId, noteId) => {
   const note = await NoteDao.fetchNoteContentById(noteId);
 
   if (!note) {
@@ -57,7 +63,7 @@ export const addNote = async ({
 
 export const saveChangesToNote = async (userId, noteId, noteDetails) => {
   await checkForExistingNoteAndPermission(userId, noteId);
-  return await NoteDao.update(noteId, noteDetails);
+  return await NoteDao.updateNote(noteId, noteDetails);
 };
 
 export const favoriteNote = async (userId, noteId) => {
@@ -74,7 +80,7 @@ export const duplicateNote = async ({
   newNoteId,
   noteDetails,
 }) => {
-  const { content } = await getNoteContent(userId, existingNoteId);
+  const { content } = await fetchNoteContent(userId, existingNoteId);
 
   return await addNote({
     userId,
@@ -90,4 +96,12 @@ export const removeNote = async (userId, noteId) => {
   const deletedNote = await NoteDao.deleteNote(userId, noteId);
 
   return deletedNote;
+};
+
+export const sortNormalList = async (userId, newOrder) => {
+  await NoteListDao.sortNormalList(userId, newOrder);
+};
+
+export const sortFavoriteList = async (userId, newOrder) => {
+  await NoteListDao.sortFavoriteList(userId, newOrder);
 };

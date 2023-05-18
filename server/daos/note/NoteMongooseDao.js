@@ -7,6 +7,14 @@ class NoteMongooseDao extends MongooseClass {
     super(Note);
   }
 
+  async fetchNoteById(id) {
+    return await this.collection.findOne({ id });
+  }
+
+  async fetchNoteContentById(id) {
+    return await this.collection.findOne({ id }).select('content userId');
+  }
+
   // TODO: use session or cascading middleware
   async createNote(noteDetails) {
     const createdNote = await this.collection.create(noteDetails);
@@ -16,12 +24,8 @@ class NoteMongooseDao extends MongooseClass {
     return createdNote;
   }
 
-  async fetchNoteById(id) {
-    return await this.collection.findOne({ id });
-  }
-
-  async fetchNoteContentById(id) {
-    return await this.collection.findOne({ id }).select('content userId');
+  async updateNote(id, obj) {
+    return await this.collection.findOneAndUpdate({ id }, obj);
   }
 
   // TODO: use session or cascading middleware

@@ -11,12 +11,13 @@ class NoteListMongooseDao extends MongooseClass {
       .findOne({ userId })
       .populate({
         path: 'favoriteListOrder',
-        select: 'title',
+        select: 'id',
       })
       .populate({
         path: 'normalListOrder',
         select: '-content',
-      });
+      })
+      .lean();
   }
 
   async addNoteToNormalList(userId, noteId) {
@@ -27,13 +28,22 @@ class NoteListMongooseDao extends MongooseClass {
   }
 
   async favoriteNote(userId, noteId) {
-    const noteList = await this.collection.findOne({ userId }).populate({
-      path: 'normalListOrder',
-      select: 'id _id',
-    });
+    const noteList = await this.collection
+      .findOne({ userId })
+      .populate({
+        path: 'normalListOrder',
+        select: 'id _id',
+      })
+      .populate({
+        path: 'favoriteListOrder',
+        select: 'id',
+      });
 
     const { _id } = noteList.normalListOrder.find((note) => note.id === noteId);
-    noteList.favoriteListOrder.push(_id);
+
+    if (!noteList.favoriteListOrder.find((note) => note.id === noteId)) {
+      noteList.favoriteListOrder.push(_id);
+    }
 
     return await noteList.save();
   }
@@ -71,6 +81,36 @@ class NoteListMongooseDao extends MongooseClass {
   //     { $pull: { normalListOrder: noteId } }
   //   );
   // }
+
+  async sortNormalList(userId, newOrder) {
+    const noteList = await this.collection.findOne({ userId }).populate({
+      path: 'normalListOrder',
+      select: 'id',
+    });
+
+    const updatedList = newOrder.map((id) =>
+      noteList.normalListOrder.find((note) => note.id === id)
+    );
+
+    noteList.normalListOrder = updatedList;
+
+    await noteList.save();
+  }
+
+  async sortFavoriteList(userId, newOrder) {
+    const noteList = await this.collection.findOne({ userId }).populate({
+      path: 'favoriteListOrder',
+      select: 'id',
+    });
+
+    const updatedList = newOrder.map((id) =>
+      noteList.favoriteListOrder.find((note) => note.id === id)
+    );
+    console.log(updatedList);
+    noteList.favoriteList = updatedList;
+
+    await noteList.save();
+  }
 }
 
 export default NoteListMongooseDao;

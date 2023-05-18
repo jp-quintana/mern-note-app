@@ -1,5 +1,5 @@
 import {
-  getNoteContent,
+  fetchNoteContent,
   fetchUserNotes,
   addNote,
   saveChangesToNote,
@@ -7,13 +7,15 @@ import {
   unfavoriteNote,
   duplicateNote,
   removeNote,
+  sortNormalList,
+  sortFavoriteList,
 } from '../services/noteService.js';
 
 export const getNote = async (req, res, next) => {
   try {
     const { noteId } = req.params;
 
-    const noteContent = await getNoteContent(req.user.id, noteId);
+    const noteContent = await fetchNoteContent(req.user.id, noteId);
 
     res.json(noteContent);
   } catch (err) {
@@ -100,6 +102,28 @@ export const deleteNote = async (req, res, next) => {
     // const { isFavorite } = req.body;
 
     await removeNote(req.user.id, noteId);
+    res.json({ message: 'Success' });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const reorderNormalList = async (req, res, next) => {
+  try {
+    const { newOrder } = req.body;
+
+    await sortNormalList(req.user.id, newOrder);
+    res.json({ message: 'Success' });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const reorderFavoriteList = async (req, res, next) => {
+  try {
+    const { newOrder } = req.body;
+
+    await sortFavoriteList(req.user.id, newOrder);
     res.json({ message: 'Success' });
   } catch (err) {
     return next(err);

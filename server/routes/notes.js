@@ -9,6 +9,8 @@ import {
   removeNoteFromFavorites,
   createDuplicateNote,
   deleteNote,
+  reorderNormalList,
+  reorderFavoriteList,
 } from '../controllers/noteController.js';
 
 import { checkAuth } from '../middlewares/checkAuth.js';
@@ -18,6 +20,8 @@ const router = Router();
 router.get('/', checkAuth, getUserNotes);
 router.get('/:noteId', checkAuth, getNote);
 router.post('/', checkAuth, createNote);
+router.put('/normalListOrder', checkAuth, reorderNormalList);
+router.put('/favoriteListOrder', checkAuth, reorderFavoriteList);
 router.put('/:noteId', checkAuth, editNote);
 router.put('/:noteId/favorite', checkAuth, addNoteToFavorites);
 router.put('/:noteId/unfavorite', checkAuth, removeNoteFromFavorites);
