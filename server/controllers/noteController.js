@@ -96,8 +96,9 @@ export const createDuplicateNote = async (req, res, next) => {
 export const deleteNote = async (req, res, next) => {
   try {
     const { noteId } = req.params;
+    const { isFavorite } = req.body;
 
-    await removeNote(req.user.id, noteId);
+    await removeNote(req.user.id, noteId, isFavorite);
     res.json({ message: 'Success' });
   } catch (err) {
     return next(err);

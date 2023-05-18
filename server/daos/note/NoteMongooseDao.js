@@ -7,7 +7,7 @@ class NoteMongooseDao extends MongooseClass {
     super(Note);
   }
 
-  // TODO: use session
+  // TODO: use session or cascading middleware
   async createNote(noteDetails) {
     const createdNote = await this.collection.create(noteDetails);
 
@@ -18,6 +18,13 @@ class NoteMongooseDao extends MongooseClass {
 
   async fetchNoteContentById(id) {
     return await this.collection.findOne({ id }).select('content userId');
+  }
+
+  // TODO: use session or cascading middleware
+  async deleteNote(noteId, isFavorite) {
+    const _id = await this.collection.findOneAndDelete({ id: noteId });
+
+    console.log(_id);
   }
 }
 

@@ -84,18 +84,10 @@ export const duplicateNote = async ({
   });
 };
 
-export const removeNote = async (userId, noteId) => {
+export const removeNote = async (userId, noteId, isFavorite) => {
   await checkForExistingNoteAndPermission(userId, noteId);
 
-  const deletedNote = await NoteDao.delete(noteId);
-
-  return deletedNote;
-};
-
-export const removeFavoriteNote = async (userId, noteId) => {
-  await checkForExistingNoteAndPermission(userId, noteId);
-
-  const deletedNote = await NoteDao.delete(noteId);
+  const deletedNote = await NoteDao.deleteNote(noteId, isFavorite);
 
   return deletedNote;
 };
