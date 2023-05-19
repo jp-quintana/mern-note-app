@@ -1,8 +1,9 @@
 import NoteDao from '../daos/note/index.js';
+import NoteListDao from '../daos/noteList/index.js';
 import CustomError from '../models/CustomError.js';
 
 const checkForExistingNoteAndPermission = async (userId, noteId) => {
-  const existingNote = await NoteDao.fetchById(noteId);
+  const existingNote = await NoteDao.fetchNoteById(noteId);
 
   if (!existingNote) {
     throw new CustomError('A note with that id does not exist.', 404);
@@ -15,7 +16,19 @@ const checkForExistingNoteAndPermission = async (userId, noteId) => {
   return existingNote;
 };
 
-export const getNoteContent = async (userId, noteId) => {
+export const fetchUserNotes = async (userId) => {
+  const notes = await NoteListDao.fetchUserNotes(userId);
+
+  for (let i = 0; i < notes.normalListOrder.length; i++) {
+    notes.normalListOrder[i].isFavorite = notes.favoriteListOrder.some(
+      (favoriteNote) => favoriteNote.id === notes.normalListOrder[i].id
+    );
+  }
+
+  return notes;
+};
+
+export const fetchNoteContent = async (userId, noteId) => {
   const note = await NoteDao.fetchNoteContentById(noteId);
 
   if (!note) {
@@ -27,12 +40,6 @@ export const getNoteContent = async (userId, noteId) => {
   }
 
   return { content: note.content };
-};
-
-export const fetchUserNotes = async (userId) => {
-  const notes = await NoteDao.fetchUserNotes(userId);
-
-  return notes;
 };
 
 export const addNote = async ({
@@ -48,15 +55,10 @@ export const addNote = async ({
     title,
     emoji,
     content,
-    isFavorite: false,
+    // isFavorite: false,
   };
 
-  return await NoteDao.create(newNote);
-};
-
-export const saveChangesToNote = async (userId, noteId, noteDetails) => {
-  await checkForExistingNoteAndPermission(userId, noteId);
-  return await NoteDao.update(noteId, noteDetails);
+  return await NoteDao.createNote(newNote);
 };
 
 export const duplicateNote = async ({
@@ -65,19 +67,42 @@ export const duplicateNote = async ({
   newNoteId,
   noteDetails,
 }) => {
-  const { content } = await getNoteContent(userId, existingNoteId);
-  return await addNote({
+  const { content } = await fetchNoteContent(userId, existingNoteId);
+
+  return await NoteDao.createDuplicate({
+    existingNoteId,
     userId,
-    noteId: newNoteId,
+    id: newNoteId,
     content,
     ...noteDetails,
   });
 };
 
+export const saveChangesToNote = async (userId, noteId, noteDetails) => {
+  await checkForExistingNoteAndPermission(userId, noteId);
+  return await NoteDao.updateNote(noteId, noteDetails);
+};
+
+export const favoriteNote = async (userId, noteId) => {
+  return await NoteListDao.favoriteNote(userId, noteId);
+};
+
+export const unfavoriteNote = async (userId, noteId) => {
+  return await NoteListDao.unfavoriteNote(userId, noteId);
+};
+
 export const removeNote = async (userId, noteId) => {
   await checkForExistingNoteAndPermission(userId, noteId);
 
-  const deletedNote = await NoteDao.delete(noteId);
+  const deletedNote = await NoteDao.deleteNote(userId, noteId);
 
   return deletedNote;
+};
+
+export const sortNormalList = async (userId, newOrder) => {
+  await NoteListDao.sortNormalList(userId, newOrder);
+};
+
+export const sortFavoriteList = async (userId, newOrder) => {
+  await NoteListDao.sortFavoriteList(userId, newOrder);
 };

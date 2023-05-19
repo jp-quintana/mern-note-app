@@ -5,16 +5,18 @@ import { useAuthContext } from 'hooks/useAuthContext';
 
 import NoteContext from './note-context';
 
-const DUMMY_NOTES = [
-  { id: '1', title: 'TO DO', emoji: '🐑', isFavorite: true },
-  { id: '2', title: 'Grocery list', emoji: '', isFavorite: false },
-  { id: '3', title: 'Goals', emoji: '', isFavorite: false },
-  { id: '4', title: 'Weight loss', emoji: '', isFavorite: false },
-];
+// TODO: remove
+// const DUMMY_NOTES = [
+//   { id: '1', title: 'TO DO', emoji: '🐑', isFavorite: true },
+//   { id: '2', title: 'Grocery list', emoji: '', isFavorite: false },
+//   { id: '3', title: 'Goals', emoji: '', isFavorite: false },
+//   { id: '4', title: 'Weight loss', emoji: '', isFavorite: false },
+// ];
 
 const initialState = {
   notesAreReady: false,
   notes: [],
+  favoriteNotes: [],
   selectedNote: null,
 };
 
@@ -26,7 +28,8 @@ const noteReducer = (state, action) => {
       return {
         ...state,
         notesAreReady: true,
-        notes: payload,
+        notes: payload.normalListOrder,
+        favoriteNotes: payload.favoriteListOrder,
       };
     }
 
@@ -34,7 +37,7 @@ const noteReducer = (state, action) => {
       return {
         ...state,
         selectedNote: null,
-        notes: payload,
+        // notes: payload,
       };
     }
 
@@ -68,11 +71,12 @@ const noteReducer = (state, action) => {
       return {
         ...state,
         notes: [...payload.notes],
+        favoriteNotes: [...payload.favoriteNotes],
         selectedNote: { ...state.selectedNote, ...payload.selectedNote },
       };
     }
 
-    case 'SAVE_CHANGES': {
+    case 'UPDATE_NORMAL_NOTES': {
       return {
         ...state,
         notes: payload,
@@ -83,6 +87,7 @@ const noteReducer = (state, action) => {
       return {
         ...state,
         notes: payload.notes,
+        favoriteNotes: payload.favoriteNotes,
         selectedNote: { ...state.selectedNote, content: payload.content },
       };
     }
@@ -94,12 +99,24 @@ const noteReducer = (state, action) => {
       };
     }
 
+    case 'SORT_NOTES': {
+      return {
+        ...state,
+        notes: payload,
+      };
+    }
+
+    case 'SORT_FAVORITE_NOTES': {
+      return {
+        ...state,
+        favoriteNotes: payload,
+      };
+    }
+
     default:
       return state;
   }
 };
-
-console.log(import.meta.env);
 
 const NoteProvider = ({ children }) => {
   const { user } = useAuthContext();
@@ -109,14 +126,14 @@ const NoteProvider = ({ children }) => {
   console.log('notes', state);
 
   useEffect(() => {
-    (async () => {
-      if (user) {
+    if (user) {
+      (async () => {
         const res = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/notes`
         );
         dispatch({ type: 'LOAD_NOTES', payload: res.data });
-      }
-    })();
+      })();
+    }
   }, [user]);
 
   return (

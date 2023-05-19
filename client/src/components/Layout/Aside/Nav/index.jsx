@@ -5,7 +5,7 @@ import { FaAngleRight, FaPlus } from 'react-icons/fa';
 import { useNoteContext } from 'hooks/useNoteContext';
 import { useNote } from 'hooks/useNote';
 
-import NavElement from './NavElement';
+import NavDragContainer from './NavDragContainer';
 
 import styles from './index.module.scss';
 
@@ -18,10 +18,10 @@ const USER = {
 const Nav = () => {
   const navigate = useNavigate();
 
-  const { notes, selectedNote } = useNoteContext();
+  const { notes, favoriteNotes, selectedNote } = useNoteContext();
   const { createNote } = useNote();
 
-  const favoriteNotes = notes.filter((note) => note.isFavorite);
+  // const favoriteNotes = notes.filter((note) => note.isFavorite);
 
   const [showFavorites, setShowFavorites] = useState(false);
   const [showNotes, setShowNotes] = useState(true);
@@ -43,6 +43,20 @@ const Nav = () => {
   return (
     <div className={styles.container}>
       <nav className={styles.nav}>
+        {notes.length === 0 && (
+          <div className={styles.list}>
+            <div onClick={handleAddNote} className={styles.list_header}>
+              <div
+                className={`${styles.icon_wrapper} ${
+                  showFavorites ? styles.icon_open : undefined
+                }`}
+              >
+                <FaPlus size={'1.3rem'} />
+              </div>
+              <p>Add Note</p>
+            </div>
+          </div>
+        )}
         {favoriteNotes.length > 0 && (
           <ul className={styles.list}>
             <div
@@ -58,28 +72,16 @@ const Nav = () => {
               </div>
               <p>Favorite Notes:</p>
             </div>
-            {showFavorites &&
-              favoriteNotes.map((note) => (
-                <li
-                  className={
-                    selectedNote && selectedNote.id === note.id
-                      ? styles.isSelected
-                      : undefined
-                  }
-                  key={note.id}
-                >
-                  <NavElement
-                    id={note.id}
-                    to={`/notes/${note.id}`}
-                    emoji={note.emoji}
-                    title={note.title}
-                    isFavorite={note.isFavorite}
-                    ellipsisClassName={styles.ellipsis}
-                  />
-                </li>
-              ))}
+            {showFavorites && (
+              <NavDragContainer
+                containerType="favorite"
+                notes={favoriteNotes}
+                selectedNote={selectedNote}
+              />
+            )}
           </ul>
         )}
+
         {notes.length > 0 && (
           <ul className={styles.list}>
             <div
@@ -95,41 +97,14 @@ const Nav = () => {
               </div>
               <p>Notes:</p>
             </div>
-            {showNotes &&
-              notes.map((note) => (
-                <li
-                  className={
-                    selectedNote && selectedNote.id === note.id
-                      ? styles.isSelected
-                      : undefined
-                  }
-                  key={note.id}
-                >
-                  <NavElement
-                    id={note.id}
-                    to={`/notes/${note.id}`}
-                    emoji={note.emoji}
-                    title={note.title}
-                    isFavorite={note.isFavorite}
-                    ellipsisClassName={styles.ellipsis}
-                  />
-                </li>
-              ))}
+            {showNotes && (
+              <NavDragContainer
+                containerType="normal"
+                notes={notes}
+                selectedNote={selectedNote}
+              />
+            )}
           </ul>
-        )}
-        {notes.length === 0 && (
-          <div className={styles.list}>
-            <div onClick={handleAddNote} className={styles.list_header}>
-              <div
-                className={`${styles.icon_wrapper} ${
-                  showFavorites ? styles.icon_open : undefined
-                }`}
-              >
-                <FaPlus size={'1.3rem'} />
-              </div>
-              <p>Add Note</p>
-            </div>
-          </div>
         )}
       </nav>
     </div>

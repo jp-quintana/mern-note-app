@@ -1,17 +1,21 @@
 import {
-  getNoteContent,
+  fetchNoteContent,
   fetchUserNotes,
   addNote,
   saveChangesToNote,
+  favoriteNote,
+  unfavoriteNote,
   duplicateNote,
   removeNote,
+  sortNormalList,
+  sortFavoriteList,
 } from '../services/noteService.js';
 
 export const getNote = async (req, res, next) => {
   try {
     const { noteId } = req.params;
 
-    const noteContent = await getNoteContent(req.user.id, noteId);
+    const noteContent = await fetchNoteContent(req.user.id, noteId);
 
     res.json(noteContent);
   } catch (err) {
@@ -51,6 +55,28 @@ export const editNote = async (req, res, next) => {
   }
 };
 
+export const addNoteToFavorites = async (req, res, next) => {
+  try {
+    const { noteId } = req.params;
+
+    await favoriteNote(req.user.id, noteId);
+    res.json({ message: 'Success' });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const removeNoteFromFavorites = async (req, res, next) => {
+  try {
+    const { noteId } = req.params;
+
+    await unfavoriteNote(req.user.id, noteId);
+    res.json({ message: 'Success' });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 export const createDuplicateNote = async (req, res, next) => {
   try {
     const { noteId } = req.params;
@@ -69,11 +95,35 @@ export const createDuplicateNote = async (req, res, next) => {
   }
 };
 
+// TODO: check for isFavorite
 export const deleteNote = async (req, res, next) => {
   try {
     const { noteId } = req.params;
+    // const { isFavorite } = req.body;
 
     await removeNote(req.user.id, noteId);
+    res.json({ message: 'Success' });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const reorderNormalList = async (req, res, next) => {
+  try {
+    const { newOrder } = req.body;
+
+    await sortNormalList(req.user.id, newOrder);
+    res.json({ message: 'Success' });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+export const reorderFavoriteList = async (req, res, next) => {
+  try {
+    const { newOrder } = req.body;
+
+    await sortFavoriteList(req.user.id, newOrder);
     res.json({ message: 'Success' });
   } catch (err) {
     return next(err);

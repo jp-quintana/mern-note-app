@@ -2,22 +2,22 @@ import mongoose from 'mongoose';
 
 const noteSchema = new mongoose.Schema(
   {
-    id: { type: String, required: true },
+    id: { type: String, required: true, unique: true },
     title: { type: String },
     emoji: { type: String },
     content: { type: String },
-    isFavorite: { type: Boolean, required: 'true' },
+    // isFavorite: { type: Boolean, required: 'true' },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
-    _id: {
-      type: String,
-      default: function () {
-        return this.id;
-      },
-    },
+    // _id: {
+    //   type: String,
+    //   default: function () {
+    //     return this.id;
+    //   },
+    // },
   },
 
   { timestamps: true }
