@@ -75,7 +75,7 @@ const noteReducer = (state, action) => {
       };
     }
 
-    case 'SAVE_CHANGES': {
+    case 'UPDATE_NORMAL_NOTES': {
       return {
         ...state,
         notes: payload,
@@ -86,6 +86,7 @@ const noteReducer = (state, action) => {
       return {
         ...state,
         notes: payload.notes,
+        favoriteNotes: payload.favoriteNotes,
         selectedNote: { ...state.selectedNote, content: payload.content },
       };
     }

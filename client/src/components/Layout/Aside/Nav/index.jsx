@@ -72,26 +72,12 @@ const Nav = () => {
               </div>
               <p>Favorite Notes:</p>
             </div>
-            {/* {showFavorites &&
-              favoriteNotes.map((note) => (
-                <li
-                  className={
-                    selectedNote && selectedNote.id === note.id
-                      ? styles.isSelected
-                      : undefined
-                  }
-                  key={note.id}
-                >
-                  <NavElement
-                    id={note.id}
-                    to={`/notes/${note.id}`}
-                    emoji={note.emoji}
-                    title={note.title}
-                    isFavorite={note.isFavorite}
-                    ellipsisClassName={styles.ellipsis}
-                  />
-                </li>
-              ))} */}
+            {showFavorites && (
+              <NavDragContainer
+                notes={favoriteNotes}
+                selectedNote={selectedNote}
+              />
+            )}
           </ul>
         )}
 

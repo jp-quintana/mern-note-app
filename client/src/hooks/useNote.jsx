@@ -25,7 +25,7 @@ export const useNote = () => {
       };
       updatedNotes.push(newNote);
 
-      dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
+      dispatch({ type: 'UPDATE_NORMAL_NOTES', payload: updatedNotes });
 
       const config = {
         headers: {
@@ -98,16 +98,33 @@ export const useNote = () => {
 
     try {
       const updatedNotes = [...notes];
+      const updatedFavoriteNotes = [...favoriteNotes];
       const currentSelectedNote = selectedNote;
 
       delete currentSelectedNote.content;
+      const existingNormalNoteIndex = notes.findIndex((note) => note.id === id);
+      updatedNotes.splice(existingNormalNoteIndex, 1, currentSelectedNote);
 
-      const existingNoteIndex = notes.findIndex((note) => note.id === id);
-      updatedNotes.splice(existingNoteIndex, 1, currentSelectedNote);
+      delete currentSelectedNote.isFavorite;
+      const existingFavoriteNoteIndex = favoriteNotes.findIndex(
+        (note) => note.id === id
+      );
+
+      if (existingFavoriteNoteIndex > 0) {
+        updatedFavoriteNotes.splice(
+          existingFavoriteNoteIndex,
+          1,
+          currentSelectedNote
+        );
+      }
 
       dispatch({
         type: 'SAVE_SELECTED_CHANGES',
-        payload: { notes: updatedNotes, content },
+        payload: {
+          notes: updatedNotes,
+          favoriteNotes: updatedFavoriteNotes,
+          content,
+        },
       });
 
       const config = {
@@ -201,7 +218,7 @@ export const useNote = () => {
 
       updatedNotes.splice(existingNoteIndex + 1, 0, duplicate);
 
-      dispatch({ type: 'SAVE_CHANGES', payload: updatedNotes });
+      dispatch({ type: 'UPDATE_NORMAL_NOTES', payload: updatedNotes });
 
       const config = {
         headers: {
