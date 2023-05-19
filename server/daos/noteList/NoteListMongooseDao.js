@@ -11,11 +11,11 @@ class NoteListMongooseDao extends MongooseClass {
       .findOne({ userId })
       .populate({
         path: 'favoriteListOrder',
-        select: 'id',
+        select: 'id title emoji',
       })
       .populate({
         path: 'normalListOrder',
-        select: '-content',
+        select: '-content -userId',
       })
       .lean();
   }

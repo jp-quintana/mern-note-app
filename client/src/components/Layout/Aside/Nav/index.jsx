@@ -18,10 +18,10 @@ const USER = {
 const Nav = () => {
   const navigate = useNavigate();
 
-  const { notes, selectedNote } = useNoteContext();
+  const { notes, favoriteNotes, selectedNote } = useNoteContext();
   const { createNote } = useNote();
 
-  const favoriteNotes = notes.filter((note) => note.isFavorite);
+  // const favoriteNotes = notes.filter((note) => note.isFavorite);
 
   const [showFavorites, setShowFavorites] = useState(false);
   const [showNotes, setShowNotes] = useState(true);

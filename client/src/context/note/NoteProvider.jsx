@@ -28,7 +28,8 @@ const noteReducer = (state, action) => {
       return {
         ...state,
         notesAreReady: true,
-        notes: payload,
+        notes: payload.normalListOrder,
+        favoriteNotes: payload.favoriteListOrder,
       };
     }
 
@@ -36,7 +37,7 @@ const noteReducer = (state, action) => {
       return {
         ...state,
         selectedNote: null,
-        notes: payload,
+        // notes: payload,
       };
     }
 
@@ -108,8 +109,6 @@ const noteReducer = (state, action) => {
   }
 };
 
-console.log(import.meta.env);
-
 const NoteProvider = ({ children }) => {
   const { user } = useAuthContext();
 
@@ -118,14 +117,14 @@ const NoteProvider = ({ children }) => {
   console.log('notes', state);
 
   useEffect(() => {
-    (async () => {
-      if (user) {
+    if (user) {
+      (async () => {
         const res = await axios.get(
           `${import.meta.env.VITE_API_URL}/api/notes`
         );
         dispatch({ type: 'LOAD_NOTES', payload: res.data });
-      }
-    })();
+      })();
+    }
   }, [user]);
 
   return (

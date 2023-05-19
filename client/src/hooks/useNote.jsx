@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNoteContext } from './useNoteContext';
 
 export const useNote = () => {
-  const { notes, selectedNote, dispatch } = useNoteContext();
+  const { notes, favoriteNotes, selectedNote, dispatch } = useNoteContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -87,9 +87,6 @@ export const useNote = () => {
   };
 
   const editSelectedNote = (key, value) => {
-    if (key !== 'updatedAt') {
-    }
-
     dispatch({
       type: 'EDIT_SELECTED_NOTE',
       payload: { key, value },
