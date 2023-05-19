@@ -9,6 +9,7 @@
     font-weight: 700;
     border-radius: 0.3rem;
     transition: all 0.1s ease-in;
+    position: relative;
 
     &:hover {
       background: $background-primary-h;

@@ -6,19 +6,19 @@ import NavElement from './NavElement';
 
 import styles from './index.module.scss';
 
-const NavDragContainer = ({
-  notes,
-  selectedNote,
-  favoriteContainer = null,
-}) => {
+const NavDragContainer = ({ notes, selectedNote, containerType = null }) => {
   const { sortNormalNotes, sortFavoriteNotes } = useNote();
   const dragId = useRef(null);
   const dragStartingIndex = useRef(null);
+
+  const [activeDragContainer, setActiveDragContainer] = useState(null);
 
   const [currentDragIndex, setCurrentDragIndex] = useState(null);
   const [highlightIndex, setHighlightIndex] = useState(null);
 
   const handleDragStart = (e, index) => {
+    setActiveDragContainer(containerType);
+
     const targetRect = e.currentTarget.getBoundingClientRect();
     const xOffset = e.clientX - targetRect.left;
     const yOffset = e.clientY - targetRect.top;
@@ -32,7 +32,7 @@ const NavDragContainer = ({
 
   const handleDrop = (e) => {
     if (dragStartingIndex !== currentDragIndex) {
-      if (favoriteContainer) {
+      if (containerType === 'favorite') {
         sortFavoriteNotes(dragId.current, currentDragIndex);
       } else {
         sortNormalNotes(dragId.current, currentDragIndex);
@@ -41,6 +41,7 @@ const NavDragContainer = ({
   };
 
   const handleDragStop = (e) => {
+    setActiveDragContainer(null);
     dragStartingIndex.current = null;
     dragId.current = null;
     setCurrentDragIndex(null);
@@ -48,7 +49,10 @@ const NavDragContainer = ({
   };
 
   return (
-    <div onDrop={(e) => handleDrop(e)} className={styles.container}>
+    <div
+      onDrop={containerType === activeDragContainer ? handleDrop : undefined}
+      className={styles.container}
+    >
       {notes.map((note, index) => (
         <li
           id={note.id}
@@ -60,15 +64,6 @@ const NavDragContainer = ({
               ? styles.isSelected
               : undefined
           }
-          // style={{
-          //   position:
-          //     index === currentDragIndex &&
-          //     currentDragIndex !== dragStartingIndex &&
-          //     'relative',
-          // }}
-          style={{
-            position: 'relative',
-          }}
           key={note.id}
         >
           <div
@@ -78,20 +73,18 @@ const NavDragContainer = ({
             onDragLeave={() => {
               setCurrentDragIndex(index);
             }}
-            onDragOver={(e) => {
-              e.preventDefault();
-            }}
           >
             <NavElement
               id={note.id}
               to={`/notes/${note.id}`}
               emoji={note.emoji}
               title={note.title}
-              isFavorite={favoriteContainer || note.isFavorite}
+              isFavorite={containerType === 'favorite' || note.isFavorite}
               ellipsisClassName={styles.ellipsis}
             />
           </div>
-          {index === currentDragIndex &&
+          {containerType === activeDragContainer &&
+            index === currentDragIndex &&
             currentDragIndex !== dragStartingIndex.current && (
               <div
                 className={styles.highlight_wrapper}
@@ -114,8 +107,6 @@ const NavDragContainer = ({
                 <div className={styles.highlight} />
               </div>
             )}
-
-          {/* <div className={styles.highlight} style={{ top: '-.4rem' }} /> */}
         </li>
       ))}
     </div>

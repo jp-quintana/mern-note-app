@@ -74,7 +74,7 @@ const Nav = () => {
             </div>
             {showFavorites && (
               <NavDragContainer
-                favoriteContainer
+                containerType="favorite"
                 notes={favoriteNotes}
                 selectedNote={selectedNote}
               />
@@ -98,7 +98,11 @@ const Nav = () => {
               <p>Notes:</p>
             </div>
             {showNotes && (
-              <NavDragContainer notes={notes} selectedNote={selectedNote} />
+              <NavDragContainer
+                containerType="normal"
+                notes={notes}
+                selectedNote={selectedNote}
+              />
             )}
           </ul>
         )}
