@@ -6,15 +6,18 @@ import { useNote } from 'hooks/useNote';
 import styles from './index.module.scss';
 
 const NavElementMenu = ({ id, isFavorite, closeMenu }) => {
-  const { toggleFavoriteNote, duplicateNote, deleteNote } = useNote();
+  const { favoriteNote, unfavoriteNote, duplicateNote, deleteNote } = useNote();
 
   const handleDeleteNote = async () => {
     await deleteNote(id);
   };
 
   const handleToggleFavorite = async () => {
-    console.log(id);
-    await toggleFavoriteNote(id);
+    if (isFavorite) {
+      await unfavoriteNote(id);
+    } else {
+      await favoriteNote(id);
+    }
     closeMenu();
   };
 

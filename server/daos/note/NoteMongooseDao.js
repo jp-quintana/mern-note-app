@@ -24,6 +24,18 @@ class NoteMongooseDao extends MongooseClass {
     return createdNote;
   }
 
+  async createDuplicate({ existingNoteId, ...noteDetails }) {
+    const createdNote = await this.collection.create(noteDetails);
+
+    await NoteListDao.addDuplicateToNormalList({
+      userId: createdNote.userId,
+      existingNoteId,
+      noteId: createdNote._id,
+    });
+
+    return createdNote;
+  }
+
   async updateNote(id, obj) {
     return await this.collection.findOneAndUpdate({ id }, obj);
   }

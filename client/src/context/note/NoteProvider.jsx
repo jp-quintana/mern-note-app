@@ -71,6 +71,7 @@ const noteReducer = (state, action) => {
       return {
         ...state,
         notes: [...payload.notes],
+        favoriteNotes: [...payload.favoriteNotes],
         selectedNote: { ...state.selectedNote, ...payload.selectedNote },
       };
     }
@@ -102,6 +103,13 @@ const noteReducer = (state, action) => {
       return {
         ...state,
         notes: payload,
+      };
+    }
+
+    case 'SORT_FAVORITE_NOTES': {
+      return {
+        ...state,
+        favoriteNotes: payload,
       };
     }
 

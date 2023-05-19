@@ -6,8 +6,12 @@ import NavElement from './NavElement';
 
 import styles from './index.module.scss';
 
-const NavDragContainer = ({ notes, selectedNote }) => {
-  const { sortNotes } = useNote();
+const NavDragContainer = ({
+  notes,
+  selectedNote,
+  favoriteContainer = null,
+}) => {
+  const { sortNormalNotes, sortFavoriteNotes } = useNote();
   const dragId = useRef(null);
   const dragStartingIndex = useRef(null);
 
@@ -28,7 +32,11 @@ const NavDragContainer = ({ notes, selectedNote }) => {
 
   const handleDrop = (e) => {
     if (dragStartingIndex !== currentDragIndex) {
-      sortNotes(dragId.current, currentDragIndex);
+      if (favoriteContainer) {
+        sortFavoriteNotes(dragId.current, currentDragIndex);
+      } else {
+        sortNormalNotes(dragId.current, currentDragIndex);
+      }
     }
   };
 
@@ -38,8 +46,6 @@ const NavDragContainer = ({ notes, selectedNote }) => {
     setCurrentDragIndex(null);
     setHighlightIndex(null);
   };
-
-  console.log(dragStartingIndex, currentDragIndex, highlightIndex);
 
   return (
     <div onDrop={(e) => handleDrop(e)} className={styles.container}>
@@ -81,7 +87,7 @@ const NavDragContainer = ({ notes, selectedNote }) => {
               to={`/notes/${note.id}`}
               emoji={note.emoji}
               title={note.title}
-              isFavorite={note.isFavorite}
+              isFavorite={favoriteContainer || note.isFavorite}
               ellipsisClassName={styles.ellipsis}
             />
           </div>

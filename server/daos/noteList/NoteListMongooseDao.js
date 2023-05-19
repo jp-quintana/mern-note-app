@@ -27,6 +27,24 @@ class NoteListMongooseDao extends MongooseClass {
     );
   }
 
+  async addDuplicateToNormalList({ userId, existingNoteId, noteId }) {
+    const noteList = await this.collection.findOne({ userId }).populate({
+      path: 'normalListOrder',
+      select: 'id _id',
+    });
+    const updatedNormalListOrder = [...noteList.normalListOrder];
+
+    const existingNoteIndex = noteList.normalListOrder.findIndex(
+      (note) => note.id === existingNoteId
+    );
+
+    updatedNormalListOrder.splice(existingNoteIndex + 1, 0, noteId);
+
+    noteList.normalListOrder = updatedNormalListOrder;
+
+    noteList.save();
+  }
+
   async favoriteNote(userId, noteId) {
     const noteList = await this.collection
       .findOne({ userId })
@@ -106,8 +124,7 @@ class NoteListMongooseDao extends MongooseClass {
     const updatedList = newOrder.map((id) =>
       noteList.favoriteListOrder.find((note) => note.id === id)
     );
-    console.log(updatedList);
-    noteList.favoriteList = updatedList;
+    noteList.favoriteListOrder = updatedList;
 
     await noteList.save();
   }

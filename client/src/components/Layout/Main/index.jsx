@@ -7,6 +7,7 @@ import {
   FaStar,
   FaEllipsisH,
 } from 'react-icons/fa';
+
 import moment from 'moment';
 
 import { useNoteContext } from 'hooks/useNoteContext';
@@ -21,9 +22,17 @@ const Main = () => {
   const { pathname } = useLocation();
 
   const { notes, selectedNote } = useNoteContext();
-  const { toggleFavoriteNote } = useNote();
+  const { favoriteNote, unfavoriteNote } = useNote();
 
   const [isFirstLoad, setIsFirstLoad] = useState(true);
+
+  const handleToggleFavorite = async () => {
+    if (selectedNote.isFavorite) {
+      await unfavoriteNote(selectedNote.id);
+    } else {
+      await favoriteNote(selectedNote.id);
+    }
+  };
 
   useEffect(() => {
     if (pathname === '/') {
@@ -66,7 +75,7 @@ const Main = () => {
           <p className={styles.last_edit}>
             {selectedNote &&
               selectedNote.updatedAt &&
-              formatDate(selectedNote.updatedAt)}
+              formatDate(moment(selectedNote.updatedAt))}
           </p>
           <p className={styles.share}>Share</p>
           <div className={styles.icon_wrapper}>
@@ -75,10 +84,7 @@ const Main = () => {
           <div className={styles.icon_wrapper}>
             <FaRegClock />
           </div>
-          <div
-            onClick={() => toggleFavoriteNote(selectedNote.id)}
-            className={styles.icon_wrapper}
-          >
+          <div onClick={handleToggleFavorite} className={styles.icon_wrapper}>
             {!selectedNote && <FaRegStar />}
             {selectedNote && (
               <>
