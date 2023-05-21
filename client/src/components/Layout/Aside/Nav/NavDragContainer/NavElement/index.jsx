@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { FaEllipsisH } from 'react-icons/fa';
@@ -6,6 +6,7 @@ import { FaEllipsisH } from 'react-icons/fa';
 import { useNoteContext } from 'hooks/useNoteContext';
 
 import NavElementMenu from './NavElementMenu';
+import EditElementModal from './EditElementModal';
 
 import Modal from 'components/Modal';
 
@@ -19,11 +20,16 @@ const NavElement = ({
   isFavorite,
   ellipsisClassName,
 }) => {
-  const { selectedNote } = useNoteContext();
-  const [modalPosition, setModalPosition] = useState(null);
-  const [showMenu, setShowMenu] = useState(false);
+  const emojiRef = useRef(null);
 
-  const handleToggleMenu = (e) => {
+  const { selectedNote } = useNoteContext();
+  const [navMenuPosition, setNavMenuPosition] = useState(null);
+  const [showNavMenu, setShowNavMenu] = useState(false);
+
+  const [editModalPosition, setEditModalPosition] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const handleOpenNavMenu = (e) => {
     e.preventDefault();
     const targetRect = e.target.getBoundingClientRect();
     const isAboveMidpoint =
@@ -33,13 +39,22 @@ const NavElement = ({
       ? targetRect.bottom
       : targetRect.top - modalHeight;
     const modalLeft = targetRect.right;
-    setModalPosition({ top: modalTop, left: modalLeft });
-    setShowMenu(true);
+    setNavMenuPosition({ top: modalTop, left: modalLeft });
+    setShowNavMenu(true);
+  };
+
+  const handleToggleEditModal = (e) => {
+    e.preventDefault();
+    const emojiRect = emojiRef.current.getBoundingClientRect();
+    const modalTop = emojiRect.bottom;
+    const modalLeft = emojiRect.left;
+    setProfileMenuPosition({ top: modalTop, left: modalLeft });
+    setShowProfileMenu(true);
   };
 
   return (
     <NavLink className={styles.link} to={to}>
-      <div className={styles.emoji}>
+      <div ref={emojiRef} className={styles.emoji}>
         {selectedNote && id === selectedNote.id
           ? selectedNote.emoji || `\u{1F5CB}`
           : emoji || `\u{1F5CB}`}
@@ -54,22 +69,36 @@ const NavElement = ({
           : 'Untitled'}
       </p>
       <div
-        onClick={handleToggleMenu}
+        onClick={handleOpenNavMenu}
         className={`${ellipsisClassName} ${styles.ellipsis}`}
       >
         <FaEllipsisH />
       </div>
       <Modal
-        show={showMenu}
-        close={() => setShowMenu(false)}
-        modalPosition={modalPosition}
+        show={showNavMenu}
+        close={() => setShowNavMenu(false)}
+        modalPosition={navMenuPosition}
         modalContainerClassName={styles.menu_container}
         modalClassName={styles.menu}
       >
         <NavElementMenu
           id={id}
           isFavorite={isFavorite}
-          closeMenu={() => setShowMenu(false)}
+          closeMenu={() => setShowNavMenu(false)}
+          openEditModal={handleToggleEditModal}
+        />
+      </Modal>
+      <Modal
+        show={showEditModal}
+        close={() => setShowEditModal(false)}
+        modalPosition={editModalPosition}
+        // modalContainerClassName={styles.menu_container}
+        // modalClassName={styles.menu}
+      >
+        <EditElementModal
+          // id={id}
+          // isFavorite={isFavorite}
+          closeMenu={() => setShowEditModal(false)}
         />
       </Modal>
     </NavLink>
