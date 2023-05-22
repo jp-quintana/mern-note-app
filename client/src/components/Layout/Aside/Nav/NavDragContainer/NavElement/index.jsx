@@ -48,8 +48,8 @@ const NavElement = ({
     const emojiRect = emojiRef.current.getBoundingClientRect();
     const modalTop = emojiRect.bottom;
     const modalLeft = emojiRect.left;
-    setProfileMenuPosition({ top: modalTop, left: modalLeft });
-    setShowProfileMenu(true);
+    setEditModalPosition({ top: modalTop, left: modalLeft });
+    setShowEditModal(true);
   };
 
   return (
