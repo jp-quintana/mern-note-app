@@ -6,7 +6,7 @@ import { FaEllipsisH } from 'react-icons/fa';
 import { useNoteContext } from 'hooks/useNoteContext';
 
 import NavElementMenu from './NavElementMenu';
-import EditElementModal from './EditElementModal';
+import EditElementMenu from '../../../../../EditElementMenu';
 
 import Modal from 'components/Modal';
 
@@ -26,8 +26,8 @@ const NavElement = ({
   const [navMenuPosition, setNavMenuPosition] = useState(null);
   const [showNavMenu, setShowNavMenu] = useState(false);
 
-  const [editModalPosition, setEditModalPosition] = useState(null);
-  const [showEditModal, setShowEditModal] = useState(false);
+  const [editMenuPosition, setEditMenuPosition] = useState(null);
+  const [showEditMenu, setShowEditMenu] = useState(false);
 
   const handleOpenNavMenu = (e) => {
     e.preventDefault();
@@ -48,26 +48,30 @@ const NavElement = ({
     const emojiRect = emojiRef.current.getBoundingClientRect();
     const modalTop = emojiRect.bottom;
     const modalLeft = emojiRect.left;
-    setEditModalPosition({ top: modalTop, left: modalLeft });
-    setShowEditModal(true);
+    setEditMenuPosition({ top: modalTop, left: modalLeft });
+    setShowEditMenu(true);
   };
+
+  const currentEmoji =
+    selectedNote && id === selectedNote.id
+      ? selectedNote.emoji || `\u{1F5CB}`
+      : emoji || `\u{1F5CB}`;
+
+  const currentTitle =
+    selectedNote && id === selectedNote.id
+      ? selectedNote.title.length > 0
+        ? selectedNote.title
+        : 'Untitled'
+      : title.length > 0
+      ? title
+      : 'Untitled';
 
   return (
     <NavLink className={styles.link} to={to}>
       <div ref={emojiRef} className={styles.emoji}>
-        {selectedNote && id === selectedNote.id
-          ? selectedNote.emoji || `\u{1F5CB}`
-          : emoji || `\u{1F5CB}`}
+        {currentEmoji}
       </div>
-      <p>
-        {selectedNote && id === selectedNote.id
-          ? selectedNote.title.length > 0
-            ? selectedNote.title
-            : 'Untitled'
-          : title.length > 0
-          ? title
-          : 'Untitled'}
-      </p>
+      <p>{currentTitle}</p>
       <div
         onClick={handleOpenNavMenu}
         className={`${ellipsisClassName} ${styles.ellipsis}`}
@@ -89,16 +93,18 @@ const NavElement = ({
         />
       </Modal>
       <Modal
-        show={showEditModal}
-        close={() => setShowEditModal(false)}
-        modalPosition={editModalPosition}
-        // modalContainerClassName={styles.menu_container}
-        // modalClassName={styles.menu}
+        show={showEditMenu}
+        close={() => setShowEditMenu(false)}
+        modalPosition={editMenuPosition}
+        modalContainerClassName={styles.menu_container}
+        modalClassName={styles.menu}
       >
-        <EditElementModal
+        <EditElementMenu
           // id={id}
           // isFavorite={isFavorite}
-          closeMenu={() => setShowEditModal(false)}
+          title={currentTitle}
+          emoji={currentEmoji}
+          closeMenu={() => setShowEditMenu(false)}
         />
       </Modal>
     </NavLink>
