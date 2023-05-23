@@ -7,7 +7,8 @@ import { useNoteContext } from './useNoteContext';
 import formatDuplicateName from 'utils/formatDuplicateNames';
 
 export const useNote = () => {
-  const { notes, favoriteNotes, selectedNote, dispatch } = useNoteContext();
+  const { notes, favoriteNotes, selectedNote, dispatch, editingNote } =
+    useNoteContext();
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -150,45 +151,6 @@ export const useNote = () => {
       setError(err);
     }
   };
-
-  // const toggleFavoriteNote = async (id) => {
-  //   setError(null);
-  //   try {
-  //     const updatedNotes = [...notes];
-  //     const existingNoteIndex = notes.findIndex((note) => note.id === id);
-  //     updatedNotes[existingNoteIndex].isFavorite =
-  //       !updatedNotes[existingNoteIndex].isFavorite;
-  //     let payload;
-  //     if (selectedNote && selectedNote.id === id) {
-  //       payload = {
-  //         notes: updatedNotes,
-  //         selectedNote: updatedNotes[existingNoteIndex],
-  //       };
-  //     } else {
-  //       payload = { notes: updatedNotes, selectedNote };
-  //     }
-  //     dispatch({
-  //       type: 'TOGGLE_FAVORITE_NOTE',
-  //       payload,
-  //     });
-  //     const config = {
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     };
-  //     const body = JSON.stringify({
-  //       isFavorite: updatedNotes[existingNoteIndex].isFavorite,
-  //     });
-  //     await axios.put(
-  //       `${import.meta.env.VITE_API_URL}/api/notes/${id}/favorite`,
-  //       body,
-  //       config
-  //     );
-  //   } catch (err) {
-  //     console.error(err.message);
-  //     setError(err);
-  //   }
-  // };
 
   const favoriteNote = async (id) => {
     setError(null);
@@ -463,18 +425,84 @@ export const useNote = () => {
     );
   };
 
+  const setEditingValue = (payload) => {
+    dispatch({ type: 'SET_EDITING_NOTE', payload });
+  };
+
+  const editEditingNote = (key, value) => {
+    dispatch({
+      type: 'EDIT_EDITING_NOTE',
+      payload: { key, value },
+    });
+  };
+
+  const saveEditingChanges = async ({ id, title, emoji }) => {
+    setError(null);
+
+    try {
+      const updatedNotes = [...notes];
+      const updatedFavoriteNotes = [...favoriteNotes];
+      const currentEditingNote = editingNote;
+
+      const existingNormalNoteIndex = notes.findIndex((note) => note.id === id);
+      updatedNotes.splice(existingNormalNoteIndex, 1, currentEditingNote);
+
+      const existingFavoriteNoteIndex = favoriteNotes.findIndex(
+        (note) => note.id === id
+      );
+
+      if (existingFavoriteNoteIndex >= 0) {
+        updatedFavoriteNotes.splice(existingFavoriteNoteIndex, 1, {
+          id: currentEditingNote.id,
+          title: currentEditingNote.title,
+          emoji: currentEditingNote.emoji,
+        });
+      }
+
+      dispatch({
+        type: 'SAVE_EDITING_CHANGES',
+        payload: {
+          notes: updatedNotes,
+          favoriteNotes: updatedFavoriteNotes,
+        },
+      });
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const body = JSON.stringify({
+        title,
+        emoji,
+      });
+
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/notes/${id}`,
+        body,
+        config
+      );
+    } catch (err) {
+      console.error(err.message);
+      setError(err);
+    }
+  };
+
   return {
     setSelectedNote,
     createNote,
     editSelectedNote,
     saveSelectedChanges,
-    // toggleFavoriteNote,
     favoriteNote,
     unfavoriteNote,
     duplicateNote,
     deleteNote,
     sortNormalNotes,
     sortFavoriteNotes,
+    setEditingValue,
+    editEditingNote,
+    saveEditingChanges,
     isLoading,
     error,
   };

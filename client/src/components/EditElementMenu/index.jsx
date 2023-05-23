@@ -1,10 +1,21 @@
 import { useCallback, useEffect, useRef } from 'react';
 
+import { useNote } from 'hooks/useNote';
+
 import Editor from '../Editor';
 
 import styles from './index.module.scss';
 
-const EditElementMenu = ({ title, emoji, closeMenu }) => {
+const EditElementMenu = ({
+  id,
+  isSelected,
+  title,
+  emoji,
+  isFavorite,
+  closeMenu,
+}) => {
+  const { editSelectedNote, editEditingNote, saveEditingChanges } = useNote();
+
   const isFirstRender = useRef(true);
 
   const handleKeyDown = (e, name) => {
@@ -16,19 +27,24 @@ const EditElementMenu = ({ title, emoji, closeMenu }) => {
   };
 
   const handleFormChange = useCallback((e) => {
-    if (!hasEdited) {
-      setHasEdited(true);
+    if (isSelected) {
+      editSelectedNote(e.target.name, e.target.value);
+    } else {
+      editEditingNote(e.target.name, e.target.value);
     }
-
-    editSelectedNote(e.target.name, e.target.value);
   });
 
   useEffect(() => {
-    if (isFirstRender.current) {
-      isFirstRender.current = false;
-    } else {
+    if (!isFavorite) {
+      if (isFirstRender.current) {
+        isFirstRender.current = false;
+      } else {
+        if (!isSelected) {
+          saveEditingChanges({ id, title, emoji });
+        }
+      }
     }
-  }, []);
+  }, [title, emoji]);
 
   return (
     <div className={styles.container}>

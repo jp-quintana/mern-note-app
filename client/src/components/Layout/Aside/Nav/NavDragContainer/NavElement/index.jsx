@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { FaEllipsisH } from 'react-icons/fa';
 
 import { useNoteContext } from 'hooks/useNoteContext';
+import { useNote } from 'hooks/useNote';
 
 import NavElementMenu from './NavElementMenu';
 import EditElementMenu from '../../../../../EditElementMenu';
@@ -22,7 +23,9 @@ const NavElement = ({
 }) => {
   const emojiRef = useRef(null);
 
-  const { selectedNote } = useNoteContext();
+  const { selectedNote, editingNote } = useNoteContext();
+  const { setEditingValue } = useNote();
+
   const [navMenuPosition, setNavMenuPosition] = useState(null);
   const [showNavMenu, setShowNavMenu] = useState(false);
 
@@ -45,6 +48,7 @@ const NavElement = ({
 
   const handleToggleEditModal = (e) => {
     e.preventDefault();
+    setEditingValue({ id, title, emoji });
     const emojiRect = emojiRef.current.getBoundingClientRect();
     const modalTop = emojiRect.bottom;
     const modalLeft = emojiRect.left;
@@ -52,19 +56,31 @@ const NavElement = ({
     setShowEditMenu(true);
   };
 
-  const currentEmoji =
-    selectedNote && id === selectedNote.id
-      ? selectedNote.emoji || `\u{1F5CB}`
-      : emoji || `\u{1F5CB}`;
+  const handleCloseEditModal = (e) => {
+    setShowEditMenu(false);
+    setEditingValue(null);
+  };
 
-  const currentTitle =
-    selectedNote && id === selectedNote.id
-      ? selectedNote.title.length > 0
-        ? selectedNote.title
-        : 'Untitled'
-      : title.length > 0
-      ? title
-      : 'Untitled';
+  const isSelectedElement = (selectedNote && selectedNote.id) === id;
+
+  const isEditingElement =
+    (!isSelectedElement && editingNote && editingNote.id) === id;
+
+  const currentEmoji = isEditingElement
+    ? editingNote.emoji
+    : isSelectedElement
+    ? selectedNote.emoji || `\u{1F5CB}`
+    : emoji || `\u{1F5CB}`;
+
+  const currentTitle = isEditingElement
+    ? editingNote.title
+    : isSelectedElement
+    ? selectedNote.title.length > 0
+      ? selectedNote.title
+      : 'Untitled'
+    : title.length > 0
+    ? title
+    : 'Untitled';
 
   return (
     <NavLink className={styles.link} to={to}>
@@ -100,11 +116,12 @@ const NavElement = ({
         modalClassName={styles.menu}
       >
         <EditElementMenu
-          // id={id}
-          // isFavorite={isFavorite}
+          id={id}
+          isSelected={isSelectedElement}
           title={currentTitle}
           emoji={currentEmoji}
-          closeMenu={() => setShowEditMenu(false)}
+          isFavorite={isFavorite}
+          closeMenu={handleCloseEditModal}
         />
       </Modal>
     </NavLink>

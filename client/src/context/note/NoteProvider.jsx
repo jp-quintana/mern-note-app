@@ -5,19 +5,12 @@ import { useAuthContext } from 'hooks/useAuthContext';
 
 import NoteContext from './note-context';
 
-// TODO: remove
-// const DUMMY_NOTES = [
-//   { id: '1', title: 'TO DO', emoji: '🐑', isFavorite: true },
-//   { id: '2', title: 'Grocery list', emoji: '', isFavorite: false },
-//   { id: '3', title: 'Goals', emoji: '', isFavorite: false },
-//   { id: '4', title: 'Weight loss', emoji: '', isFavorite: false },
-// ];
-
 const initialState = {
   notesAreReady: false,
   notes: [],
   favoriteNotes: [],
   selectedNote: null,
+  editingNote: null,
 };
 
 const noteReducer = (state, action) => {
@@ -64,6 +57,31 @@ const noteReducer = (state, action) => {
           [key]: value,
           updatedAt: new Date(),
         },
+      };
+    }
+
+    case 'SET_EDITING_NOTE': {
+      return {
+        ...state,
+        editingNote: payload,
+      };
+    }
+
+    case 'EDIT_EDITING_NOTE': {
+      const { key, value } = payload;
+      return {
+        ...state,
+        editingNote: {
+          ...state.editingNote,
+          [key]: value,
+        },
+      };
+    }
+
+    case 'SAVE_EDITING_CHANGES': {
+      return {
+        ...state,
+        ...payload,
       };
     }
 
