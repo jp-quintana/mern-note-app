@@ -7,7 +7,8 @@ import { useNoteContext } from 'hooks/useNoteContext';
 import { useNote } from 'hooks/useNote';
 
 import NavElementMenu from './NavElementMenu';
-import EditElementMenu from '../../../../../EditElementMenu';
+import EditElementMenu from 'components/EditElementMenu';
+import EmojiPicker from 'components/EmojiPicker';
 
 import Modal from 'components/Modal';
 
@@ -23,8 +24,11 @@ const NavElement = ({
 }) => {
   const emojiRef = useRef(null);
 
-  const { selectedNote, editingNote } = useNoteContext();
-  const { setEditingValue } = useNote();
+  const { selectedNote, editingValue } = useNoteContext();
+  const { setEditingValue, editSelectedNote, updateEmojiFromNav } = useNote();
+
+  const [pickerPosition, setPickerPosition] = useState(null);
+  const [showPicker, setShowPicker] = useState(false);
 
   const [navMenuPosition, setNavMenuPosition] = useState(null);
   const [showNavMenu, setShowNavMenu] = useState(false);
@@ -35,18 +39,18 @@ const NavElement = ({
   const handleOpenNavMenu = (e) => {
     e.preventDefault();
     const targetRect = e.target.getBoundingClientRect();
+    const modalHeight = 227;
     const isAboveMidpoint =
       targetRect.top + targetRect.height / 2 < window.innerHeight / 2;
-    const modalHeight = 200;
-    const modalTop = isAboveMidpoint
-      ? targetRect.bottom
-      : targetRect.top - modalHeight;
     const modalLeft = targetRect.right;
-    setNavMenuPosition({ top: modalTop, left: modalLeft });
+    const navMenuPosition = isAboveMidpoint
+      ? { top: targetRect.bottom, left: modalLeft }
+      : { top: targetRect.top - modalHeight, left: modalLeft };
+    setNavMenuPosition(navMenuPosition);
     setShowNavMenu(true);
   };
 
-  const handleToggleEditModal = (e) => {
+  const handleOpenEditModal = (e) => {
     e.preventDefault();
     setEditingValue({ id, title, emoji });
     const emojiRect = emojiRef.current.getBoundingClientRect();
@@ -56,44 +60,64 @@ const NavElement = ({
     setShowEditMenu(true);
   };
 
-  const handleCloseEditModal = (e) => {
+  const handleCloseEditModal = () => {
     setShowEditMenu(false);
     setEditingValue(null);
   };
 
-  const isSelectedElement = (selectedNote && selectedNote.id) === id;
+  const isSelectedElement = selectedNote && selectedNote.id === id;
 
   const isEditingElement =
-    (!isSelectedElement && editingNote && editingNote.id) === id;
+    !isSelectedElement && editingValue && editingValue.id === id;
 
   const currentEmoji = isEditingElement
-    ? editingNote.emoji
+    ? editingValue.emoji
     : isSelectedElement
-    ? selectedNote.emoji || `\u{1F5CB}`
-    : emoji || `\u{1F5CB}`;
+    ? selectedNote.emoji
+    : emoji;
 
   const currentTitle = isEditingElement
-    ? editingNote.title
+    ? editingValue.title
     : isSelectedElement
-    ? selectedNote.title.length > 0
-      ? selectedNote.title
-      : 'Untitled'
-    : title.length > 0
-    ? title
-    : 'Untitled';
+    ? selectedNote.title
+    : title;
+
+  const handleOpenPicker = (e) => {
+    e.preventDefault();
+    const emojiRect = e.target.getBoundingClientRect();
+    const distanceFromBottom = window.innerHeight - emojiRect.bottom;
+    const modalHeight = 435;
+    let pickerPosition;
+    if (distanceFromBottom < modalHeight) {
+      const topPosition = window.innerHeight - modalHeight - 10;
+      pickerPosition = { top: topPosition, left: emojiRect.right + 5 };
+    } else {
+      pickerPosition = { top: emojiRect.bottom + 3, left: emojiRect.left };
+    }
+    setPickerPosition(pickerPosition);
+    setShowPicker(true);
+  };
+
+  const handleEmojiSelect = (e) => {
+    if (isSelectedElement) {
+      editSelectedNote('emoji', e.native);
+    } else {
+      updateEmojiFromNav(e.native);
+    }
+    setShowPicker(false);
+  };
 
   return (
-    <NavLink className={styles.link} to={to}>
-      <div ref={emojiRef} className={styles.emoji}>
-        {currentEmoji}
-      </div>
-      <p>{currentTitle}</p>
-      <div
-        onClick={handleOpenNavMenu}
-        className={`${ellipsisClassName} ${styles.ellipsis}`}
+    <>
+      <Modal
+        show={showPicker}
+        close={() => setShowPicker(false)}
+        modalPosition={pickerPosition}
+        modalContainerClassName={styles.picker_container}
+        modalClassName={styles.picker}
       >
-        <FaEllipsisH />
-      </div>
+        <EmojiPicker onEmojiSelect={handleEmojiSelect} theme="dark" />
+      </Modal>
       <Modal
         show={showNavMenu}
         close={() => setShowNavMenu(false)}
@@ -105,12 +129,12 @@ const NavElement = ({
           id={id}
           isFavorite={isFavorite}
           closeMenu={() => setShowNavMenu(false)}
-          openEditModal={handleToggleEditModal}
+          openEditModal={handleOpenEditModal}
         />
       </Modal>
       <Modal
         show={showEditMenu}
-        close={() => setShowEditMenu(false)}
+        close={handleCloseEditModal}
         modalPosition={editMenuPosition}
         modalContainerClassName={styles.menu_container}
         modalClassName={styles.menu}
@@ -119,12 +143,24 @@ const NavElement = ({
           id={id}
           isSelected={isSelectedElement}
           title={currentTitle}
-          emoji={currentEmoji}
+          emoji={currentEmoji === '' ? `\u{1F5CB}` : currentEmoji}
           isFavorite={isFavorite}
           closeMenu={handleCloseEditModal}
         />
       </Modal>
-    </NavLink>
+      <NavLink className={styles.link} to={to}>
+        <div onClick={handleOpenPicker} ref={emojiRef} className={styles.emoji}>
+          {currentEmoji === '' ? `\u{1F5CB}` : currentEmoji}
+        </div>
+        <p>{currentTitle.length > 0 ? currentTitle : 'Untitled'}</p>
+        <div
+          onClick={handleOpenNavMenu}
+          className={`${ellipsisClassName} ${styles.ellipsis}`}
+        >
+          <FaEllipsisH />
+        </div>
+      </NavLink>
+    </>
   );
 };
 

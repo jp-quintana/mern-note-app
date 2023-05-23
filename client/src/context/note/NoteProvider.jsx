@@ -10,7 +10,7 @@ const initialState = {
   notes: [],
   favoriteNotes: [],
   selectedNote: null,
-  editingNote: null,
+  editingValue: null,
 };
 
 const noteReducer = (state, action) => {
@@ -60,25 +60,26 @@ const noteReducer = (state, action) => {
       };
     }
 
-    case 'SET_EDITING_NOTE': {
+    case 'SET_EDITING_VALUE': {
       return {
         ...state,
-        editingNote: payload,
+        editingValue: payload,
       };
     }
 
-    case 'EDIT_EDITING_NOTE': {
+    case 'UPDATE_EDITING_VALUE': {
       const { key, value } = payload;
       return {
         ...state,
-        editingNote: {
-          ...state.editingNote,
+        editingValue: {
+          ...state.editingValue,
           [key]: value,
+          updatedAt: new Date(),
         },
       };
     }
 
-    case 'SAVE_EDITING_CHANGES': {
+    case 'SAVE_EDITING_VALUE': {
       return {
         ...state,
         ...payload,
@@ -110,14 +111,7 @@ const noteReducer = (state, action) => {
       };
     }
 
-    case 'DELETE_NOTE': {
-      return {
-        ...state,
-        ...payload,
-      };
-    }
-
-    case 'SORT_NOTES': {
+    case 'SORT_NORMAL_NOTES': {
       return {
         ...state,
         notes: payload,
@@ -128,6 +122,13 @@ const noteReducer = (state, action) => {
       return {
         ...state,
         favoriteNotes: payload,
+      };
+    }
+
+    case 'DELETE_NOTE': {
+      return {
+        ...state,
+        ...payload,
       };
     }
 

@@ -35,3 +35,10 @@
     width: 100%;
   }
 }
+
+.picker_container {
+  .picker {
+    z-index: 2;
+    position: absolute;
+  }
+}

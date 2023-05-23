@@ -7,9 +7,9 @@
   width: 38rem;
   box-shadow: $box-shadow-modal;
 
-  .emoji_wrapper {
+  .emoji {
     height: 2.8rem;
-    width: 2.8rem;
+    width: 3rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -43,5 +43,12 @@
       resize: none !important;
       line-height: 2;
     }
+  }
+}
+
+.picker_container {
+  .picker {
+    z-index: 2;
+    position: absolute;
   }
 }

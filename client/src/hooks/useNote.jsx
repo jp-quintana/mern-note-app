@@ -7,7 +7,7 @@ import { useNoteContext } from './useNoteContext';
 import formatDuplicateName from 'utils/formatDuplicateNames';
 
 export const useNote = () => {
-  const { notes, favoriteNotes, selectedNote, dispatch, editingNote } =
+  const { notes, favoriteNotes, selectedNote, dispatch, editingValue } =
     useNoteContext();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -152,6 +152,70 @@ export const useNote = () => {
     }
   };
 
+  const setEditingValue = (payload) => {
+    dispatch({ type: 'SET_EDITING_VALUE', payload });
+  };
+
+  const updateEditingValue = (key, value) => {
+    dispatch({
+      type: 'UPDATE_EDITING_VALUE',
+      payload: { key, value },
+    });
+  };
+
+  const saveEditingValue = async ({ id, title, emoji }) => {
+    setError(null);
+    console.log(id, title, emoji);
+    try {
+      const updatedNotes = [...notes];
+      const updatedFavoriteNotes = [...favoriteNotes];
+      const currentEditingValue = editingValue;
+
+      const existingNormalNoteIndex = notes.findIndex((note) => note.id === id);
+      updatedNotes.splice(existingNormalNoteIndex, 1, currentEditingValue);
+
+      const existingFavoriteNoteIndex = favoriteNotes.findIndex(
+        (note) => note.id === id
+      );
+
+      if (existingFavoriteNoteIndex >= 0) {
+        updatedFavoriteNotes.splice(existingFavoriteNoteIndex, 1, {
+          id: currentEditingValue.id,
+          title: currentEditingValue.title,
+          emoji: currentEditingValue.emoji,
+        });
+      }
+
+      dispatch({
+        type: 'SAVE_EDITING_VALUE',
+        payload: {
+          notes: updatedNotes,
+          favoriteNotes: updatedFavoriteNotes,
+        },
+      });
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const body = JSON.stringify({
+        title,
+        emoji,
+      });
+
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/notes/${id}`,
+        body,
+        config
+      );
+    } catch (err) {
+      console.error(err.message);
+      setError(err);
+    }
+  };
+
   const favoriteNote = async (id) => {
     setError(null);
 
@@ -189,20 +253,8 @@ export const useNote = () => {
         payload,
       });
 
-      // const config = {
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // };
-
-      // const body = JSON.stringify({
-      //   isFavorite: updatedNotes[existingNoteIndex].isFavorite,
-      // });
-
       await axios.put(
         `${import.meta.env.VITE_API_URL}/api/notes/${id}/favorite`
-        // body,
-        // config
       );
     } catch (err) {
       console.error(err.message);
@@ -244,25 +296,79 @@ export const useNote = () => {
         payload,
       });
 
-      // const config = {
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // };
-
-      // const body = JSON.stringify({
-      //   isFavorite: updatedNotes[existingNoteIndex].isFavorite,
-      // });
-
       await axios.put(
         `${import.meta.env.VITE_API_URL}/api/notes/${id}/unfavorite`
-        // body,
-        // config
       );
     } catch (err) {
       console.error(err.message);
       setError(err);
     }
+  };
+
+  const sortNormalNotes = async (id, newIndex) => {
+    const notesToUpdate = notes.filter((note) => note.id !== id);
+
+    notesToUpdate.splice(
+      newIndex,
+      0,
+      notes.find((note) => note.id === id)
+    );
+
+    const updatedNotes = notesToUpdate.map((note, index) => ({
+      ...note,
+      index,
+    }));
+
+    dispatch({ type: 'SORT_NORMAL_NOTES', payload: updatedNotes });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const body = JSON.stringify({
+      newOrder: updatedNotes.map((note) => note.id),
+    });
+
+    await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/notes/sortNormalList`,
+      body,
+      config
+    );
+  };
+
+  const sortFavoriteNotes = async (id, newIndex) => {
+    const notesToUpdate = favoriteNotes.filter((note) => note.id !== id);
+
+    notesToUpdate.splice(
+      newIndex,
+      0,
+      notes.find((note) => note.id === id)
+    );
+
+    const updatedNotes = notesToUpdate.map((note, index) => ({
+      ...note,
+      index,
+    }));
+
+    dispatch({ type: 'SORT_FAVORITE_NOTES', payload: updatedNotes });
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const body = JSON.stringify({
+      newOrder: updatedNotes.map((note) => note.id),
+    });
+
+    await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/notes/sortFavoriteList`,
+      body,
+      config
+    );
   };
 
   const duplicateNote = async (id) => {
@@ -359,134 +465,38 @@ export const useNote = () => {
     }
   };
 
-  const sortNormalNotes = async (id, newIndex) => {
-    const notesToUpdate = notes.filter((note) => note.id !== id);
-
-    notesToUpdate.splice(
-      newIndex,
-      0,
-      notes.find((note) => note.id === id)
-    );
-
-    const updatedNotes = notesToUpdate.map((note, index) => ({
-      ...note,
-      index,
-    }));
-
-    dispatch({ type: 'SORT_NOTES', payload: updatedNotes });
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
-    const body = JSON.stringify({
-      newOrder: updatedNotes.map((note) => note.id),
-    });
-
-    await axios.put(
-      `${import.meta.env.VITE_API_URL}/api/notes/sortNormalList`,
-      body,
-      config
-    );
-  };
-
-  const sortFavoriteNotes = async (id, newIndex) => {
-    const notesToUpdate = favoriteNotes.filter((note) => note.id !== id);
-
-    notesToUpdate.splice(
-      newIndex,
-      0,
-      notes.find((note) => note.id === id)
-    );
-
-    const updatedNotes = notesToUpdate.map((note, index) => ({
-      ...note,
-      index,
-    }));
-
-    dispatch({ type: 'SORT_FAVORITE_NOTES', payload: updatedNotes });
-
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
-    const body = JSON.stringify({
-      newOrder: updatedNotes.map((note) => note.id),
-    });
-
-    await axios.put(
-      `${import.meta.env.VITE_API_URL}/api/notes/sortFavoriteList`,
-      body,
-      config
-    );
-  };
-
-  const setEditingValue = (payload) => {
-    dispatch({ type: 'SET_EDITING_NOTE', payload });
-  };
-
-  const editEditingNote = (key, value) => {
-    dispatch({
-      type: 'EDIT_EDITING_NOTE',
-      payload: { key, value },
-    });
-  };
-
-  const saveEditingChanges = async ({ id, title, emoji }) => {
-    setError(null);
-
-    try {
-      const updatedNotes = [...notes];
-      const updatedFavoriteNotes = [...favoriteNotes];
-      const currentEditingNote = editingNote;
-
-      const existingNormalNoteIndex = notes.findIndex((note) => note.id === id);
-      updatedNotes.splice(existingNormalNoteIndex, 1, currentEditingNote);
-
-      const existingFavoriteNoteIndex = favoriteNotes.findIndex(
-        (note) => note.id === id
-      );
-
-      if (existingFavoriteNoteIndex >= 0) {
-        updatedFavoriteNotes.splice(existingFavoriteNoteIndex, 1, {
-          id: currentEditingNote.id,
-          title: currentEditingNote.title,
-          emoji: currentEditingNote.emoji,
-        });
-      }
-
-      dispatch({
-        type: 'SAVE_EDITING_CHANGES',
-        payload: {
-          notes: updatedNotes,
-          favoriteNotes: updatedFavoriteNotes,
-        },
-      });
-
-      // const config = {
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // };
-
-      // const body = JSON.stringify({
-      //   title,
-      //   emoji,
-      // });
-
-      // await axios.put(
-      //   `${import.meta.env.VITE_API_URL}/api/notes/${id}`,
-      //   body,
-      //   config
-      // );
-    } catch (err) {
-      console.error(err.message);
-      setError(err);
-    }
+  const updateEmojiFromNav = async (emoji) => {
+    // setError(null);
+    // setIsLoading(true);
+    // try {
+    //   const updatedNotes = [...notes];
+    //   const updatedFavoriteNotes = [...favoriteNotes];
+    //   const existingNoteIndex = notes.findIndex((note) => note.id === id);
+    //   updatedNotes.splice(existingNoteIndex, 1);
+    //   const existingFavoriteNoteIndex = favoriteNotes.findIndex(
+    //     (note) => note.id === id
+    //   );
+    //   if (existingFavoriteNoteIndex >= 0) {
+    //     updatedFavoriteNotes.splice(existingFavoriteNoteIndex, 1);
+    //   }
+    //   let payload;
+    //   if (selectedNote && selectedNote.id === id) {
+    //     payload = {
+    //       notes: updatedNotes,
+    //       favoriteNotes: updatedFavoriteNotes,
+    //       selectedNote: null,
+    //     };
+    //   } else {
+    //     payload = { notes: updatedNotes, favoriteNotes: updatedFavoriteNotes };
+    //   }
+    //   dispatch({ type: 'DELETE_NOTE', payload });
+    //   await axios.delete(`${import.meta.env.VITE_API_URL}/api/notes/${id}`);
+    //   setIsLoading(false);
+    // } catch (err) {
+    //   console.error(err.message);
+    //   setError(err.message);
+    //   setIsLoading(false);
+    // }
   };
 
   return {
@@ -501,8 +511,9 @@ export const useNote = () => {
     sortNormalNotes,
     sortFavoriteNotes,
     setEditingValue,
-    editEditingNote,
-    saveEditingChanges,
+    updateEditingValue,
+    saveEditingValue,
+    updateEmojiFromNav,
     isLoading,
     error,
   };
