@@ -6,14 +6,7 @@ import Editor from '../Editor';
 
 import styles from './index.module.scss';
 
-const EditElementMenu = ({
-  id,
-  isSelected,
-  title,
-  emoji,
-  isFavorite,
-  closeMenu,
-}) => {
+const EditElementMenu = ({ id, isSelected, title, emoji, closeMenu }) => {
   const { editSelectedNote, editEditingNote, saveEditingChanges } = useNote();
 
   const isFirstRender = useRef(true);
@@ -35,13 +28,15 @@ const EditElementMenu = ({
   });
 
   useEffect(() => {
-    if (!isFavorite) {
-      if (isFirstRender.current) {
-        isFirstRender.current = false;
-      } else {
-        if (!isSelected) {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+    } else {
+      if (!isSelected) {
+        const timer = setTimeout(() => {
           saveEditingChanges({ id, title, emoji });
-        }
+        }, 200);
+
+        return () => clearTimeout(timer);
       }
     }
   }, [title, emoji]);

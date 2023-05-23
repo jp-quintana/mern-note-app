@@ -467,22 +467,22 @@ export const useNote = () => {
         },
       });
 
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      };
+      // const config = {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // };
 
-      const body = JSON.stringify({
-        title,
-        emoji,
-      });
+      // const body = JSON.stringify({
+      //   title,
+      //   emoji,
+      // });
 
-      await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/notes/${id}`,
-        body,
-        config
-      );
+      // await axios.put(
+      //   `${import.meta.env.VITE_API_URL}/api/notes/${id}`,
+      //   body,
+      //   config
+      // );
     } catch (err) {
       console.error(err.message);
       setError(err);
