@@ -143,7 +143,7 @@ const NavElement = ({
           id={id}
           isSelected={isSelectedElement}
           title={currentTitle}
-          emoji={currentEmoji === '' ? `\u{1F5CB}` : currentEmoji}
+          emoji={currentEmoji ? currentEmoji : `\u{1F5CB}`}
           isFavorite={isFavorite}
           closeMenu={handleCloseEditModal}
         />
