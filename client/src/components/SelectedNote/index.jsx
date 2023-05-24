@@ -4,7 +4,7 @@ import { FaSmile, FaImage } from 'react-icons/fa';
 import { useNote } from 'hooks/useNote';
 import { useNoteContext } from 'hooks/useNoteContext';
 
-import Editor from './Editor';
+import Editor from '../Editor';
 
 import Modal from 'components/Modal';
 import EmojiPicker from 'components/EmojiPicker';
@@ -16,18 +16,13 @@ const SelectedNote = () => {
   const { selectedNote } = useNoteContext();
 
   const contentRef = useRef();
-
-  const [hasEdited, setHasEdited] = useState(false);
+  const isFirstRender = useRef(true);
 
   const { id, title, emoji, content } = selectedNote;
 
   const [showPicker, setShowPicker] = useState(false);
 
   const handleEmojiSelect = (e) => {
-    if (!hasEdited) {
-      setHasEdited(true);
-    }
-
     editSelectedNote('emoji', e.native);
     setShowPicker(false);
   };
@@ -42,22 +37,20 @@ const SelectedNote = () => {
   };
 
   const handleFormChange = useCallback((e) => {
-    if (!hasEdited) {
-      setHasEdited(true);
-    }
-
     editSelectedNote(e.target.name, e.target.value);
   });
 
   useEffect(() => {
-    if (hasEdited) {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+    } else {
       const timer = setTimeout(() => {
         saveSelectedChanges({ id, title, emoji, content });
       }, 300);
 
       return () => clearTimeout(timer);
     }
-  }, [title, emoji, content, hasEdited]);
+  }, [title, emoji, content]);
 
   return (
     <div className={styles.container}>

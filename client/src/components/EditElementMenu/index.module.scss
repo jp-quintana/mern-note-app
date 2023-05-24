@@ -1,0 +1,54 @@
+.container {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: rgb(37, 37, 37);
+  border-radius: 0.4rem;
+  width: 38rem;
+  box-shadow: $box-shadow-modal;
+
+  .emoji {
+    height: 2.8rem;
+    width: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.4rem;
+    box-shadow: rgba(255, 255, 255, 0.13) 0px 0px 0px 1px inset;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .input_wrapper {
+    flex-grow: 1;
+    width: 100%;
+    height: 2.8rem;
+    max-height: 2.8rem;
+    display: flex;
+    align-items: center;
+    box-shadow: rgba(15, 15, 15, 0.2) 0px 0px 0px 1px inset;
+    background: rgba(255, 255, 255, 0.055);
+    border-radius: 0.4rem;
+    padding: 0 1rem;
+
+    .input {
+      all: unset;
+      width: 100%;
+      overflow-x: hidden;
+      max-height: 2.8rem;
+      display: flex;
+      align-items: center;
+      resize: none !important;
+      line-height: 2;
+    }
+  }
+}
+
+.picker_container {
+  .picker {
+    z-index: 2;
+    position: absolute;
+  }
+}

@@ -4,11 +4,12 @@ import TextareaAutosize from 'react-textarea-autosize';
 
 const Editor = forwardRef(
   (
-    { isTitle, value, name, placeholder, onInput, onKeyDown, className },
+    { isTitle, rows, value, name, placeholder, onInput, onKeyDown, className },
     ref
   ) => {
     return (
       <TextareaAutosize
+        rows={rows}
         value={value}
         name={name}
         placeholder={placeholder}

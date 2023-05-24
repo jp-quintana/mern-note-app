@@ -5,19 +5,12 @@ import { useAuthContext } from 'hooks/useAuthContext';
 
 import NoteContext from './note-context';
 
-// TODO: remove
-// const DUMMY_NOTES = [
-//   { id: '1', title: 'TO DO', emoji: '🐑', isFavorite: true },
-//   { id: '2', title: 'Grocery list', emoji: '', isFavorite: false },
-//   { id: '3', title: 'Goals', emoji: '', isFavorite: false },
-//   { id: '4', title: 'Weight loss', emoji: '', isFavorite: false },
-// ];
-
 const initialState = {
   notesAreReady: false,
   notes: [],
   favoriteNotes: [],
   selectedNote: null,
+  editingValue: null,
 };
 
 const noteReducer = (state, action) => {
@@ -67,6 +60,33 @@ const noteReducer = (state, action) => {
       };
     }
 
+    case 'SET_EDITING_VALUE': {
+      return {
+        ...state,
+        editingValue: payload,
+      };
+    }
+
+    case 'UPDATE_EDITING_VALUE': {
+      const { key, value } = payload;
+      return {
+        ...state,
+        editingValue: {
+          ...state.editingValue,
+          [key]: value,
+          updatedAt: new Date(),
+        },
+      };
+    }
+
+    case 'SAVE_EDITING_VALUE':
+    case 'UPDATE_EMOJI_FROM_NAV': {
+      return {
+        ...state,
+        ...payload,
+      };
+    }
+
     case 'TOGGLE_FAVORITE_NOTE': {
       return {
         ...state,
@@ -92,14 +112,7 @@ const noteReducer = (state, action) => {
       };
     }
 
-    case 'DELETE_NOTE': {
-      return {
-        ...state,
-        ...payload,
-      };
-    }
-
-    case 'SORT_NOTES': {
+    case 'SORT_NORMAL_NOTES': {
       return {
         ...state,
         notes: payload,
@@ -110,6 +123,13 @@ const noteReducer = (state, action) => {
       return {
         ...state,
         favoriteNotes: payload,
+      };
+    }
+
+    case 'DELETE_NOTE': {
+      return {
+        ...state,
+        ...payload,
       };
     }
 

@@ -5,7 +5,7 @@ import { useNote } from 'hooks/useNote';
 
 import styles from './index.module.scss';
 
-const NavElementMenu = ({ id, isFavorite, closeMenu }) => {
+const NavElementMenu = ({ id, isFavorite, closeMenu, openEditModal }) => {
   const { favoriteNote, unfavoriteNote, duplicateNote, deleteNote } = useNote();
 
   const handleDeleteNote = async () => {
@@ -26,6 +26,12 @@ const NavElementMenu = ({ id, isFavorite, closeMenu }) => {
     closeMenu();
   };
 
+  const handleEdit = async (e) => {
+    openEditModal(e);
+    closeMenu();
+  };
+
+  // TODO: Fix this for production
   const handleCopyLink = () => {
     navigator.clipboard.writeText(`http://127.0.0.1:5173/notes/${id}`);
     closeMenu();
@@ -63,7 +69,7 @@ const NavElementMenu = ({ id, isFavorite, closeMenu }) => {
             <FaLink size={`1.6rem`} />
             <p>Copy Link</p>
           </li>
-          <li className={styles.list_item} onClick={closeMenu}>
+          <li className={styles.list_item} onClick={handleEdit}>
             <FaEdit size={`1.6rem`} />
             <p>Rename</p>
           </li>
