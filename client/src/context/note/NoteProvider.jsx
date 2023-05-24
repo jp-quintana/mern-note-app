@@ -79,7 +79,8 @@ const noteReducer = (state, action) => {
       };
     }
 
-    case 'SAVE_EDITING_VALUE': {
+    case 'SAVE_EDITING_VALUE':
+    case 'UPDATE_EMOJI_FROM_NAV': {
       return {
         ...state,
         ...payload,

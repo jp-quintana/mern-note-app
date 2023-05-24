@@ -102,7 +102,7 @@ const NavElement = ({
     if (isSelectedElement) {
       editSelectedNote('emoji', e.native);
     } else {
-      updateEmojiFromNav(e.native);
+      updateEmojiFromNav(id, e.native);
     }
     setShowPicker(false);
   };

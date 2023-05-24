@@ -465,38 +465,53 @@ export const useNote = () => {
     }
   };
 
-  const updateEmojiFromNav = async (emoji) => {
-    // setError(null);
+  const updateEmojiFromNav = async (id, emoji) => {
+    setError(null);
     // setIsLoading(true);
-    // try {
-    //   const updatedNotes = [...notes];
-    //   const updatedFavoriteNotes = [...favoriteNotes];
-    //   const existingNoteIndex = notes.findIndex((note) => note.id === id);
-    //   updatedNotes.splice(existingNoteIndex, 1);
-    //   const existingFavoriteNoteIndex = favoriteNotes.findIndex(
-    //     (note) => note.id === id
-    //   );
-    //   if (existingFavoriteNoteIndex >= 0) {
-    //     updatedFavoriteNotes.splice(existingFavoriteNoteIndex, 1);
-    //   }
-    //   let payload;
-    //   if (selectedNote && selectedNote.id === id) {
-    //     payload = {
-    //       notes: updatedNotes,
-    //       favoriteNotes: updatedFavoriteNotes,
-    //       selectedNote: null,
-    //     };
-    //   } else {
-    //     payload = { notes: updatedNotes, favoriteNotes: updatedFavoriteNotes };
-    //   }
-    //   dispatch({ type: 'DELETE_NOTE', payload });
-    //   await axios.delete(`${import.meta.env.VITE_API_URL}/api/notes/${id}`);
-    //   setIsLoading(false);
-    // } catch (err) {
-    //   console.error(err.message);
-    //   setError(err.message);
-    //   setIsLoading(false);
-    // }
+    try {
+      const updatedNotes = [...notes];
+      const updatedFavoriteNotes = [...favoriteNotes];
+
+      const existingNormalNoteIndex = notes.findIndex((note) => note.id === id);
+      updatedNotes[existingNormalNoteIndex].emoji = emoji;
+
+      const existingFavoriteNoteIndex = favoriteNotes.findIndex(
+        (note) => note.id === id
+      );
+
+      if (existingFavoriteNoteIndex >= 0) {
+        updatedFavoriteNotes[existingFavoriteNoteIndex].emoji = emoji;
+      }
+
+      dispatch({
+        type: 'UPDATE_EMOJI_FROM_NAV',
+        payload: {
+          notes: updatedNotes,
+          favoriteNotes: updatedFavoriteNotes,
+        },
+      });
+
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const body = JSON.stringify({
+        emoji,
+      });
+
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/notes/${id}`,
+        body,
+        config
+      );
+      setIsLoading(false);
+    } catch (err) {
+      console.error(err.message);
+      setError(err.message);
+      setIsLoading(false);
+    }
   };
 
   return {
