@@ -42,9 +42,12 @@ const noteReducer = (state, action) => {
     }
 
     case 'SET_SELECTED_CONTENT': {
+      console.log('SET_SELECTED_CONTENT is running');
       return {
         ...state,
-        selectedNote: { ...state.selectedNote, content: payload },
+        selectedNote: !state.selectedNote
+          ? null
+          : { ...state.selectedNote, content: payload },
       };
     }
 
@@ -127,6 +130,8 @@ const noteReducer = (state, action) => {
     }
 
     case 'DELETE_NOTE': {
+      console.log('DELETE_NOTE is running');
+
       return {
         ...state,
         ...payload,

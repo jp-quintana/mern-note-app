@@ -34,7 +34,7 @@ const Nav = () => {
   };
 
   useEffect(() => {
-    if (needToNavigate) {
+    if (needToNavigate && notes.length > 0) {
       navigate(`/notes/${notes[0].id}`);
       setNeedToNavigate(false);
     }
