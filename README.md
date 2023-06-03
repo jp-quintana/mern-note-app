@@ -44,7 +44,7 @@ DAO_OPTION="Currently MONGOOSE is only option available. It is also the default 
 JWT_SECRET="Can not be left empty."
 ```
 
-- Step 4: Create .env.local file and add in server directory.
+- Step 4: Create .env.local file and add in client directory.
 
 ```
 VITE_API_URL='http://localhost:8080'
