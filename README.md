@@ -25,7 +25,7 @@ Check issues tab.
 - Step 1: Clone Repository and Install Packages.
 
 ```
-git clone https://github.com/jp-quintana/flaakko-shopping-cart.git
+git clone https://github.com/jp-quintana/mern-note-app.git
 
 npm i
 
