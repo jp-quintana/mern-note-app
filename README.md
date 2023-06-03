@@ -10,7 +10,6 @@ https://github.com/jp-quintana/mern-note-app/assets/87621233/10b92abc-03c0-4932-
 
 ## Features
 
-- Products Display.
 - Create, Edit, Duplicate and Delete notes.
 - Basic note customization.
 - Note list reorder.
