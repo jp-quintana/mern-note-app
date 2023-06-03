@@ -12,6 +12,7 @@ const EditElementMenu = ({ id, isSelected, title, emoji, closeMenu }) => {
   const { editSelectedNote, updateEditingValue, saveEditingValue } = useNote();
 
   const isFirstRender = useRef(true);
+  const titleRef = useRef(null);
   const elementRef = useRef(null);
 
   const [showPicker, setShowPicker] = useState(false);
@@ -64,6 +65,11 @@ const EditElementMenu = ({ id, isSelected, title, emoji, closeMenu }) => {
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false;
+      titleRef.current.focus();
+      titleRef.current.setSelectionRange(
+        titleRef.current.value.length,
+        titleRef.current.value.length
+      );
     } else {
       if (!isSelected) {
         const timer = setTimeout(() => {
@@ -100,6 +106,7 @@ const EditElementMenu = ({ id, isSelected, title, emoji, closeMenu }) => {
             className={styles.input}
             type="text"
             onInput={handleFormChange}
+            ref={titleRef}
           />
         </div>
       </div>
